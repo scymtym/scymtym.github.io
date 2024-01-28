@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <style type="text/css">body{margin:40px auto;max-width:80%;line-height:1.6;font-size:18px;color:#444;padding:0 10px}h1,h2,h3{line-height:1.2}</style>
+    <title>Text Editing Stuff</title>
+  </head>
+  <body>
+    <main>
+      <article>
+        <section>
+          <h2>Introduction</h2>
+          <p>
+            This page contains some random stuff related to the text
+            editing and Common Lisp editing stuff we have been
+            doing. Software demonstrated here (Note that not all of
+            the features shown here are included in the publicly
+            available versions of the software):
+            <br/>
+            <h3>Frontend independent</h3>
+            <ul>
+              <li><a href="https://github.com/robert-strandh/Cluffer">Cluffer Library</a></li>
+              <li><a href="https://github.com/scymtym/text.editing">Text Editing Library</a></li>
+              <li><a href="https://github.com/s-expressionists/Eclector">Eclector Library</a></li>
+              <li><a href="https://github.com/s-expressionists/Concrete-Syntax-Tree">Concrete Syntax Tree Library</a></li>
+              <li><a href="https://github.com/scymtym/s-expression-syntax">S-expression-syntax Library</a></li>
+              <li><a href="https://github.com/robert-strandh/Incrementalist">Incrementalist Library</a></li>
+            </ul>
+            <h3>CLIM frontend</h3>
+            <ul>
+              <li><a href="https://codeberg.org/McCLIM/McCLIM">McCLIM</a></li>
+              <li><a href="https://github.com/robert-strandh/Second-Climacs">Second Climacs Editor</a></li>
+            </ul>
+          </p>
+        </section>
+        <section>
+          <h2>Documentation Drafts</h2>
+          <p>
+            Those are obsolete but are preserved so that links don't
+            break:
+            <ul>
+              <li style="text-decoration: line-through"><a href="text.html">text.editing documentation draft 1</a></li>
+              <li style="text-decoration: line-through"><a href="text.editing.html">text.editing documentation draft 2</a></li>
+            </ul>
+            Please
+            use <a href="https://scymtym.github.io/text.editing/">the
+            actual documentation</a> instead.
+          </p>
+        </section>
+        <section>
+          <h2>Demos</h2>
+          <p>
+            <h3>Cluffer</h3>
+            <div style="display: flex; flex-wrap: wrap">
+              <div style="width: 40%; margin: 20px">
+                <video width="100%" controls>
+                  <source src="cluffer-snapshots.ogv" type="video/ogg"/>
+                </video>
+                <div style="text-align: center">
+                  Cluffer snapshots for undo.
+                </div>
+              </div>
+              <div style="width: 40%; margin: 20px">
+                <video width="100%" controls>
+                  <source src="undo-history-1.ogv" type="video/ogg"/>
+                </video>
+                <div style="text-align: center">
+                  Cluffer undo experiment.
+                </div>
+              </div>
+            </div>
+          </p2>
+          <p>
+            <h3>Second Climacs</h3>
+            <div style="display: flex; flex-wrap: wrap">
+              <div style="width: 40%; margin: 20px">
+                <img style="width: 100%" src="second-climacs-3.png"/>
+                <div style="text-align: center">
+                  AST
+                  from <a href="https://github.com/scymtym/s-expression-syntax">parsing
+                  s-expressions</a> represented
+                  as <a href="https://github.com/s-expressionists/Concrete-Syntax-Tree">Concrete
+                  Syntax Tree</a>.
+                </div>
+              </div>
+              <div style="width: 40%; margin: 20px">
+                <img style="width: 100%" src="second-climacs-4.png"/>
+                <div style="text-align:center">S-expression-level errors.</div>
+              </div>
+              <div style="width: 40%; margin: 20px">
+                <video width="100%" controls>
+                  <source src="second-climacs-5.ogv" type="video/ogg"/>
+                </video>
+                <div style="text-align:center">
+                  Gutter area and CLIM presentations within buffer content.
+                </div>
+              </div>
+
+              <div style="width: 40%; margin: 20px">
+                <video width="100%" controls>
+                  <source src="editing-library-3.ogv" type="video/ogg"/>
+                </video>
+                <div style="text-align: center">
+                  Filling (word wrapping) and multiple cursors.
+                </div>
+              </div>
+              <div style="width: 40%; margin: 20px">
+                <video width="100%" controls>
+                  <source src="editing-library-5.ogv" type="video/ogg"/>
+                </video>
+                <div style="text-align: center;">
+                  Search and replace experiment.
+                </div>
+              </div>
+            </div>
+          </p>
+          <p>
+            <h3>Other Frontends</h3>
+            These alternate frontends use mostly the same software
+            stack as the examples shown above. The most notable
+            difference is that the syntax (or rather semantic)
+            highlighting is further along:
+            <div style="display: flex; flex-wrap: wrap">
+              <div style="width: 40%; margin: 20px">
+                <img style="width: 100%" src="editing-library-3.png"/>
+                <div style="text-align:center">Terminal REPL with editing and syntax highlighting.</div>
+              </div>
+              <div style="width: 40%; margin: 20px">
+                <video style="width: 100%; margin: 20px%" controls>
+                  <source src="ide-2.ogv">
+                </video>
+                <div style="text-align:center">S-expression parsing experiments.</div>
+              </div>
+            </div>
+          </p>
+        </section>
+      </article>
+    </main>
+  </body>
+</html>
