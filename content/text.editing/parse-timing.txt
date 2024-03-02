@@ -1,0 +1,97 @@
+ Running test READ-CODE
+; package.lisp
+;   ++
+;   --
+;   insert: 0.49 s (3,508/s) delete: 0.12 s (14,383/s)
+; utilities.lisp
+;   +++
+;   ---
+;   insert: 0.46 s (5,304/s) delete: 0.30 s (8,133/s)
+; protocol.lisp
+;   ++
+;   --
+;   insert: 0.12 s (10,983/s) delete: 0.16 s (8,512/s)
+; token.lisp
+;   ++
+;   --
+;   insert: 0.23 s (6,521/s) delete: 0.15 s (10,222/s)
+; wad.lisp
+;   +++++++++++++++++++++++++++++++++++
+;   -----------------------------------
+;   insert: 8.93 s (3,906/s) delete: 8.12 s (4,299/s)
+; check-wad-graph.lisp
+;   +++++
+;   -----
+;   insert: 1.28 s (3,244/s) delete: 0.70 s (5,914/s)
+; cache.lisp
+;   ++++++++++++++++++++
+;   --------------------
+;   insert: 4.94 s (3,931/s) delete: 2.25 s (8,639/s)
+; buffer-stream.lisp
+;   +++++++
+;   -------
+;   insert: 1.16 s (5,219/s) delete: 0.73 s (8,243/s)
+; analyzer.lisp
+;   ++++
+;   ----
+;   insert: 0.64 s (5,076/s) delete: 0.41 s (7,934/s)
+; client.lisp
+;   +++++++++++++++++++
+;   -------------------
+;   insert: 5.98 s (3,150/s) delete: 2.72 s (6,931/s)
+; parse.lisp
+;   +++++++
+;   -------
+;   insert: 1.83 s (3,741/s) delete: 0.97 s (7,036/s)
+; read-forms.lisp
+;   +++
+;   ---
+;   insert: 1.05 s (2,617/s) delete: 0.33 s (8,396/s)
+; update-cache.lisp
+;   +
+;   -
+;   insert: 0.08 s (4,674/s) delete: 0.04 s (10,388/s)
+; find-wad-beginning-line.lisp
+;   ++
+;   --
+;   insert: 0.26 s (6,671/s) delete: 0.20 s (8,372/s)
+; find-wad-containing-position.lisp
+;   ++++
+;   ----
+;   insert: 0.69 s (5,056/s) delete: 0.39 s (9,017/s)
+; mapwad.lisp
+;   ++
+;   --
+;   insert: 0.23 s (6,859/s) delete: 0.17 s (9,309/s)
+; extra-assertions.lisp
+;   ++++++++++
+;   ----------
+;   insert: 2.30 s (4,174/s) delete: 1.45 s (6,642/s)
+; package.lisp
+;   +
+;   -
+;   insert: 0.05 s (8,291/s) delete: 0.03 s (12,437/s)
+; utilities.lisp
+;   +++++++++++
+;   -----------
+;   insert: 2.52 s (3,986/s) delete: 1.43 s (7,034/s)
+; code-reading-utilities.lisp
+;   +
+;   -
+;   insert: 0.19 s (4,377/s) delete: 0.10 s (8,229/s)
+; wad.lisp
+;   +
+;   -
+;   insert: 0.10 s (5,319/s) delete: 0.07 s (7,823/s)
+; test.lisp
+;   ++++++++
+;   --------
+;   insert: 3.37 s (2,139/s) delete: 2.75 s (2,621/s)
+; read-code.lisp
+;   ++++
+;   ----
+;   insert: 0.80 s (3,913/s) delete: 0.39 s (8,069/s)
+; regressions.lisp
+;   +++
+;   ---
+;   insert: 0.84 s (2,645/s) delete: 0.34 s (6,535/s)
