@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html>
+<!-- Created by GNU Texinfo 7.1, https://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<!-- Copyright © 2013 Robert Strandh
+Copyright © 2024 Jan Moringen -->
+<title>Incrementalist User&rsquo;s Manual</title>
+
+<meta name="description" content="Incrementalist User&rsquo;s Manual">
+<meta name="keywords" content="Incrementalist User&rsquo;s Manual">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="#Top" rel="start" title="Top">
+<link href="#Concept-index" rel="index" title="Concept index">
+<link href="#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="#Introduction" rel="next" title="Introduction">
+<style type="text/css">
+<!--
+/*
+ * Based on version 1.0.1 of the texinfo-css stylesheet published by
+ * sirgazil (https://bitbucket.org/sirgazil/texinfo-css).
+ *
+ * Public domain 2016 sirgazil. All rights waived.
+*/
+
+/* NATIVE ELEMENTS */
+
+a.copiable-link {visibility: hidden; text-decoration: none; line-height: 0em}
+a.summary-letter-printindex {text-decoration: none}
+div.center {text-align:center}
+span:hover a.copiable-link {visibility: visible}
+strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
+td.printindex-index-entry {vertical-align: top}
+td.printindex-index-section {vertical-align: top; padding-left: 1em}
+th.entries-header-printindex {text-align:left}
+th.sections-header-printindex {text-align:left; padding-left: 1em}
+ul.mark-bullet {list-style-type: disc}
+ul.toc-numbered-mark {list-style: none}
+a:link,
+a:visited {
+    color: #1E90FF;
+    text-decoration: none;
+}
+
+a:active,
+a:focus,
+a:hover {
+    text-decoration: underline;
+}
+
+abbr,
+acronym {
+    cursor: help;
+}
+
+blockquote {
+    color: #555753;
+    font-style: oblique;
+    margin: 30px 0px;
+    padding-left: 3em;
+}
+
+body {
+    background-color: white;
+    box-shadow: 0 0 2px gray;
+    box-sizing: border-box;
+    color: #333;
+    font-family: sans-serif;
+    font-size: 16px;
+    margin: 50px auto;
+    max-width: 80%;
+    padding: 50px;
+}
+
+code,
+samp,
+tt,
+var {
+    color: purple;
+    font-size: 0.8em;
+}
+
+kbd {
+    padding-left: .25em;
+    padding-right: .25em;
+    border: solid 1px #C2C2C2;
+    border-radius: 4px;
+    background-color: #F0F0F0;
+    box-shadow: 1px 1px silver;
+}
+
+div.example,
+div.lisp {
+    margin: 0px;
+}
+
+dl {
+    margin: 3em 0em;
+}
+
+dl dl {
+    margin: 0em;
+}
+
+dt {
+    background-color: #F5F5F5;
+    padding: 0.5em;
+}
+
+h1,
+h2,
+h2.contents-heading,
+h3,
+h4 {
+    padding: 20px 0px 0px 0px;
+    font-weight: normal;
+}
+
+h1 {
+    font-size: 2.4em;
+}
+
+h2 {
+    font-size: 2.2em;
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 1.8em;
+}
+
+h4 {
+    font-size: 1.4em;
+}
+
+hr {
+    background-color: silver;
+    border-style: none;
+    height: 1px;
+    margin: 0px;
+}
+
+html {
+    background-color: #F5F5F5;
+}
+
+img {
+    max-width: 80%;
+}
+
+li {
+    padding: 5px;
+}
+
+div.display,
+div.example,
+div.format,
+div.lisp,
+div.verbatim {
+    overflow: auto;
+}
+
+div.example,
+div.lisp,
+div.verbatim {
+    background-color: #F5F5F5;
+    font-size: smaller;
+    padding: 1em;
+
+    /* border with rounded corner */
+    border-color: #000;
+    border-radius: 4px;
+    border-style: solid;
+    border-width: thin;
+}
+
+pre {
+    padding: 0;
+    margin: 0 0 1em 0;
+}
+pre:last-of-type {
+    margin: 0 0 0 0;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 40px 0px;
+}
+
+.printindex table * {
+    background-color: inherit;
+    border-style: none;
+}
+
+td,
+th {
+    border-color: silver;
+    border-style: solid;
+    border-width: thin;
+    padding: 10px;
+}
+
+th {
+    background-color: #F5F5F5;
+}
+/* END NATIVE ELEMENTS */
+
+
+
+/* CLASSES */
+.contents {
+    margin-bottom: 4em;
+}
+
+strong.def-name {
+    font-size: initial;
+}
+
+/* Restrict TOC to depth 3 */
+.contents > ul ul ul ul {
+    display: none;
+}
+
+.float {
+    margin: 3em 0em;
+}
+
+.float .caption {
+    font-size: smaller;
+    text-align: center;
+}
+
+.float > img {
+    display: block;
+    margin: auto;
+}
+
+.footnotes-segment {
+    font-size: smaller;
+    margin: 5em 0em;
+}
+
+.footnote-body-heading {
+    display: inline;
+    font-size: small;
+}
+
+.key {
+    color: purple;
+    font-size: 0.8em;
+}
+
+/* END CLASSES */
+.header {
+    display: none;
+}
+
+.menu {
+    display: none;
+}
+
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+
+
+
+
+
+<div class="top-level-extent" id="Top">
+<h1 class="top" id="Incrementalist-User_0027s-Manual"><span>Incrementalist User&rsquo;s Manual<a class="copiable-link" href="#Incrementalist-User_0027s-Manual"> &para;</a></span></h1>
+
+<p>This manual is for Incrementalist version 0.2.0.
+</p>
+
+<div class="element-contents" id="SEC_Contents">
+<h2 class="contents-heading">Table of Contents</h2>
+
+<div class="contents">
+
+<ul class="toc-numbered-mark">
+  <li><a id="toc-Introduction-1" href="#Introduction">1 Introduction</a></li>
+  <li><a id="toc-Concepts-1" href="#Concepts">2 Concepts</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Representation-of-the-Editor-Buffer-1" href="#Representation-of-the-Editor-Buffer">2.1 Representation of the Editor Buffer</a></li>
+    <li><a id="toc-Parsing-using-the-Common-Lisp-Reader-1" href="#Parsing-using-the-Common-Lisp-Reader">2.2 Parsing using the Common Lisp Reader</a></li>
+    <li><a id="toc-Incremental-Updates-and-Parse-Results-1" href="#Incremental-Updates-and-Parse-Results">2.3 Incremental Updates and Parse Results</a></li>
+    <li><a id="toc-The-Analyzer-1" href="#The-Analyzer">2.4 The Analyzer</a></li>
+  </ul></li>
+  <li><a id="toc-External-Protocols-1" href="#External-Protocols">3 External Protocols</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-The-Token-protocol-1" href="#The-Token-protocol">3.1 The Token protocol</a></li>
+    <li><a id="toc-WAD-Protocols-1" href="#WAD-Protocols">3.2 WAD Protocols</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Children-Protocol-1" href="#Children-Protocol">3.2.1 Children Protocol</a></li>
+      <li><a id="toc-Family-Relations-Protocol-1" href="#Family-Relations-Protocol">3.2.2 Family Relations Protocol</a></li>
+      <li><a id="toc-Basic-Wad-Protocol-1" href="#Basic-Wad-Protocol">3.2.3 Basic Wad Protocol</a></li>
+      <li><a id="toc-Wad-Protocol-1" href="#Wad-Protocol">3.2.4 Wad Protocol</a></li>
+      <li><a id="toc-Wad-Classes-1" href="#Wad-Classes">3.2.5 Wad Classes</a></li>
+    </ul></li>
+    <li><a id="toc-The-Associated-Buffer-Protocol-1" href="#The-Associated-Buffer-Protocol">3.3 The Associated Buffer Protocol</a></li>
+    <li><a id="toc-The-Cache-Protocol-1" href="#The-Cache-Protocol">3.4 The Cache Protocol</a></li>
+    <li><a id="toc-The-Analyzer-Protocol-1" href="#The-Analyzer-Protocol">3.5 The Analyzer Protocol</a></li>
+  </ul></li>
+  <li><a id="toc-Incremental-Parsing-1" href="#Incremental-Parsing">4 Incremental Parsing</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Data-Structures-1" href="#Data-Structures">4.1 Data Structures</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-WADs-1" href="#WADs">4.1.1 WADs</a></li>
+      <li><a id="toc-Prefix-and-Suffix-1" href="#Prefix-and-Suffix">4.1.2 Prefix and Suffix</a></li>
+    </ul></li>
+    <li><a id="toc-Moving-Top_002dlevel-Wads-1" href="#Moving-Top_002dlevel-Wads">4.2 Moving Top-level Wads</a></li>
+    <li><a id="toc-Incremental-Update-1" href="#Incremental-Update">4.3 Incremental Update</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Processing-Modifications-1" href="#Processing-Modifications">4.3.1 Processing Modifications</a></li>
+      <li><a id="toc-Recreating-the-Cache-1" href="#Recreating-the-Cache">4.3.2 Recreating the Cache</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a id="toc-Concept-index-1" href="#Concept-index" rel="index">Concept index</a></li>
+  <li><a id="toc-Function-and-macro-and-variable-and-type-index-1" href="#Function-and-macro-and-variable-and-type-index" rel="index">Function and macro and variable and type index</a></li>
+</ul>
+</div>
+</div>
+<hr>
+<div class="chapter-level-extent" id="Introduction">
+<h2 class="chapter" id="Introduction-1"><span>1 Introduction<a class="copiable-link" href="#Introduction-1"> &para;</a></span></h2>
+
+<p>Incrementalist is a system for incrementally parsing Common Lisp code
+that has been developed in the context of the Climacs editor for
+Common Lisp code and extracted into its own system.
+</p>
+<ul class="itemize mark-bullet">
+<li>We implemented a better buffer representation, and extracted it from the
+editor code into a separate library named <a class="url" href="https://github.com/robert-strandh/Cluffer">Cluffer</a>.  The new
+buffer representation has better performance, especially on large
+buffers, and it makes it easier to write sophisticated parsers for
+buffer contents.
+
+</li><li>The incremental parser for Common Lisp syntax of the first version of
+Climacs was very hard to maintain, and while it was better than that
+of Emacs, it was still not good enough.  To improve upon those
+previous approaches, Incrementalist uses <a class="url" href="https://github.com/s-expressionists/eclector">Eclector</a> in order to parse
+buffer contents.  Eclector is a library that implements the
+Common Lisp reader, but that can also be customized in many ways.  We
+take advantage of these capabilities to read material that is normally
+skipped, like comments, and for error recovery.  By using a
+Common Lisp reader, we parse the buffer contents in the same way that
+the Common Lisp compiler would.
+
+</li><li>Incrementalist is independent of any particular library for making graphic
+user interfaces, allowing it to be configured with different such
+libraries.
+
+</li></ul>
+
+<hr>
+</div>
+<div class="chapter-level-extent" id="Concepts">
+<h2 class="chapter" id="Concepts-1"><span>2 Concepts<a class="copiable-link" href="#Concepts-1"> &para;</a></span></h2>
+
+
+<p>This chapter describes the approaches and abstract data types which
+Incrementalist uses to incrementally and only when necessary parse buffer
+contents in order to fill and update a cache of parse results that
+clients can query.  <a class="ref" href="#fig_003aanalyzer">Figure 2.1</a> presents an overview of the
+concepts which will be explained in the following sections.
+</p>
+<div class="float" id="fig_003aanalyzer">
+<div class="center"><img class="image" src="fig-analyzer.png" alt="fig-analyzer">
+</div><div class="type-number-float"><p><strong class="strong">Figure 2.1: </strong></p></div></div>
+<hr>
+<div class="section-level-extent" id="Representation-of-the-Editor-Buffer">
+<h3 class="section" id="Representation-of-the-Editor-Buffer-1"><span>2.1 Representation of the Editor Buffer<a class="copiable-link" href="#Representation-of-the-Editor-Buffer-1"> &para;</a></span></h3>
+
+<p>Incrementalist uses the <a class="url" href="https://github.com/robert-strandh/Cluffer">Cluffer</a> library to represent its buffers.  We
+briefly describe the essential aspects of that library below.  For
+detailed information on how it works, see the dedicated documentation.
+</p>
+<p>Cluffer provides two distinct protocols, namely the <em class="emph">edit
+protocol</em> and the <em class="emph">update protocol</em>.
+</p>
+<ul class="itemize mark-bullet">
+<li><a class="index-entry-id" id="index-edit-protocol"></a>
+<a class="anchor" id="term_002dedit_002dprotocol"></a>The <em class="dfn">edit protocol</em> provides operations for editing the buffer
+contents.  It has been designed to be both simple and very efficient.
+As such, it does not provide operations on larger chunks of contents
+such as <em class="emph">regions</em>.  It provides operations only on single items,
+and operations to split and join lines.  These editing operations do
+not trigger any view updates which is why they can be invoked a large
+number of times for each user interaction without loss of performance.
+This feature is taken advantage of in operations on regions and in
+keyboard macros.
+
+</li><li><a class="index-entry-id" id="index-update-protocol"></a>
+<a class="index-entry-id" id="index-buffer-time-stamp"></a>
+The <a class="anchor" id="term_002dupdate_002dprotocol"></a><em class="dfn">update protocol</em> is designed to be
+run at the frequency of the event loop.  It is based on the concept of
+<a class="anchor" id="term_002dbuffer_002dtime_002dstamp"></a><em class="dfn">time stamps</em>.  Any number of edit
+operations can be performed between two invocations of the update
+protocol, and the update protocol can be invoked at different times for
+different views, including very rarely for views that are not currently
+on display.  Given that the amount of data displayed in a view is
+relatively modest, no attempt is made to minimize the modifications to
+the view.  The smallest unit of an update is a <em class="emph">line</em> of items.
+
+</li></ul>
+
+<hr>
+</div>
+<div class="section-level-extent" id="Parsing-using-the-Common-Lisp-Reader">
+<h3 class="section" id="Parsing-using-the-Common-Lisp-Reader-1"><span>2.2 Parsing using the Common Lisp Reader<a class="copiable-link" href="#Parsing-using-the-Common-Lisp-Reader-1"> &para;</a></span></h3>
+
+<p>Incrementalist uses a special version of the Common Lisp reader, i.e.,
+<a class="url" href="https://github.com/s-expressionists/eclector">Eclector</a>, to parse the contents of a buffer.  We use a special
+version of the reader for the following reasons:
+</p>
+<ul class="itemize mark-bullet">
+<li>We need a different action from that of the standard reader when it
+comes to interpreting tokens.  In particular, we do not necessarily want
+the incremental parser to intern symbols automatically, and we do not
+want the reader to fail when a symbol with an explicit package prefix
+does not exist or when the package corresponding to the package prefix
+does not exists.
+
+</li><li>We need for the reader to return not only a resulting expression, but an
+object that describes the start and end locations in the buffer where
+the expression was read.
+
+</li><li>The reader needs to return source elements that are not returned by an
+ordinary reader, such as comments and expressions that are skipped by
+certain other reader macros.
+
+</li><li>The reader can not fail but must instead recover in some way when
+either some invalid syntax is encountered, or when end of file is
+encountered in the middle of a call.
+
+</li></ul>
+
+<hr>
+</div>
+<div class="section-level-extent" id="Incremental-Updates-and-Parse-Results">
+<h3 class="section" id="Incremental-Updates-and-Parse-Results-1"><span>2.3 Incremental Updates and Parse Results<a class="copiable-link" href="#Incremental-Updates-and-Parse-Results-1"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-cache"></a>
+<p>When Incrementalist produces parse results for a given snapshot (which is
+identified by a buffer time stamp) of the contents of a buffer in the
+way described above, Incrementalist stores those results in a
+<a class="anchor" id="term_002dcache"></a><em class="dfn">cache</em> and updates a
+<a class="anchor" id="term_002dcache_002dtime_002dstamp"></a><em class="dfn">time stamp</em> within the cache to the
+buffer time stamp (see <a class="pxref" href="#WAD-Protocols">WAD Protocols</a> for details on the parse result
+representation).  Once the cache is up-to-date, clients can query it,
+for example to obtain parse results which correspond to a particular
+range of lines in the buffer.
+</p>
+<hr>
+</div>
+<div class="section-level-extent" id="The-Analyzer">
+<h3 class="section" id="The-Analyzer-1"><span>2.4 The Analyzer<a class="copiable-link" href="#The-Analyzer-1"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-analyzer"></a>
+<p>A final concept, the <a class="anchor" id="term_002danalyzer"></a><em class="dfn">analyzer</em>, ties together
+the previously mentioned components:
+</p>
+<dl class="table">
+<dt>The buffer</dt>
+<dd><p>The buffer serves as the input for the incremental parsing.  An analyzer
+remains attached to a single buffer for the entire lifetime of the
+analyzer.
+</p>
+</dd>
+<dt>The Reader</dt>
+<dd><p>Or more precisely, a stream that presents the contents of the buffer to
+the reader.  The analyzer contains (or itself acts as) a Common Lisp
+stream which can efficiently seek to particular buffer line and item
+numbers and from which the buffer contents can be read.
+</p>
+</dd>
+<dt>The cache</dt>
+<dd><p>The analyzer creates and maintains a cache which holds parse results
+that the reader produces from the buffer stream.
+</p>
+</dd>
+</dl>
+
+<p>Clients use the Incrementalist library by constructing an analyzer for a
+given buffer and the repeatedly updating the analyzer and querying the
+parse results in the associated cache.
+</p>
+<hr>
+</div>
+</div>
+<div class="chapter-level-extent" id="External-Protocols">
+<h2 class="chapter" id="External-Protocols-1"><span>3 External Protocols<a class="copiable-link" href="#External-Protocols-1"> &para;</a></span></h2>
+
+
+<hr>
+<div class="section-level-extent" id="The-Token-protocol">
+<h3 class="section" id="The-Token-protocol-1"><span>3.1 The Token protocol<a class="copiable-link" href="#The-Token-protocol-1"> &para;</a></span></h3>
+
+<p><code class="t">token</code> class
+</p>
+<p><code class="t">symbol-token</code> class
+<code class="t">ackage-marker-1</code> readers
+<code class="t">package-marker-2</code>
+<code class="t">package-name</code>
+<code class="t">name</code>
+</p>
+<p><code class="t">non-existing-package-symbol-token</code> ; classes
+<code class="t">non-existing-symbol-token</code>
+<code class="t">existing-symbol-token</code>
+</p>
+<hr>
+</div>
+<div class="section-level-extent" id="WAD-Protocols">
+<h3 class="section" id="WAD-Protocols-1"><span>3.2 WAD Protocols<a class="copiable-link" href="#WAD-Protocols-1"> &para;</a></span></h3>
+
+
+<hr>
+<div class="subsection-level-extent" id="Children-Protocol">
+<h4 class="subsection" id="Children-Protocol-1"><span>3.2.1 Children Protocol<a class="copiable-link" href="#Children-Protocol-1"> &para;</a></span></h4>
+
+<p>This protocol allows the client to process or obtain the children of a
+given <a class="ref" href="#term_002dwad">wad</a> which are also wads.
+</p>
+<p>Note that the sequence of (wad) children considered by this function may
+be different from the (CST) children obtained via the readers
+<code class="t">cst:first</code> and <code class="t">cst:rest</code> for several reasons:
+</p>
+<ul class="itemize mark-bullet">
+<li>CST children may not have an associated source location such as the
+second <code class="t">cons</code> in <code class="t">(1 2)</code> while wads always have a source location.
+
+</li><li>A CST child may be linked to its parents via multiple relations such as
+the string <code class="t">&quot;a&quot;</code> which is the <code class="t">cst:first</code> and <code class="t">cst:second</code> of its
+parent in <code class="t">(#1=&quot;a&quot; . #1#)</code>.  In contrast, a wad child must appear
+exactly once in the sequence of children of its parent.
+
+</li><li>Skipped material such as comments does not have a representation as a
+CST node at all.  For the wad tree however, comments and other skipped
+material appear as children or top-level nodes.
+
+</li><li>TODO reordering or hierarchy changes due to reader macros
+
+</li></ul>
+
+<a class="anchor" id="Generic_002dFunction-incrementalist_007cmap_002dchildren"></a><dl class="first-deffn">
+<dt class="deffn" id="index-map_002dchildren-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">map-children [incrementalist]</strong> <var class="def-var-arguments">function wad</var><a class="copiable-link" href="#index-map_002dchildren-_005bincrementalist_005d"> &para;</a></span></dt>
+<dd><p>Call <var class="var">function</var> with each child of <var class="var">wad</var> as the sole argument.
+</p>
+<p>The calls happen in the order in which the children of <var class="var">wad</var> appear
+in the source text.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-incrementalist_007cchildren"></a><dl class="first-deffn">
+<dt class="deffn" id="index-children-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">children [incrementalist]</strong> <var class="def-var-arguments">wad</var><a class="copiable-link" href="#index-children-_005bincrementalist_005d"> &para;</a></span></dt>
+</dl>
+
+<hr>
+</div>
+<div class="subsection-level-extent" id="Family-Relations-Protocol">
+<h4 class="subsection" id="Family-Relations-Protocol-1"><span>3.2.2 Family Relations Protocol<a class="copiable-link" href="#Family-Relations-Protocol-1"> &para;</a></span></h4>
+
+<a class="anchor" id="Generic_002dFunction-incrementalist_007cparent"></a><dl class="first-deffn">
+<dt class="deffn" id="index-parent-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">parent [incrementalist]</strong> <var class="def-var-arguments">wad</var><a class="copiable-link" href="#index-parent-_005bincrementalist_005d"> &para;</a></span></dt>
+<dd><p>Return the parent wad of <var class="var">wad</var> or <code class="t">nil</code> if <var class="var">wad</var> is a
+<a class="ref" href="#term_002dtop_002dlevel_002dwad">top-level wad</a>.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-incrementalist_007cleft_002dsibling"></a><dl class="first-deffn">
+<dt class="deffn" id="index-left_002dsibling-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">left-sibling [incrementalist]</strong> <var class="def-var-arguments">wad</var><a class="copiable-link" href="#index-left_002dsibling-_005bincrementalist_005d"> &para;</a></span></dt>
+<dd><p>Return the wad that is the left sibling of <var class="var">wad</var> or <code class="t">nil</code> if
+<var class="var">wad</var> does not have a left sibling.
+</p>
+<p>There are two possible cases in which <var class="var">wad</var> does not have a left
+sibling:
+</p>
+<ul class="itemize mark-bullet">
+<li>If <var class="var">wad</var> is the first child of its parent.
+
+</li><li>If <var class="var">wad</var> is a <a class="ref" href="#term_002dtop_002dlevel_002dwad">top-level wad</a> and is the
+first element of the <a class="ref" href="#term_002dprefix">prefix</a>.
+
+</li></ul>
+</dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-incrementalist_007cright_002dsibling"></a><dl class="first-deffn">
+<dt class="deffn" id="index-right_002dsibling-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">right-sibling [incrementalist]</strong> <var class="def-var-arguments">wad</var><a class="copiable-link" href="#index-right_002dsibling-_005bincrementalist_005d"> &para;</a></span></dt>
+<dd><p>Return the wad that is the right sibling of <var class="var">wad</var> or <code class="t">nil</code> if
+<var class="var">wad</var> does not have a right sibling.
+</p>
+<p>There are two possible cases in which <var class="var">wad</var> does not have a right
+sibling:
+</p>
+<ul class="itemize mark-bullet">
+<li>If <var class="var">wad</var> is the last child of its parent.
+
+</li><li>If <var class="var">wad</var> is a <a class="ref" href="#term_002dtop_002dlevel_002dwad">top-level wad</a> and is the
+last element of the <a class="ref" href="#term_002dsuffix">suffix</a>.
+
+</li></ul>
+</dd></dl>
+
+
+<hr>
+</div>
+<div class="subsection-level-extent" id="Basic-Wad-Protocol">
+<h4 class="subsection" id="Basic-Wad-Protocol-1"><span>3.2.3 Basic Wad Protocol<a class="copiable-link" href="#Basic-Wad-Protocol-1"> &para;</a></span></h4>
+
+<a class="anchor" id="Generic_002dFunction-incrementalist_007cabsolute_002dstart_002dline_002dnumber"></a><dl class="first-deffn">
+<dt class="deffn" id="index-absolute_002dstart_002dline_002dnumber-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">absolute-start-line-number [incrementalist]</strong> <var class="def-var-arguments">wad</var><a class="copiable-link" href="#index-absolute_002dstart_002dline_002dnumber-_005bincrementalist_005d"> &para;</a></span></dt>
+</dl>
+
+<a class="anchor" id="Generic_002dFunction-incrementalist_007cheight"></a><dl class="first-deffn">
+<dt class="deffn" id="index-height-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">height [incrementalist]</strong> <var class="def-var-arguments">wad</var><a class="copiable-link" href="#index-height-_005bincrementalist_005d"> &para;</a></span></dt>
+</dl>
+
+<a class="anchor" id="Generic_002dFunction-incrementalist_007cend_002dline"></a><dl class="first-deffn">
+<dt class="deffn" id="index-end_002dline-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">end-line [incrementalist]</strong> <var class="def-var-arguments">wad</var><a class="copiable-link" href="#index-end_002dline-_005bincrementalist_005d"> &para;</a></span></dt>
+</dl>
+
+<a class="anchor" id="Generic_002dFunction-incrementalist_007cstart_002dcolumn"></a><dl class="first-deffn">
+<dt class="deffn" id="index-start_002dcolumn-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">start-column [incrementalist]</strong> <var class="def-var-arguments">wad</var><a class="copiable-link" href="#index-start_002dcolumn-_005bincrementalist_005d"> &para;</a></span></dt>
+</dl>
+
+<a class="anchor" id="Generic_002dFunction-incrementalist_007cend_002dcolumn"></a><dl class="first-deffn">
+<dt class="deffn" id="index-end_002dcolumn-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">end-column [incrementalist]</strong> <var class="def-var-arguments">wad</var><a class="copiable-link" href="#index-end_002dcolumn-_005bincrementalist_005d"> &para;</a></span></dt>
+</dl>
+
+<a class="anchor" id="Generic_002dFunction-incrementalist_007citems"></a><dl class="first-deffn">
+<dt class="deffn" id="index-items-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">items [incrementalist]</strong> <var class="def-var-arguments">wad</var><a class="copiable-link" href="#index-items-_005bincrementalist_005d"> &para;</a></span></dt>
+</dl>
+
+
+<hr>
+</div>
+<div class="subsection-level-extent" id="Wad-Protocol">
+<h4 class="subsection" id="Wad-Protocol-1"><span>3.2.4 Wad Protocol<a class="copiable-link" href="#Wad-Protocol-1"> &para;</a></span></h4>
+
+<a class="anchor" id="Generic_002dFunction-incrementalist_007cerrors"></a><dl class="first-deffn">
+<dt class="deffn" id="index-errors-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">errors [incrementalist]</strong> <var class="def-var-arguments">wad</var><a class="copiable-link" href="#index-errors-_005bincrementalist_005d"> &para;</a></span></dt>
+</dl>
+
+<a class="anchor" id="Generic_002dFunction-incrementalist_007cindentation"></a><dl class="first-deffn">
+<dt class="deffn" id="index-indentation-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">indentation [incrementalist]</strong> <var class="def-var-arguments">wad</var><a class="copiable-link" href="#index-indentation-_005bincrementalist_005d"> &para;</a></span></dt>
+</dl>
+
+<hr>
+</div>
+<div class="subsection-level-extent" id="Wad-Classes">
+<h4 class="subsection" id="Wad-Classes-1"><span>3.2.5 Wad Classes<a class="copiable-link" href="#Wad-Classes-1"> &para;</a></span></h4>
+
+<p><code class="t">wad</code> ; class
+</p>
+<p><code class="t">cst-wad</code>
+<code class="t">atom-wad</code>
+<code class="t">cons-wad</code>
+</p>
+<p><code class="t">labeled-object-definition-wad</code>
+<code class="t">labeled-object-reference-wad</code>
+</p>
+<p><code class="t">non-cst-wad</code>
+<code class="t">skipped-wad</code>
+<code class="t">comment-wad</code>
+<code class="t">block-comment-wad</code>
+</p>
+<p><code class="t">semicolon-comment-wad</code>
+<code class="t">semicolon-count</code> ; reader
+</p>
+<p><code class="t">ignored-wad</code>
+<code class="t">sharpsign-wad</code>
+<code class="t">expression</code> ; reader
+<code class="t">sharpsign-plus-wad</code>
+<code class="t">sharpsign-minus-wad</code>
+<code class="t">read-suppress-wad</code>
+<code class="t">reader-macro-wad</code>
+</p>
+<p><code class="t">word-wad</code>
+</p>
+<a class="anchor" id="Generic_002dFunction-incrementalist_007cmisspelled"></a><dl class="first-deffn">
+<dt class="deffn" id="index-misspelled-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">misspelled [incrementalist]</strong> <var class="def-var-arguments">word-wad</var><a class="copiable-link" href="#index-misspelled-_005bincrementalist_005d"> &para;</a></span></dt>
+<dd><p>TODO we may just permit <code class="t">error-wad</code>s as children of <code class="t">word-wad</code>s.
+</p></dd></dl>
+
+<p><code class="t">error-wad</code>
+</p>
+<a class="anchor" id="Generic_002dFunction-incrementalist_007ccondition"></a><dl class="first-deffn">
+<dt class="deffn" id="index-condition-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">condition [incrementalist]</strong> <var class="def-var-arguments">error-wad</var><a class="copiable-link" href="#index-condition-_005bincrementalist_005d"> &para;</a></span></dt>
+</dl>
+
+<hr>
+</div>
+</div>
+<div class="section-level-extent" id="The-Associated-Buffer-Protocol">
+<h3 class="section" id="The-Associated-Buffer-Protocol-1"><span>3.3 The Associated Buffer Protocol<a class="copiable-link" href="#The-Associated-Buffer-Protocol-1"> &para;</a></span></h3>
+
+<p>This tiny protocol consists of a single generic function which looks up
+the Cluffer buffer associated with a given object.  Clients can use
+this protocol for looking up the buffers associated with <code class="t">cache</code> and
+<a class="ref" href="#Class-incrementalist_007canalyzer">analyzer</a> objects.
+</p>
+<a class="anchor" id="Generic_002dFunction-incrementalist_007cbuffer"></a><dl class="first-deffn">
+<dt class="deffn" id="index-buffer-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">buffer [incrementalist]</strong> <var class="def-var-arguments">object</var><a class="copiable-link" href="#index-buffer-_005bincrementalist_005d"> &para;</a></span></dt>
+<dd><p>Return the Cluffer buffer associated with <var class="var">object</var>.
+</p></dd></dl>
+
+<hr>
+</div>
+<div class="section-level-extent" id="The-Cache-Protocol">
+<h3 class="section" id="The-Cache-Protocol-1"><span>3.4 The Cache Protocol<a class="copiable-link" href="#The-Cache-Protocol-1"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-cache-1"></a>
+<p>This protocol extends the <a class="ref" href="#The-Associated-Buffer-Protocol">associated
+buffer protocol</a>, that is, the
+<a class="ref" href="#Generic_002dFunction-incrementalist_007cbuffer">buffer generic function</a> is
+applicable to objects which implement the cache protocol.
+</p>
+<a class="anchor" id="Generic_002dFunction-incrementalist_007ctime_002dstamp"></a><dl class="first-deffn">
+<dt class="deffn" id="index-time_002dstamp-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">time-stamp [incrementalist]</strong> <var class="def-var-arguments">cache</var><a class="copiable-link" href="#index-time_002dstamp-_005bincrementalist_005d"> &para;</a></span></dt>
+<dd><p>Return <code class="t">nil</code> or an integer time stamp which indicates the most recent
+time stamp of the associated buffer for which the cache has been
+synchronized to the contents of the buffer.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-incrementalist_007cline_002dcount"></a><dl class="first-deffn">
+<dt class="deffn" id="index-line_002dcount-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">line-count [incrementalist]</strong> <var class="def-var-arguments">cache</var><a class="copiable-link" href="#index-line_002dcount-_005bincrementalist_005d"> &para;</a></span></dt>
+<dd><p>Return the number of lines in <var class="var">cache</var>.
+</p>
+<p>The returned number reflects the state of the associated buffer at the
+time returned by the <code class="t">time-stamp</code> reader for <var class="var">cache</var>, not
+necessarily the current state.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-incrementalist_007cline_002dlength"></a><dl class="first-deffn">
+<dt class="deffn" id="index-line_002dlength-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">line-length [incrementalist]</strong> <var class="def-var-arguments">cache line-number</var><a class="copiable-link" href="#index-line_002dlength-_005bincrementalist_005d"> &para;</a></span></dt>
+<dd><p>Return the number of items in the line with number <var class="var">line-number</var>
+within <var class="var">cache</var>.
+</p>
+<p>The returned number reflects the state of the associated buffer at the
+time returned by the <code class="t">time-stamp</code> reader for <var class="var">cache</var>, not
+necessarily the current state.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-incrementalist_007cline_002dcontents"></a><dl class="first-deffn">
+<dt class="deffn" id="index-line_002dcontents-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">line-contents [incrementalist]</strong> <var class="def-var-arguments">cache line-number</var><a class="copiable-link" href="#index-line_002dcontents-_005bincrementalist_005d"> &para;</a></span></dt>
+<dd><p>Return the contents of the line with number <var class="var">line-number</var> within
+<var class="var">cache</var> as a <code class="t">cl:vector</code> if items.
+</p>
+<p>The returned items reflect the state of the associated buffer at the
+time returned by the <code class="t">time-stamp</code> reader for <var class="var">cache</var>, not
+necessarily the current state.
+</p></dd></dl>
+
+
+<hr>
+</div>
+<div class="section-level-extent" id="The-Analyzer-Protocol">
+<h3 class="section" id="The-Analyzer-Protocol-1"><span>3.5 The Analyzer Protocol<a class="copiable-link" href="#The-Analyzer-Protocol-1"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-analyzer-1"></a>
+<p>This protocol extends the
+<a class="ref" href="#The-Associated-Buffer-Protocol">associated buffer protocol</a>, that
+is, the
+<a class="ref" href="#Generic_002dFunction-incrementalist_007cbuffer">buffer generic function</a> is
+applicable to objects which implement the analyzer protocol.
+</p>
+<a class="anchor" id="Generic_002dFunction-incrementalist_007ccache"></a><dl class="first-deffn">
+<dt class="deffn" id="index-cache-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">cache [incrementalist]</strong> <var class="def-var-arguments">analyzer</var><a class="copiable-link" href="#index-cache-_005bincrementalist_005d"> &para;</a></span></dt>
+<dd><p>Return the cache associated with <var class="var">analyzer</var>.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-incrementalist_007cupdate"></a><dl class="first-deffn">
+<dt class="deffn" id="index-update-_005bincrementalist_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">update [incrementalist]</strong> <var class="def-var-arguments">analyzer</var><a class="copiable-link" href="#index-update-_005bincrementalist_005d"> &para;</a></span></dt>
+<dd><p>Update the cache associated with <var class="var">analyzer</var> according to changes in
+the buffer associated with <var class="var">analyzer</var>.
+</p>
+<p>The function does not return a meaningful result.  Instead, the client
+queries the update cache associated with <var class="var">analyzer</var> after the update
+is complete.
+</p></dd></dl>
+
+<a class="anchor" id="Class-incrementalist_007canalyzer"></a><dl class="first-deftp">
+<dt class="deftp" id="index-analyzer-_005bincrementalist_005d"><span class="category-def">Class: </span><span><strong class="def-name">analyzer [incrementalist]</strong><a class="copiable-link" href="#index-analyzer-_005bincrementalist_005d"> &para;</a></span></dt>
+<dd><p>Instances of this class tie together three aspects:
+</p>
+<ul class="itemize mark-bullet">
+<li>An associated Cluffer buffer.
+
+</li><li>An associated cache.
+
+</li><li>The behavior of a Common Lisp stream which enables the
+Eclector-based reader to read expressions from the object.
+
+</li></ul>
+</dd></dl>
+
+<hr>
+</div>
+</div>
+<div class="chapter-level-extent" id="Incremental-Parsing">
+<h2 class="chapter" id="Incremental-Parsing-1"><span>4 Incremental Parsing<a class="copiable-link" href="#Incremental-Parsing-1"> &para;</a></span></h2>
+
+<p>As mentioned in <a class="ref" href="#Representation-of-the-Editor-Buffer">Representation of the Editor Buffer</a>, the general
+control structure for buffer modifications and incremental updates was
+designed with the following goals:
+</p>
+<ul class="itemize mark-bullet">
+<li>Most editing operations should be very fast, even when they involve
+fairly large chunks of buffer contents.  Here, <em class="emph">fast</em> means that
+the response time for interactive editing should be short.
+
+</li><li>From a software-engineering point of view, the buffer editing operations
+should not be aware of the presence of any <em class="emph">views</em>.
+
+</li></ul>
+
+<p>Notice that it was <em class="emph">not</em> a goal that editing operations use as
+little computational power as possible.
+</p>
+<p>Input events can be divided into two categories:
+</p>
+<ul class="itemize mark-bullet">
+<li>Input events that result in some modification to some buffer contents.
+Inserting and deleting items are in this category.  Modifications can be
+the result of indirect events such as executing a keyboard macro that
+inserts or deletes items in one or more buffers.
+
+</li><li>Input events that have no effect on any buffer contents.  Moving a
+cursor, changing the size of a window, or scrolling a view are typical
+events in this category.  These events influence only the <em class="emph">view</em>
+into a buffer.
+
+</li></ul>
+
+<p>When an event in the first category occurs, the following chain of
+events is triggered:
+</p>
+<ol class="enumerate">
+<li> The event itself triggers the execution of some <em class="emph">command</em> that
+causes one or more items to be inserted and/or deleted from one or more
+buffers.  Whether this happens as a direct result or as an indirect
+result of the event makes no difference.  The buffers involved are
+modified, but no other action is taken at this time.  Lines that are
+modified or inserted are marked with the <em class="emph">current time stamp</em> and
+the current time stamp is incremented, possibly more than once.
+
+</li><li> At the end of the execution of the command, the <em class="emph">syntax update</em> is
+executed for all buffers, allowing the contents to be incrementally
+parsed according to the syntax associated with the buffer.
+
+<blockquote class="quotation">
+<p><b class="b">warning:</b> There seem to be cases where the syntax of one buffer depends not only
+on its own associated buffer, but also on the contents of other buffers.
+It is not a big problem if the dependency is only on the <em class="emph">contents</em>
+of other buffers, but if the dependency is also on the <em class="emph">result of
+the syntax analysis</em> of other buffers, then one syntax update might
+invalidate another.  In that case, it might be necessary to loop until
+all analyses are complete.  This can become very complicated because
+there can now be circular dependencies so that the entire editor gets
+caught in an infinite loop.
+</p></blockquote>
+
+<p>Finally, visible views are repainted using whatever combination they
+want of the buffer contents and the result of the syntax update.  The
+syntax update uses the time stamps of lines in the buffer and of the
+previous syntax update to compute an up-to-date representation of the
+buffer.  This computation is done incrementally as much as possible.
+</p>
+</li><li> Each view on display recomputes the data presented to the user and
+redraws the associated window.  Again, time stamps are used to make this
+computation as incremental as possible.
+
+</li></ol>
+
+
+<hr>
+<div class="section-level-extent" id="Data-Structures">
+<h3 class="section" id="Data-Structures-1"><span>4.1 Data Structures<a class="copiable-link" href="#Data-Structures-1"> &para;</a></span></h3>
+
+
+<hr>
+<div class="subsection-level-extent" id="WADs">
+<h4 class="subsection" id="WADs-1"><span>4.1.1 WADs<a class="copiable-link" href="#WADs-1"> &para;</a></span></h4>
+
+<a class="index-entry-id" id="index-wad"></a>
+
+<p>We call the data structure for storing the (modified) return value of
+the reader together with start and end location a
+<a class="anchor" id="term_002dwad"></a><em class="dfn">wad</em>.  It contains the following slots:
+</p>
+<ul class="itemize mark-bullet">
+<li>The start and the end location of the wad in the buffer.  The start line
+number within this location information is either
+<a class="anchor" id="term_002dabsolute"></a><em class="dfn">absolute</em> which means that it directly
+corresponds to a line number of the underlying buffer or
+<a class="anchor" id="term_002drelative"></a><em class="dfn">relative</em> which means that it represents an
+offset from the start line number of a parent or sibling wad.  A
+dedicated slot indicates whether the start line number is relative or
+absolute.
+
+</li><li>The &ldquo;raw&rdquo; expression that was read, with some possible modifications.
+Tokens, in particular symbols, are not represented as themselves for
+reasons mentioned above.
+
+</li><li>A list of <em class="dfn">children</em>.  These are wads that were returned by
+recursive calls to the reader.  The children are represented in the
+order they were encountered in the buffer.  This order may be different
+from the order in which the corresponding expressions appear in the
+expression resulting from the call to the reader.  Furthermore, the
+descendants of a given wad can contain wads which correspond to source
+elements that would not be present in the s-expression tree returned by
+<code class="t">cl:read</code> at all such as comments or expressions guarded by feature
+expressions.
+
+</li></ul>
+
+<p>The representation of a wad is shown in <a class="ref" href="#fig_003awad">Figure 4.1</a>.
+</p>
+<div class="float" id="fig_003awad">
+<div class="center"><img class="image" src="fig-wad.png" alt="fig-wad">
+</div><div class="caption"><p><strong class="strong">Figure 4.1: </strong>Representation of a wad. The major components are highlighted:
+location information in green, tree structure information in blue and
+&ldquo;raw&rdquo; information in orange. Not all wad classes contain children and
+&ldquo;raw&rdquo; data. The faintly rendered tree structure slots are computed
+on-demand and are thus always present but not always bound. </p></div></div>
+<a class="index-entry-id" id="index-top_002dlevel-location"></a>
+<a class="index-entry-id" id="index-top_002dlevel-wad"></a>
+
+<p>A location in the buffer is considered a
+<a class="anchor" id="term_002dtop_002dlevel_002dlocation"></a><em class="dfn">top-level location</em> if and only if,
+when the buffer is parsed by a number of consecutive calls to <code class="t">read</code>,
+when this location is reached, the reader is in its initial state with
+no recursive pending invocations.  Similarly A wad is considered a
+<a class="anchor" id="term_002dtop_002dlevel_002dwad"></a><em class="dfn">top-level wad</em> if it is the result of an
+immediate call to <code class="t">read</code>, as opposed to of a recursive call.
+</p>
+<p>Let the <em class="dfn">initial character</em> of some wad be the first non-whitespace
+character encountered during the call to the reader that produced this
+wad.  Similarly, let the <em class="dfn">final character</em> of some wad be the last
+character encountered during the call to the reader that produced this
+wad, excluding any look-ahead character that could be un-read before the
+wad was returned.
+</p>
+<p>The value of the <code class="t">start-line</code> slot for a wad <var class="var">w</var> is computed as
+follows:
+</p>
+<ul class="itemize mark-bullet">
+<li>If <var class="var">w</var> is <a class="ref" href="#term_002dabsolute">absolute</a>, which is the case if and
+only if <var class="var">w</var> is one of the top-level wads in the prefix
+(see <a class="pxref" href="#Prefix-and-Suffix">Prefix and Suffix</a>) or the first top-level wad in the suffix,
+then the value of this slot is the absolute line number of the initial
+character of <var class="var">w</var>.  The first line of the buffer is numbered
+<em class="math">0</em>.
+
+</li><li>Otherwise <var class="var">w</var> is <a class="ref" href="#term_002drelative">relative</a> which is the case for
+different kinds of placements of <var class="var">w</var> in the overall hierarchical
+structure of wads:
+
+<ul class="itemize mark-bullet">
+<li>If <var class="var">w</var> is a top-level wad in the suffix other than the first one,
+then the value of this slot is the number of lines between the value of
+the slot <code class="t">start-line</code> of the preceding wad and the initial character
+of <var class="var">w</var>.  A value of <em class="math">0</em> indicates the same line as the
+<code class="t">start-line</code> of the preceding wad.
+
+</li><li>If <var class="var">w</var> is the first in a list of children of some parent wad
+<var class="var">p</var>, then the value of this slot is the number of lines between the
+start line of <var class="var">p</var> (which is different from the value of the
+<code class="t">start-line</code> slot of <var class="var">p</var> if <var class="var">p</var> is itself <em class="emph">relative</em>) and
+the initial character of <var class="var">w</var>.
+
+</li><li>If <var class="var">w</var> is the child other than the first in a list of children of
+some parent wad, then the value of this slot is the number of lines
+between the start line of the preceding sibling wad and the initial
+character of <var class="var">w</var>.
+
+</li></ul>
+
+</li></ul>
+
+<p>The value of the slot <code class="t">height</code> of some wad <var class="var">w</var> is the number of
+lines between the start line of <var class="var">w</var> and the final character of
+<var class="var">w</var>.  If <var class="var">w</var> starts and ends on the same line, then the value of
+this slot is <em class="math">0</em>.
+</p>
+<p>The value of the slot <code class="t">start-column</code> is the absolute column number of
+the initial character of this wad.  A value of <em class="math">0</em> means the
+leftmost column.
+</p>
+<p>The value of the slot <code class="t">end-column</code> is the absolute column number of
+the final character of the wad.
+</p>
+<hr>
+</div>
+<div class="subsection-level-extent" id="Prefix-and-Suffix">
+<h4 class="subsection" id="Prefix-and-Suffix-1"><span>4.1.2 Prefix and Suffix<a class="copiable-link" href="#Prefix-and-Suffix-1"> &para;</a></span></h4>
+
+<a class="index-entry-id" id="index-prefix"></a>
+<a class="index-entry-id" id="index-suffix"></a>
+<p>Incrementalist maintains a sequence <a class="footnote" id="DOCF1" href="#FOOT1"><sup>1</sup></a>  of
+<em class="emph">top-level wads</em>.  This sequence is organized as two ordinary
+Common Lisp lists, called the <a class="anchor" id="term_002dprefix"></a><em class="dfn">prefix</em> and the
+<a class="anchor" id="term_002dsuffix"></a><em class="dfn">suffix</em>.  Given a top-level location <em class="math">L</em>
+in the buffer, the prefix contains a list of the top-level wad that
+precede <em class="math">L</em> and the suffix contains a list of the top-level wads
+that follow <em class="math">L</em>.  The top-level wads in the prefix occur in reverse
+order compared to order in which they appear in the buffer.  The
+top-level wads in the suffix occur in the same order as they appear in
+the buffer.  the location <em class="math">L</em> is typically immediately before or
+immediately after the top-level expression in which the <em class="emph">cursor</em> of
+the current view is located, but that is not a requirement.
+<a class="ref" href="#fig_003aprefix_002dsuffix">Figure 4.2</a> illustrates the prefix and the suffix of a
+buffer with five top-level expressions.
+</p>
+<div class="float" id="fig_003aprefix_002dsuffix">
+<div class="center"><img class="image" src="fig-prefix-suffix.png" alt="fig-prefix-suffix">
+</div><div class="caption"><p><strong class="strong">Figure 4.2: </strong>Prefix and suffix containing top-level wads.</p></div></div>
+<p>Either the prefix or the suffix or both may be the empty list.  The
+location <em class="math">L</em> may be moved.  It suffices <a class="footnote" id="DOCF2" href="#FOOT2"><sup>2</sup></a>  to pop an element off of one
+of the lists and push it onto the other.
+</p>
+<p>To illustrate the above data structures, we use the following example:
+</p>
+<pre class="verbatim">...
+34 (f 10)
+35
+36 (let ((x 1)
+37       (y 2))
+38   (g (h x)
+39      (i y)
+40      (j x y)))
+41
+42 (f 20)
+...
+</pre>
+<p>Each line is preceded by the absolute line number.  If the wad
+starting at line 36 is a member of the prefix or if it is the
+first element of the suffix, it would be represented like this:
+</p>
+<pre class="verbatim">36 04 (let ((x 1) (y 2)) (g (h x) (i y) (j x y)))
+   00 01 ((x 1) (y 2))
+      00 00 (x 1)
+      01 00 (y 2)
+   02 02 (g (h x) (i y) (j x y))
+      00 00 (h x)
+      01 00 (i y)
+      02 00 (j x y)
+</pre>
+<p>Since column numbers are uninteresting for our illustration, we
+show only line numbers.  Furthermore, we present a list as a table for
+a more compact presentation.
+</p>
+<hr>
+</div>
+</div>
+<div class="section-level-extent" id="Moving-Top_002dlevel-Wads">
+<h3 class="section" id="Moving-Top_002dlevel-Wads-1"><span>4.2 Moving Top-level Wads<a class="copiable-link" href="#Moving-Top_002dlevel-Wads-1"> &para;</a></span></h3>
+
+<p>Occasionally, some top-level wads need to be moved from the prefix to
+the suffix or from the suffix to the prefix.  There could be several
+reasons for such moves:
+</p>
+<ul class="itemize mark-bullet">
+<li>The place between the prefix and the suffix must always be near the part
+of the buffer currently on display when the contents are presented to
+the user.  If the part on display changes as a result of scrolling or as
+a result of the user moving the current cursor, then the prefix and
+suffix must be adjusted to reflect the new position prior to the
+presentation.
+
+</li><li>After items have been inserted into or deleted from the buffer, the
+incremental parser may have to adjust the prefix and the suffix so that
+the altered top-level wads are near the beginning of the suffix.
+
+</li></ul>
+
+<p>These adjustments are always accomplished by repeatedly moving a single
+top-level wad.
+</p>
+<p>To move a single top-level wad <em class="math">P</em> from the prefix to the suffix,
+the following actions are executed:
+</p>
+<ol class="enumerate">
+<li> Modify the slot <code class="t">start-line</code> of the first wad of the suffix so that,
+instead of containing the absolute line number, it contains the line
+number relative to the value of the slot <code class="t">start-line</code> of <em class="math">P</em>.
+
+</li><li> Pop <em class="math">P</em> from the prefix and push it onto the suffix.  Rather than
+using the straightforward technique, the <code class="t">cons</code> cell referring to
+<em class="math">P</em> can be reused so as to avoid unnecessary consing.
+
+</li></ol>
+
+<p>To move a single top-level wad <em class="math">P</em> from the suffix to the prefix, the
+following actions are executed:
+</p>
+<ol class="enumerate">
+<li> If <em class="math">P</em> has a successor <em class="math">S</em> in the suffix, then the slot
+<code class="t">start-line</code> of <em class="math">S</em> is adjusted so that it contains the absolute
+line number as opposed to the line number relative to the slot
+<code class="t">start-line</code> of <em class="math">P</em>.
+
+</li><li> Pop <em class="math">P</em> from the suffix and push it onto the prefix.  Rather than
+using the straightforward technique, the <code class="t">cons</code> cell referring to
+<em class="math">P</em> can be reused so as to avoid unnecessary consing.
+
+</li></ol>
+
+<p>We illustrate this process by showing four possible top-level
+locations in the example buffer.  If all three top-level wads
+are located in the suffix, we have the following situation:
+</p>
+<pre class="verbatim">prefix
+...
+suffix
+34 00 (f 10)
+02 04 (let ((x 1) (y 2)) (g (h x) (i y) (j x y)))
+06 00 (f 20)
+...
+</pre>
+<p>In the example, we do not show the children of the top-level wad.
+</p>
+<p>If the prefix contains the first top-level expression and the suffix the
+other two, we have the following situation:
+</p>
+<pre class="verbatim">prefix
+...
+34 00 (f 10)
+suffix
+36 04 (let ((x 1) (y 2)) (g (h x) (i y) (j x y)))
+06 00 (f 20)
+...
+</pre>
+<p>If the prefix contains the first two top-level expressions and the
+suffix the remaining one, we have the following situation:
+</p>
+<pre class="verbatim">prefix
+...
+34 00 (f 10)
+36 04 (let ((x 1) (y 2)) (g (h x) (i y) (j x y)))
+suffix
+42 00 (f 20)
+...
+</pre>
+<p>Finally, if the prefix contains all three top-level expressions, we have
+the following situation:
+</p>
+<pre class="verbatim">prefix
+...
+34 00 (f 10)
+36 04 (let ((x 1) (y 2)) (g (h x) (i y) (j x y)))
+42 00 (f 20)
+suffix
+...
+</pre>
+<hr>
+</div>
+<div class="section-level-extent" id="Incremental-Update">
+<h3 class="section" id="Incremental-Update-1"><span>4.3 Incremental Update<a class="copiable-link" href="#Incremental-Update-1"> &para;</a></span></h3>
+
+<p>Modifications to the buffer are reported at the granularity of entire
+lines.  The following operations are possible:
+</p>
+<ul class="itemize mark-bullet">
+<li>A line may be modified.
+
+</li><li>A line may be inserted.
+
+</li><li>A line may be deleted.
+
+</li></ul>
+
+<p>Several different lines may be modified between two incremental updates,
+and in different ways.  The first step in an incremental update step is
+to invalidate wads that are no longer known to be correct after these
+modifications.  This step modifies the data structure described in
+<a class="ref" href="#Prefix-and-Suffix">Prefix and Suffix</a> in the following way:
+</p>
+<ul class="itemize mark-bullet">
+<li>After the invalidation step, the prefix contains the wad preceding the
+first modified line, so that these wads are still valid.
+
+</li><li>The suffix contains those wads following the last modified line.  These
+wads are still valid, but they may no longer be top-level wads, because
+the nesting may have changed as a result of the modifications preceding
+the suffix.
+
+</li><li>An additional list of <em class="emph">residual wads</em> is created.  This list
+contains wads that have not been invalidated by the modifications,
+i.e. that appear only in lines that have not been modified.
+
+</li></ul>
+
+<p>The order of the wads in the list of residual wads is the same as the
+order of the wads in the buffer.  The slot <code class="t">start-line</code> of each wad in
+the list is the absolute line number of the initial character of that
+wad.
+</p>
+<p>Suppose, for example, that the buffer contents in our running example
+was modified so that line 37 was altered in some way, and a line was
+inserted between the lines 39 and 40.  As a result of this update, we
+need to represent the following wads:
+</p>
+<pre class="verbatim">...
+34 (f 10)
+35
+36       (x 1)
+37
+38      (h x)
+39      (i y)
+40
+41      (j x y)
+42
+43 (f 20)
+...
+</pre>
+<p>In other words, we need to obtain the following representation:
+</p>
+<pre class="verbatim">prefix
+...
+34 00 (f 10)
+residual
+36 00 (x 1)
+38 00 (h x)
+39 00 (i y)
+41 00 (j x y)
+suffix
+43 00 (f 20)
+...
+</pre>
+
+<hr>
+<div class="subsection-level-extent" id="Processing-Modifications">
+<h4 class="subsection" id="Processing-Modifications-1"><span>4.3.1 Processing Modifications<a class="copiable-link" href="#Processing-Modifications-1"> &para;</a></span></h4>
+
+<p>While the list of residual wads is being constructed, its elements are
+in the reverse order.  Only when all buffer updates have been processed
+is the list of residual wads reversed to obtain the final
+representation.
+</p>
+<p>All line modifications are reported in increasing order of line number.
+Before the first modification is processed, the prefix and the suffix
+are positioned as indicated above, and the list of residual wads is
+initialized to the empty list.
+</p>
+<p>The following actions are taken, depending on the position of the
+modified line with respect to the suffix, and on the nature of the
+modification:
+</p>
+<ul class="itemize mark-bullet">
+<li>If a line has been modified, and either the suffix is empty or the
+modified line precedes the first wad of the suffix, then no action is
+taken.
+
+</li><li>If a line has been deleted, and the suffix is empty, then no action is
+taken.
+
+</li><li>If a line has been deleted, and it precedes the first wad of the suffix,
+then the slot <code class="t">start-line</code> of the first wad of the suffix is
+decremented.
+
+</li><li>If a line has been inserted, and the suffix is empty, then no action is
+taken.
+
+</li><li>If a line has been inserted, and it precedes the first wad of the
+suffix, then the slot <code class="t">start-line</code> of the first wad of the suffix
+is incremented.
+
+</li><li>If a line has been modified and the entire first wad of the suffix is
+entirely contained in this line, then remove the first wad from the
+suffix and start the entire process again with the same modified line.
+To remove the first wad from the suffix, first adjust the slot
+<code class="t">start-line</code> of the second element of the suffix (if any) to reflect
+the absolute start line.  Then pop the first element off the suffix.
+
+</li><li>If a line has been modified, deleted, or inserted, in a way that may
+affect the first wad of the suffix, then this wad is first removed from
+the suffix and then processed as indicated below.  Finally, start the
+entire process again with the same modified line.  To remove the first
+wad from the suffix, first adjust the slot <code class="t">start-line</code> of the second
+element of the suffix (if any) to reflect the absolute start line.  Then
+pop the first element off the suffix.
+
+</li></ul>
+
+<p>Modifications potentially apply to elements of the suffix.  When such an
+element needs to be taken apart, we try to salvage as many as possible
+of its descendants.  We do this by moving the element to a
+<em class="emph">worklist</em> organized as a stack represented as an ordinary
+Common Lisp list.  The top of the stack is taken apart by popping it
+from the stack and pushing its children.  This process goes on until
+either the top element has no children, or it is no longer affected by a
+modification to the buffer, in which case it is moved to the list of
+residual wads.
+</p>
+<p>Let us see how we process the modifications in our running example.
+</p>
+<p>Line 37 has been altered, so our first task is to adjust the prefix and
+the suffix so that the prefix contains the last wad that is unaffected
+by the modifications.  This adjustment results in the following
+situation:
+</p>
+<pre class="verbatim">prefix
+...
+34 00 (f 10)
+residue
+worklist
+suffix
+36 04 (let ((x 1) (y 2)) (g (h x) (i y) (j x y)))
+06 00 (f 20)
+...
+</pre>
+<p>The first wad of the suffix is affected by the fact that line 37 has
+been modified.  We must move the children of that wad to the worklist.
+In doing so, we make the <code class="t">start-line</code> of the children reflect the
+absolute line number, and we also make the <code class="t">start-line</code> of the next
+wad of the suffix also reflect the absolute line number.  We obtain the
+following situation:
+</p>
+<pre class="verbatim">prefix
+...
+34 00 (f 10)
+residue
+worklist
+36 01 ((x 1) (y 2))
+38 02 (g (h x) (i y) (j x y))
+suffix
+42 00 (f 20)
+...
+</pre>
+<p>The first element of the worklist is affected by the modification of
+line 37.  We therefore remove it from the worklist, and add its children
+to the top of the worklist.  In doing so, we make the <code class="t">start-line</code> of
+those children reflect absolute line numbers.  We obtain the following
+situation:
+</p>
+<pre class="verbatim">prefix
+...
+34 00 (f 10)
+residue
+worklist
+36 00 (x 1)
+37 00 (y 2)
+38 02 (g (h x) (i y) (j x y))
+suffix
+42 00 (f 20)
+...
+</pre>
+<p>The first element of the worklist is unaffected by the modification,
+because it precedes the modified line entirely.  We therefore move it to
+the residue list.  We now have the following situation:
+</p>
+<pre class="verbatim">prefix
+...
+34 00 (f 10)
+residue
+36 00 (x 1)
+worklist
+37 00 (y 2)
+38 02 (g (h x) (i y) (j x y))
+suffix
+42 00 (f 20)
+...
+</pre>
+<p>The first wad of the top of the worklist is affected by the
+modification.  It has no children, so we pop it off the worklist.
+</p>
+<pre class="verbatim">prefix
+...
+34 00 (f 10)
+residue
+36 00 (x 1)
+worklist
+38 02 (g (h x) (i y) (j x y))
+suffix
+42 00 (f 20)
+...
+</pre>
+<p>The modification of line 37 is now entirely processed.  We know this
+because the first wad on the worklist occurs beyond the modified line in
+the buffer.  We therefore start processing the line inserted between the
+existing lines 39 and 40.  The first item on the worklist is affected by
+this insertion.  We therefore remove it from the worklist and push its
+children instead.  In doing so, we make the <code class="t">start-line</code> slot those
+children reflect the absolute line number.  We obtain the following
+result:
+</p>
+<pre class="verbatim">prefix
+...
+34 00 (f 10)
+residue
+36 00 (x 1)
+worklist
+38 00 (h x)
+39 00 (i y)
+40 00 (j x y)
+suffix
+42 00 (f 20)
+...
+</pre>
+<p>The first element of the worklist is unaffected by the insertion because
+it precedes the inserted line entirely.  We therefore move it to the
+residue list.  We now have the following situation:
+</p>
+<pre class="verbatim">prefix
+...
+34 00 (f 10)
+residue
+36 00 (x 1)
+38 00 (h x)
+worklist
+39 00 (i y)
+40 00 (j x y)
+suffix
+42 00 (f 20)
+...
+</pre>
+<p>Once again, the first element of the worklist is unaffected by the
+insertion because it precedes the inserted line entirely.  We therefore
+move it to the residue list.  We now have the following situation:
+</p>
+<pre class="verbatim">prefix
+...
+34 00 (f 10)
+residue
+36 00 (x 1)
+38 00 (h x)
+39 00 (i y)
+worklist
+40 00 (j x y)
+suffix
+42 00 (f 20)
+...
+</pre>
+<p>The first element of the worklist is affected by the insertion, in that
+it must have its line number incremented.  In fact, every element of the
+worklist and also the first element of the suffix must have their line
+numbers incremented.  Furthermore, this update finishes the processing
+of the inserted line.  We now have the following situation:
+</p>
+<pre class="verbatim">prefix
+...
+34 00 (f 10)
+residue
+36 00 (x 1)
+38 00 (h x)
+39 00 (i y)
+worklist
+41 00 (j x y)
+suffix
+43 00 (f 20)
+...
+</pre>
+<p>With no more buffer modifications to process, we terminate the procedure
+by moving remaining wads from the worklist to the residue list.  The
+final situation is shown here:
+</p>
+<pre class="verbatim">prefix
+...
+34 00 (f 10)
+residue
+36 00 (x 1)
+38 00 (h x)
+39 00 (i y)
+41 00 (j x y)
+worklist
+suffix
+43 00 (f 20)
+...
+</pre>
+<hr>
+</div>
+<div class="subsection-level-extent" id="Recreating-the-Cache">
+<h4 class="subsection" id="Recreating-the-Cache-1"><span>4.3.2 Recreating the Cache<a class="copiable-link" href="#Recreating-the-Cache-1"> &para;</a></span></h4>
+
+<a class="index-entry-id" id="index-cache-2"></a>
+<p>Once the cache has been processed so that only wads that are known to be
+valid remain, the new buffer contents must be fully parsed so that its
+complete structure is reflected in the cache.
+</p>
+<p>Conceptually, we obtain a complete cache by applying <code class="t">read</code> repeatedly
+from the beginning of the buffer, until all top-level wad have been
+found.  But doing it this way essentially for every keystroke would be
+too slow.  In this section we explain how the partially invalidated
+cache is used to make this process sufficiently fast.
+</p>
+<hr>
+</div>
+</div>
+</div>
+<div class="unnumbered-level-extent" id="Concept-index">
+<h2 class="unnumbered" id="Concept-index-1"><span>Concept index<a class="copiable-link" href="#Concept-index-1"> &para;</a></span></h2>
+
+<div class="printindex cp-printindex">
+<table class="cp-letters-header-printindex"><tr><th>Jump to: &nbsp; </th><td><a class="summary-letter-printindex" href="#Concept-index_cp_letter-A"><b>A</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-index_cp_letter-B"><b>B</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-index_cp_letter-C"><b>C</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-index_cp_letter-E"><b>E</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-index_cp_letter-P"><b>P</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-index_cp_letter-S"><b>S</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-index_cp_letter-T"><b>T</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-index_cp_letter-U"><b>U</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-index_cp_letter-W"><b>W</b></a>
+ &nbsp; 
+</td></tr></table>
+<table class="cp-entries-printindex" border="0">
+<tr><td></td><th class="entries-header-printindex">Index Entry</th><th class="sections-header-printindex">Section</th></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-index_cp_letter-A">A</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-analyzer">analyzer</a></td><td class="printindex-index-section"><a href="#The-Analyzer">The Analyzer</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-analyzer-1">analyzer</a></td><td class="printindex-index-section"><a href="#The-Analyzer-Protocol">The Analyzer Protocol</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-index_cp_letter-B">B</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-buffer-time-stamp">buffer time stamp</a></td><td class="printindex-index-section"><a href="#Representation-of-the-Editor-Buffer">Representation of the Editor Buffer</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-index_cp_letter-C">C</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-cache">cache</a></td><td class="printindex-index-section"><a href="#Incremental-Updates-and-Parse-Results">Incremental Updates and Parse Results</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-cache-1">cache</a></td><td class="printindex-index-section"><a href="#The-Cache-Protocol">The Cache Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-cache-2">cache</a></td><td class="printindex-index-section"><a href="#Recreating-the-Cache">Recreating the Cache</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-index_cp_letter-E">E</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-edit-protocol">edit protocol</a></td><td class="printindex-index-section"><a href="#Representation-of-the-Editor-Buffer">Representation of the Editor Buffer</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-index_cp_letter-P">P</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-prefix">prefix</a></td><td class="printindex-index-section"><a href="#Prefix-and-Suffix">Prefix and Suffix</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-index_cp_letter-S">S</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-suffix">suffix</a></td><td class="printindex-index-section"><a href="#Prefix-and-Suffix">Prefix and Suffix</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-index_cp_letter-T">T</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-top_002dlevel-location">top-level location</a></td><td class="printindex-index-section"><a href="#WADs">WADs</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-top_002dlevel-wad">top-level wad</a></td><td class="printindex-index-section"><a href="#WADs">WADs</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-index_cp_letter-U">U</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-update-protocol">update protocol</a></td><td class="printindex-index-section"><a href="#Representation-of-the-Editor-Buffer">Representation of the Editor Buffer</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-index_cp_letter-W">W</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-wad">wad</a></td><td class="printindex-index-section"><a href="#WADs">WADs</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+</table>
+<table class="cp-letters-footer-printindex"><tr><th>Jump to: &nbsp; </th><td><a class="summary-letter-printindex" href="#Concept-index_cp_letter-A"><b>A</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-index_cp_letter-B"><b>B</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-index_cp_letter-C"><b>C</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-index_cp_letter-E"><b>E</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-index_cp_letter-P"><b>P</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-index_cp_letter-S"><b>S</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-index_cp_letter-T"><b>T</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-index_cp_letter-U"><b>U</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-index_cp_letter-W"><b>W</b></a>
+ &nbsp; 
+</td></tr></table>
+</div>
+
+<hr>
+</div>
+<div class="unnumbered-level-extent" id="Function-and-macro-and-variable-and-type-index">
+<h2 class="unnumbered" id="Function-and-macro-and-variable-and-type-index-1"><span>Function and macro and variable and type index<a class="copiable-link" href="#Function-and-macro-and-variable-and-type-index-1"> &para;</a></span></h2>
+
+<div class="printindex fn-printindex">
+<table class="fn-letters-header-printindex"><tr><th>Jump to: &nbsp; </th><td><a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-A"><b>A</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-B"><b>B</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-C"><b>C</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-E"><b>E</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-H"><b>H</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-I"><b>I</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-L"><b>L</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-M"><b>M</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-P"><b>P</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-R"><b>R</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-S"><b>S</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-T"><b>T</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-U"><b>U</b></a>
+ &nbsp; 
+</td></tr></table>
+<table class="fn-entries-printindex" border="0">
+<tr><td></td><th class="entries-header-printindex">Index Entry</th><th class="sections-header-printindex">Section</th></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-A">A</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-absolute_002dstart_002dline_002dnumber-_005bincrementalist_005d"><code>absolute-start-line-number [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#Basic-Wad-Protocol">Basic Wad Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-analyzer-_005bincrementalist_005d"><code>analyzer [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#The-Analyzer-Protocol">The Analyzer Protocol</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-B">B</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-buffer-_005bincrementalist_005d"><code>buffer [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#The-Associated-Buffer-Protocol">The Associated Buffer Protocol</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-C">C</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-cache-_005bincrementalist_005d"><code>cache [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#The-Analyzer-Protocol">The Analyzer Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-children-_005bincrementalist_005d"><code>children [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#Children-Protocol">Children Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-condition-_005bincrementalist_005d"><code>condition [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#Wad-Classes">Wad Classes</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-E">E</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-end_002dcolumn-_005bincrementalist_005d"><code>end-column [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#Basic-Wad-Protocol">Basic Wad Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-end_002dline-_005bincrementalist_005d"><code>end-line [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#Basic-Wad-Protocol">Basic Wad Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-errors-_005bincrementalist_005d"><code>errors [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#Wad-Protocol">Wad Protocol</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-H">H</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-height-_005bincrementalist_005d"><code>height [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#Basic-Wad-Protocol">Basic Wad Protocol</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-I">I</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-indentation-_005bincrementalist_005d"><code>indentation [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#Wad-Protocol">Wad Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-items-_005bincrementalist_005d"><code>items [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#Basic-Wad-Protocol">Basic Wad Protocol</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-L">L</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-left_002dsibling-_005bincrementalist_005d"><code>left-sibling [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#Family-Relations-Protocol">Family Relations Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-line_002dcontents-_005bincrementalist_005d"><code>line-contents [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#The-Cache-Protocol">The Cache Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-line_002dcount-_005bincrementalist_005d"><code>line-count [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#The-Cache-Protocol">The Cache Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-line_002dlength-_005bincrementalist_005d"><code>line-length [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#The-Cache-Protocol">The Cache Protocol</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-M">M</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-map_002dchildren-_005bincrementalist_005d"><code>map-children [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#Children-Protocol">Children Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-misspelled-_005bincrementalist_005d"><code>misspelled [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#Wad-Classes">Wad Classes</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-P">P</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-parent-_005bincrementalist_005d"><code>parent [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#Family-Relations-Protocol">Family Relations Protocol</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-R">R</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-right_002dsibling-_005bincrementalist_005d"><code>right-sibling [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#Family-Relations-Protocol">Family Relations Protocol</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-S">S</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-start_002dcolumn-_005bincrementalist_005d"><code>start-column [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#Basic-Wad-Protocol">Basic Wad Protocol</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-T">T</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-time_002dstamp-_005bincrementalist_005d"><code>time-stamp [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#The-Cache-Protocol">The Cache Protocol</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-U">U</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-update-_005bincrementalist_005d"><code>update [incrementalist]</code></a></td><td class="printindex-index-section"><a href="#The-Analyzer-Protocol">The Analyzer Protocol</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+</table>
+<table class="fn-letters-footer-printindex"><tr><th>Jump to: &nbsp; </th><td><a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-A"><b>A</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-B"><b>B</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-C"><b>C</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-E"><b>E</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-H"><b>H</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-I"><b>I</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-L"><b>L</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-M"><b>M</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-P"><b>P</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-R"><b>R</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-S"><b>S</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-T"><b>T</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-U"><b>U</b></a>
+ &nbsp; 
+</td></tr></table>
+</div>
+
+
+</div>
+</div>
+<div class="footnotes-segment">
+<hr>
+<h4 class="footnotes-heading">Footnotes</h4>
+
+<h5 class="footnote-body-heading"><a id="FOOT1" href="#DOCF1">(1)</a></h5>
+<p>It is not a Common Lisp
+sequence, but just a suite represented in a different way.</p>
+<h5 class="footnote-body-heading"><a id="FOOT2" href="#DOCF2">(2)</a></h5>
+<p>Some slots also need
+to be updated as will be discussed later.</p>
+</div>
+
+
+
+</body>
+</html>
