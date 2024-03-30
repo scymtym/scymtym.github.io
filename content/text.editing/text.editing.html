@@ -33,7 +33,6 @@ a.summary-letter-printindex {text-decoration: none}
 div.center {text-align:center}
 div.example {margin-left: 3.2em}
 kbd.kbd {font-style: oblique}
-kbd.key {font-style: normal}
 span:hover a.copiable-link {visibility: visible}
 strong.def-name {font-family: monospace; font-weight: bold; font-size: larger}
 td.printindex-index-entry {vertical-align: top}
@@ -334,16 +333,32 @@ strong.def-name {
     <li><a id="toc-Search-Dictionary-1" href="#Search-Dictionary">4.2 Search Dictionary</a>
     <ul class="toc-numbered-mark">
       <li><a id="toc-Search-Conditions-1" href="#Search-Conditions">4.2.1 Search Conditions</a></li>
-      <li><a id="toc-Ordinary-Search-Operations-1" href="#Ordinary-Search-Operations">4.2.2 Ordinary Search Operations</a></li>
-      <li><a id="toc-Incremental-Search-Operations-1" href="#Incremental-Search-Operations">4.2.3 Incremental Search Operations</a></li>
+      <li><a id="toc-Search-State-Protocol-1" href="#Search-State-Protocol">4.2.2 Search State Protocol</a></li>
+      <li><a id="toc-Match-Protocol-1" href="#Match-Protocol">4.2.3 Match Protocol</a></li>
+      <li><a id="toc-Site-Search-State-Protocol-1" href="#Site-Search-State-Protocol">4.2.4 Site Search State Protocol</a></li>
+      <li><a id="toc-Buffer-Search-State-Protocol-1" href="#Buffer-Search-State-Protocol">4.2.5 Buffer Search State Protocol</a></li>
+      <li><a id="toc-Ordinary-Search-Operations-1" href="#Ordinary-Search-Operations">4.2.6 Ordinary Search Operations</a></li>
+      <li><a id="toc-Incremental-Search-Operations-1" href="#Incremental-Search-Operations">4.2.7 Incremental Search Operations</a></li>
     </ul></li>
   </ul></li>
-  <li><a id="toc-Equivalent-Emacs-Commands-1" href="#Equivalent-Emacs-Commands">5 Equivalent Emacs Commands</a>
+  <li><a id="toc-Expressions-1" href="#Expressions">5 Expressions</a>
   <ul class="toc-numbered-mark">
-    <li><a id="toc-Motion-1" href="#Motion">5.1 Motion</a></li>
-    <li><a id="toc-Deletion-1" href="#Deletion">5.2 Deletion</a></li>
-    <li><a id="toc-Transformation-1" href="#Transformation">5.3 Transformation</a></li>
-    <li><a id="toc-Paredit-1" href="#Paredit">5.4 Paredit</a></li>
+    <li><a id="toc-Expressions-Concepts-1" href="#Expressions-Concepts">5.1 Expressions Concepts</a></li>
+    <li><a id="toc-Expressions-Dictionary-1" href="#Expressions-Dictionary">5.2 Expressions Dictionary</a>
+    <ul class="toc-numbered-mark">
+      <li><a id="toc-Expression-Conditions-1" href="#Expression-Conditions">5.2.1 Expression Conditions</a></li>
+      <li><a id="toc-Expression-Node-Protocol-1" href="#Expression-Node-Protocol">5.2.2 Expression Node Protocol</a></li>
+      <li><a id="toc-Expression-Tree-Protocol-1" href="#Expression-Tree-Protocol">5.2.3 Expression Tree Protocol</a></li>
+      <li><a id="toc-Expression-Operations-1" href="#Expression-Operations">5.2.4 Expression Operations</a></li>
+    </ul></li>
+  </ul></li>
+  <li><a id="toc-Equivalent-Emacs-Commands-1" href="#Equivalent-Emacs-Commands">6 Equivalent Emacs Commands</a>
+  <ul class="toc-numbered-mark">
+    <li><a id="toc-Motion-1" href="#Motion">6.1 Motion</a></li>
+    <li><a id="toc-Deletion-1" href="#Deletion">6.2 Deletion</a></li>
+    <li><a id="toc-Marking-1" href="#Marking">6.3 Marking</a></li>
+    <li><a id="toc-Transformation-1" href="#Transformation">6.4 Transformation</a></li>
+    <li><a id="toc-Paredit-1" href="#Paredit">6.5 Paredit</a></li>
   </ul></li>
   <li><a id="toc-Concept-index-1" href="#Concept-index" rel="index">Concept index</a></li>
   <li><a id="toc-Function-and-macro-and-variable-and-type-index-1" href="#Function-and-macro-and-variable-and-type-index" rel="index">Function and macro and variable and type index</a></li>
@@ -399,7 +414,7 @@ that)
 </li><li>Input handling or a command processor (This aspect obviously heavily
 depends on the application and there are many ways to do it.
 <a class="uref" href="https://codeberg.org/McCLIM/McCLIM">McCLIM</a> is one library
-provides both input handling and command processing.)
+which provides both input handling and command processing.)
 
 </li><li>Advance parsing (the
 <a class="uref" href="https://github.com/robert-strandh/incrementalist">Incrementalist library</a>
@@ -543,8 +558,11 @@ point, mark, insertion stack, etc.) which would generally act as if it
 were the only cursor in the buffer (disregarding effects that arise from
 sites being too close together or overlapping).
 </p>
-<p>Each buffer has exactly one <em class="dfn">primary</em> site and zero or more
-<em class="dfn">secondary</em> sites.  Secondary sites are added and removed by
+<a class="index-entry-id" id="index-primary-site"></a>
+<a class="index-entry-id" id="index-secondary-site"></a>
+<p>Each buffer has exactly one <a class="anchor" id="term_002dprimary_002dsite"></a><em class="dfn">primary</em>
+site and zero or more <a class="anchor" id="term_002dsecondary_002dsite"></a><em class="dfn">secondary</em> sites.
+Secondary sites are added and removed by
 <a class="ref" href="#Generic_002dFunction-text_002eediting_007cadd_002dsite">certain operations</a>.  A
 secondary site and the primary site can
 <a class="ref" href="#Generic_002dFunction-text_002eediting_007crotate_002dsites">switch roles</a> since the
@@ -662,6 +680,9 @@ of the library can define additional units.
 <tr><td width="20%"><a class="index-entry-id" id="index-buffer_002dboundary"></a>
 <a class="index-entry-id" id="index-buffer_002dboundary-unit"></a>
 <a class="anchor" id="unit_002dbuffer_002dboundary"></a><code class="t">buffer-boundary</code></td><td width="20%">buffer-unit</td><td width="60%">An empty sequence at the beginning or end of the buffer.</td></tr>
+<tr><td width="20%"><a class="index-entry-id" id="index-expression-1"></a>
+<a class="index-entry-id" id="index-expression-unit"></a>
+<a class="anchor" id="unit_002dexpression"></a><code class="t">expression</code></td><td width="20%">unit</td><td width="60%"><em class="emph">not documented</em></td></tr>
 <tr><td width="20%"><a class="index-entry-id" id="index-item"></a>
 <a class="index-entry-id" id="index-item-unit"></a>
 <a class="anchor" id="unit_002ditem"></a><code class="t">item</code></td><td width="20%">unit</td><td width="60%">A single item, usually a character, in a buffer.</td></tr>
@@ -687,6 +708,14 @@ of the library can define additional units.
 <p>It does not matter whether point or mark is closer to the beginning of
 the buffer.
 </p></td></tr>
+<tr><td width="20%"><a class="index-entry-id" id="index-region_002dor_002dexpression"></a>
+<a class="index-entry-id" id="index-region_002dor_002dexpression-unit"></a>
+<a class="anchor" id="unit_002dregion_002dor_002dexpression"></a><code class="t">region-or-expression</code></td><td width="20%">region-or</td><td width="60%">The sequence of characters between point and mark or the innermost
+expression containing point.
+
+<p>Like the &lsquo;region&rsquo; unit if the mark is set and active, otherwise like
+the &lsquo;expression&rsquo; unit.
+</p></td></tr>
 <tr><td width="20%"><a class="index-entry-id" id="index-region_002dor_002ditem"></a>
 <a class="index-entry-id" id="index-region_002dor_002ditem-unit"></a>
 <a class="anchor" id="unit_002dregion_002dor_002ditem"></a><code class="t">region-or-item</code></td><td width="20%">region-or</td><td width="60%">The sequence of characters between point and mark or a single item.
@@ -706,6 +735,9 @@ the &lsquo;item&rsquo; unit.
 
 <p>The beginning and end of the buffer also delimit sentences.
 </p></td></tr>
+<tr><td width="20%"><a class="index-entry-id" id="index-toplevel_002dexpression"></a>
+<a class="index-entry-id" id="index-toplevel_002dexpression-unit"></a>
+<a class="anchor" id="unit_002dtoplevel_002dexpression"></a><code class="t">toplevel-expression</code></td><td width="20%">expression</td><td width="60%"><em class="emph">not documented</em></td></tr>
 <tr><td width="20%"><a class="index-entry-id" id="index-word"></a>
 <a class="index-entry-id" id="index-word-unit"></a>
 <a class="anchor" id="unit_002dword"></a><code class="t">word</code></td><td width="20%">prose-unit</td><td width="60%">A sequence of items that does not contain whitespace or punctuation
@@ -723,7 +755,8 @@ characters.
 +-region-unit
 | +-<a class="ref" href="#unit_002dregion">region</a>
 | `-region-or
-|   `-<a class="ref" href="#unit_002dregion_002dor_002ditem">region-or-item</a>
+|   +-<a class="ref" href="#unit_002dregion_002dor_002ditem">region-or-item</a>
+|   `-<a class="ref" href="#unit_002dregion_002dor_002dexpression">region-or-expression</a>
 +-<a class="ref" href="#unit_002ditem">item</a>
 +-line-unit
 | +-<a class="ref" href="#unit_002dline">line</a>
@@ -733,11 +766,13 @@ characters.
 | +-<a class="ref" href="#unit_002dbuffer">buffer</a>
 | +-<a class="ref" href="#unit_002dsemi_002dbuffer">semi-buffer</a>
 | `-<a class="ref" href="#unit_002dbuffer_002dboundary">buffer-boundary</a>
-`-prose-unit
-  +-<a class="ref" href="#unit_002dword">word</a>
-  +-<a class="ref" href="#unit_002dsentence">sentence</a>
-  +-<a class="ref" href="#unit_002dparagraph">paragraph</a>
-  `-<a class="ref" href="#unit_002dpage">page</a>
++-prose-unit
+| +-<a class="ref" href="#unit_002dword">word</a>
+| +-<a class="ref" href="#unit_002dsentence">sentence</a>
+| +-<a class="ref" href="#unit_002dparagraph">paragraph</a>
+| `-<a class="ref" href="#unit_002dpage">page</a>
+`-<a class="ref" href="#unit_002dexpression">expression</a>
+  `-<a class="ref" href="#unit_002dtoplevel_002dexpression">toplevel-expression</a>
 </pre></div>
 
 <hr>
@@ -1046,16 +1081,23 @@ be detached.
 <h3 class="section" id="Buffer-Protocols-1"><span>3.4 Buffer Protocols<a class="copiable-link" href="#Buffer-Protocols-1"> &para;</a></span></h3>
 
 <p>This section describes protocols for buffers and mixin classes which
-provide default implementations of the protocols.
+provide default implementations of the protocols.  The described
+protocols are extensions of the Cluffer protocols for buffers in the
+sense that objects which are used with the protocols described here must
+also implement the Cluffer protocols.  Similarly, the mixin classes are
+intended to be mixed into classes that are also subclasses of the buffer
+classes provided by Cluffer.
 </p>
 
 <hr>
 <div class="subsection-level-extent" id="Primary-Site-Protocol">
 <h4 class="subsection" id="Primary-Site-Protocol-1"><span>3.4.1 Primary Site Protocol<a class="copiable-link" href="#Primary-Site-Protocol-1"> &para;</a></span></h4>
 
+<a class="index-entry-id" id="index-primary-site-1"></a>
+
 <a class="anchor" id="Generic_002dFunction-text_002eediting_007csite"></a><dl class="first-deffn">
 <dt class="deffn" id="index-site-_005btext_002eediting_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">site [text.editing]</strong> <var class="def-var-arguments">buffer</var><a class="copiable-link" href="#index-site-_005btext_002eediting_005d"> &para;</a></span></dt>
-<dd><p>Return the primary site of <var class="var">buffer</var>.
+<dd><p>Return the <a class="ref" href="#term_002dprimary_002dsite">primary site</a> of <var class="var">buffer</var>.
 </p></dd></dl>
 
 <p>The generic functions <a class="ref" href="#Generic_002dFunction-text_002eediting_007cpoint">point</a>
@@ -1067,6 +1109,15 @@ primary point cursor and the primary mark cursor respectively.
 </div>
 <div class="subsection-level-extent" id="Multiple-Sites-Protocol">
 <h4 class="subsection" id="Multiple-Sites-Protocol-1"><span>3.4.2 Multiple Sites Protocol<a class="copiable-link" href="#Multiple-Sites-Protocol-1"> &para;</a></span></h4>
+
+<p>The following condition types are used in the multiple sites protocol:
+</p>
+<a class="anchor" id="Class-text_002eediting_007csingular_002dsite_002derror"></a><dl class="first-deftp">
+<dt class="deftp" id="index-singular_002dsite_002derror-_005btext_002eediting_005d"><span class="category-def">Class: </span><span><strong class="def-name">singular-site-error [text.editing]</strong><a class="copiable-link" href="#index-singular_002dsite_002derror-_005btext_002eediting_005d"> &para;</a></span></dt>
+<dd><p>This error is signaled if an operation that requires multiple
+<a class="ref" href="#term_002dsite">sites</a> is performed on a buffer that contains only a
+single site.
+</p></dd></dl>
 
 <p>An implementation of this protocol is provided by the class
 </p>
@@ -1111,7 +1162,8 @@ a buffer other than <var class="var">bar</var>, an error is signaled.
 
 <a class="anchor" id="Generic_002dFunction-text_002eediting_007cremove_002dsite"></a><dl class="first-deffn">
 <dt class="deffn" id="index-remove_002dsite-_005btext_002eediting_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">remove-site [text.editing]</strong> <var class="def-var-arguments">site buffer</var><a class="copiable-link" href="#index-remove_002dsite-_005btext_002eediting_005d"> &para;</a></span></dt>
-<dd><p>Remove <var class="var">site</var> fro the sites of <var class="var">buffer</var>.
+<dd><p><a class="ref" href="#Generic_002dFunction-text_002eediting_007cdetach">Detach</a> <var class="var">site</var> and remove
+it from the sites of <var class="var">buffer</var>.
 </p>
 <p>Return <var class="var">site</var>.
 </p>
@@ -1123,7 +1175,7 @@ signal an error.
 
 <a class="anchor" id="Generic_002dFunction-text_002eediting_007cpush_002dsite_002dat"></a><dl class="first-deffn">
 <dt class="deffn" id="index-push_002dsite_002dat-_005btext_002eediting_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">push-site-at [text.editing]</strong> <var class="def-var-arguments">buffer line position</var><a class="copiable-link" href="#index-push_002dsite_002dat-_005btext_002eediting_005d"> &para;</a></span></dt>
-<dd><p>Create a new site at <var class="var">line</var> and <var class="var">position</var> and attached it to
+<dd><p>Create a new site at <var class="var">line</var> and <var class="var">position</var> and attach it to
 <var class="var">buffer</var>.
 </p>
 <p><var class="var">line</var> and <var class="var">position</var> control the location of the point cursor
@@ -1134,7 +1186,7 @@ of the new site.
 
 <a class="anchor" id="Generic_002dFunction-text_002eediting_007cpush_002dsite_002drelative"></a><dl class="first-deffn">
 <dt class="deffn" id="index-push_002dsite_002drelative-_005btext_002eediting_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">push-site-relative [text.editing]</strong> <var class="def-var-arguments">buffer unit direction</var><a class="copiable-link" href="#index-push_002dsite_002drelative-_005btext_002eediting_005d"> &para;</a></span></dt>
-<dd><p>Create a new site relative to the primary site and attached it to
+<dd><p>Create a new site relative to the primary site and attach it to
 <var class="var">buffer</var>.
 </p>
 <p><var class="var">unit</var> and <var class="var">direction</var> control the location of the point cursor
@@ -1151,26 +1203,37 @@ error is signaled.
 
 <a class="anchor" id="Generic_002dFunction-text_002eediting_007cpop_002dsite"></a><dl class="first-deffn">
 <dt class="deffn" id="index-pop_002dsite-_005btext_002eediting_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">pop-site [text.editing]</strong> <var class="def-var-arguments">buffer</var><a class="copiable-link" href="#index-pop_002dsite-_005btext_002eediting_005d"> &para;</a></span></dt>
-<dd><p>Remove the most recently added site from <var class="var">buffer</var>.
+<dd><p>Remove the most recently added <a class="ref" href="#term_002dsite">site</a> from <var class="var">buffer</var>.
 </p>
 <p>Return the removed site.
 </p>
 <p>If no sites beside the primary site are attached to <var class="var">buffer</var>,
-signal an error of type <code class="t">singular-site-error</code>.
+signal an error of type
+<a class="ref" href="#Class-text_002eediting_007csingular_002dsite_002derror">singular-site-error</a>.
 </p></dd></dl>
 
 <a class="anchor" id="Generic_002dFunction-text_002eediting_007crotate_002dsites"></a><dl class="first-deffn">
 <dt class="deffn" id="index-rotate_002dsites-_005btext_002eediting_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">rotate-sites [text.editing]</strong> <var class="def-var-arguments">buffer direction</var><a class="copiable-link" href="#index-rotate_002dsites-_005btext_002eediting_005d"> &para;</a></span></dt>
-<dd><p>Swap roles between the primary site and secondary sites.
+<dd><p>Swap roles between the primary <a class="ref" href="#term_002dsite">site</a> and secondary sites
+in <var class="var">buffer</var>.
 </p>
 <p><var class="var">direction</var> controls the direction of the rotation.
 </p>
-<p>TODO explain this properly
+<p>If <var class="var">direction</var> is <code class="t">:forward</code>, sites are rotated as follows:
 </p>
-<p>TODO <var class="var">direction</var> is ignored at the moment
+<div class="example">
+<pre class="example-preformatted">primary          &#x2190; first secondary
+first secondary  &#x2190; second secondary
+second secondary &#x2190; third secondary
+...
+last secondary   &#x2190; primary
+</pre></div>
+
+<p><var class="var">direction</var> <code class="t">:backward</code> is not supported at the moment
 </p>
 <p>If no sites beside the primary site are attached to <var class="var">buffer</var>,
-signal an error of type <code class="t">singular-site-error</code>.
+signal an error of type
+<a class="ref" href="#Class-text_002eediting_007csingular_002dsite_002derror">singular-site-error</a>.
 </p></dd></dl>
 
 <a class="anchor" id="Generic_002dFunction-text_002eediting_007cother_002dsites"></a><dl class="first-deffn">
@@ -1192,7 +1255,8 @@ except the primary site.
 
 <a class="anchor" id="Generic_002dFunction-text_002eediting_007cperform"></a><dl class="first-deffn">
 <dt class="deffn" id="index-perform-_005btext_002eediting_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">perform [text.editing]</strong> <var class="def-var-arguments">target operation <code class="t">&amp;rest</code> operation-arguments</var><a class="copiable-link" href="#index-perform-_005btext_002eediting_005d"> &para;</a></span></dt>
-<dd><p>Perform <var class="var">operation</var> with <var class="var">operation-arguments</var> in or on <var class="var">target</var>.
+<dd><p>Perform <var class="var">operation</var> with <var class="var">operation-arguments</var> in or on
+<var class="var">target</var>.
 </p>
 <p><var class="var">target</var> is the object in or at or on which the operation should be
 performed such as a buffer or a cursor.
@@ -1215,7 +1279,8 @@ be passed to the function designated by <var class="var">operation</var>.
 condition that may be signaled by the <var class="var">operation</var> call.  However, if
 <var class="var">target</var> is a buffer and multiple sites exist, a different
 convention may be used in order to return one result for each site or
-bundle conditions for multiple sites in a single condition.
+bundle conditions for multiple sites in a single condition
+(see <a class="pxref" href="#Multiple-Sites-Protocol">Multiple Sites Protocol</a>).
 </p></dd></dl>
 
 <hr>
@@ -1242,6 +1307,11 @@ that protocol
 <dt class="deffn" id="index-move-_005btext_002eediting_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">move [text.editing]</strong> <var class="def-var-arguments">cursor unit direction</var><a class="copiable-link" href="#index-move-_005btext_002eediting_005d"> &para;</a></span></dt>
 <dd><p>Move <var class="var">cursor</var> to the beginning or end of the sub-sequence of buffer
 items indicated by <var class="var">unit</var>.
+</p>
+<p><var class="var">cursor</var> is an attached Cluffer cursor.
+</p>
+<p><var class="var">unit</var> is a unit of movement such as <a class="ref" href="#unit_002ditem">item</a> or
+<a class="ref" href="#unit_002dword">word</a>.
 </p>
 <p>If <var class="var">direction</var> is <code class="t">:forward</code>, <var class="var">cursor</var> moves to the end of the
 sub-sequence. If <var class="var">direction</var> is <code class="t">:backward</code>, <var class="var">cursor</var> moves to
@@ -1289,8 +1359,8 @@ a non-whitespace item.
 </p>
 <p><var class="var">cursor</var> is an attached Cluffer cursor.
 </p>
-<p><var class="var">unit</var> is a unit of movement such as <a class="ref" href="#unit_002ditem">item</a>,
-<a class="ref" href="#unit_002dword">word</a> or <code class="t">expression</code>.
+<p><var class="var">unit</var> is a unit of movement such as <a class="ref" href="#unit_002ditem">item</a>
+or <a class="ref" href="#unit_002dword">word</a>.
 </p>
 <p><var class="var">direction</var> is either <code class="t">:forward</code> or <code class="t">:backward</code>.
 </p></dd></dl>
@@ -1465,7 +1535,7 @@ typical copy and yank operations which abstract from the details of the
 lower-level <a class="ref" href="#Insertion-Stack-Protocol">Insertion Stack Protocol</a>.
 </p>
 <a class="anchor" id="Generic_002dFunction-text_002eediting_007cyank"></a><dl class="first-deffn">
-<dt class="deffn" id="index-yank-_005btext_002eediting_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">yank [text.editing]</strong> <var class="def-var-arguments">site <code class="t">&amp;key</code> direction</var><a class="copiable-link" href="#index-yank-_005btext_002eediting_005d"> &para;</a></span></dt>
+<dt class="deffn" id="index-yank-_005btext_002eediting_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">yank [text.editing]</strong> <var class="def-var-arguments">site direction <code class="t">&amp;key</code> pop</var><a class="copiable-link" href="#index-yank-_005btext_002eediting_005d"> &para;</a></span></dt>
 <dd><p>Insert top insertion stack entry of <var class="var">site</var> at the point of
 <var class="var">site</var>.
 </p>
@@ -1475,6 +1545,9 @@ before or after the point cursor of <var class="var">site</var>.
 <p><var class="var">direction</var> controls whether the items are inserted before or after
 the point cursor, or equivalently, whether the point cursor moves to the
 beginning or end of the inserted items after the insertion.
+</p>
+<p><var class="var">pop</var> controls whether the top entry of the insertion stack should
+be popped off.
 </p></dd></dl>
 
 <a class="anchor" id="Generic_002dFunction-text_002eediting_007ccopy"></a><dl class="first-deffn">
@@ -1593,7 +1666,7 @@ behave as described for
 <h4 class="subsection" id="Commenting-Operations-1"><span>3.6.10 Commenting Operations<a class="copiable-link" href="#Commenting-Operations-1"> &para;</a></span></h4>
 
 <a class="anchor" id="Generic_002dFunction-text_002eediting_007ccomment"></a><dl class="first-deffn">
-<dt class="deffn" id="index-comment-_005btext_002eediting_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">comment [text.editing]</strong> <var class="def-var-arguments">cursor unit direction <kbd class="key"></kbd> comment-syntax</var><a class="copiable-link" href="#index-comment-_005btext_002eediting_005d"> &para;</a></span></dt>
+<dt class="deffn" id="index-comment-_005btext_002eediting_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">comment [text.editing]</strong> <var class="def-var-arguments">cursor unit direction <code class="t">&amp;key</code> comment-syntax</var><a class="copiable-link" href="#index-comment-_005btext_002eediting_005d"> &para;</a></span></dt>
 <dd><p>Comment buffer items at or around <var class="var">cursor</var> according to <var class="var">unit</var>
 and <var class="var">direction</var>.
 </p>
@@ -1626,7 +1699,7 @@ the buffer, if any.
 </p>
 <a class="index-entry-id" id="index-incremental-search"></a>
 <p>The <em class="dfn">incremental search</em> operation, on the other hand, maintains a
-mutable current query sequence which the client can extend or truncate
+mutable current query sequence which the client can extend or truncate,
 as well as a set of current matches.  Extending or truncating the query
 shrinks or grows the set of matches as fewer or more sub-sequences in
 the buffer match the current query sequence.  The <a class="ref" href="#term_002dpoint">point</a>
@@ -1650,9 +1723,10 @@ in a buffer is something like this:
 <ol class="enumerate">
 <li> 
 The client performs the operation to start an incremental search in a
-given buffer which creates a buffer search state and site search states
-for that buffer.  The query sequence and set of matches are initially
-empty.
+given buffer which creates a
+<a class="ref" href="#term_002dbuffer_002dsearch_002dstate">buffer search state</a> and
+<a class="ref" href="#term_002dsite_002dsearch_002dstate">site search states</a> for that buffer.  The
+query sequence and set of <a class="ref" href="#term_002dmatch">matches</a> are initially empty.
 
 </li><li> 
 The client repeatedly updates the search state:
@@ -1731,36 +1805,274 @@ match is associated with each site.
 <div class="subsection-level-extent" id="Search-Conditions">
 <h4 class="subsection" id="Search-Conditions-1"><span>4.2.1 Search Conditions<a class="copiable-link" href="#Search-Conditions-1"> &para;</a></span></h4>
 
+<p>The conditions of the following types are signaled by functions in the
+search module:
+</p>
 <a class="anchor" id="Class-text_002eediting_002esearch_007calready_002din_002dincremental_002dsearch_002derror"></a><dl class="first-deftp">
 <dt class="deftp" id="index-already_002din_002dincremental_002dsearch_002derror-_005btext_002eediting_002esearch_005d"><span class="category-def">Class: </span><span><strong class="def-name">already-in-incremental-search-error [text.editing.search]</strong><a class="copiable-link" href="#index-already_002din_002dincremental_002dsearch_002derror-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
-</dl>
+<dd><p>An error of this type is signaled when an operation that starts an
+incremental search is performed when an incremental search is already
+associated with the buffer.
+</p></dd></dl>
 
 <a class="anchor" id="Class-text_002eediting_002esearch_007cnot_002din_002dincremental_002dsearch_002derror"></a><dl class="first-deftp">
 <dt class="deftp" id="index-not_002din_002dincremental_002dsearch_002derror-_005btext_002eediting_002esearch_005d"><span class="category-def">Class: </span><span><strong class="def-name">not-in-incremental-search-error [text.editing.search]</strong><a class="copiable-link" href="#index-not_002din_002dincremental_002dsearch_002derror-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
-</dl>
+<dd><p>An error of this type is signaled when an operation that works only in
+the context of an incremental search is performed when no incremental
+search is associated with the buffer.
+</p></dd></dl>
 
 <a class="anchor" id="Class-text_002eediting_002esearch_007cno_002dnext_002dmatch_002derror"></a><dl class="first-deftp">
 <dt class="deftp" id="index-no_002dnext_002dmatch_002derror-_005btext_002eediting_002esearch_005d"><span class="category-def">Class: </span><span><strong class="def-name">no-next-match-error [text.editing.search]</strong><a class="copiable-link" href="#index-no_002dnext_002dmatch_002derror-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
-</dl>
+<dd><p>An error of this type is signaled when the
+<a class="ref" href="#Generic_002dFunction-text_002eediting_002esearch_007cnext_002dmatch">next-match</a>
+operation is performed on a cursor for which there is no following match
+and <code class="t">wrap-around</code> is false or there are no matches at all.
+</p></dd></dl>
 
 <a class="anchor" id="Class-text_002eediting_002esearch_007cno_002dprevious_002dmatch_002derror"></a><dl class="first-deftp">
 <dt class="deftp" id="index-no_002dprevious_002dmatch_002derror-_005btext_002eediting_002esearch_005d"><span class="category-def">Class: </span><span><strong class="def-name">no-previous-match-error [text.editing.search]</strong><a class="copiable-link" href="#index-no_002dprevious_002dmatch_002derror-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>An error of this type is signaled when the
+<a class="ref" href="#Generic_002dFunction-text_002eediting_002esearch_007cprevious_002dmatch">previous-match</a>
+operation is performed on a cursor for which there is no preceding match
+and <code class="t">wrap-around</code> is false or there are no matches at all.
+</p></dd></dl>
+
+<hr>
+</div>
+<div class="subsection-level-extent" id="Search-State-Protocol">
+<h4 class="subsection" id="Search-State-Protocol-1"><span>4.2.2 Search State Protocol<a class="copiable-link" href="#Search-State-Protocol-1"> &para;</a></span></h4>
+
+<p>The search state protocol specifies generic functions that operate on a
+<a class="ref" href="#term_002dbuffer_002dsearch_002dstate">buffer search state</a> while an incremental
+search is being performed.
+</p>
+<p>The search state protocol extends the <a class="ref" href="#Detach-Protocol">Detach Protocol</a>, that is,
+search states can (and must) be detached.  When detached, a search state
+detaches all its matches.
+</p>
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007cstart"></a><dl class="first-deffn">
+<dt class="deffn" id="index-start-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">start [text.editing.search]</strong> <var class="def-var-arguments">search-state</var><a class="copiable-link" href="#index-start-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Return a cursor that represents the buffer location at which the
+incremental search represented by <var class="var">search-state</var> started.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007cquery"></a><dl class="first-deffn">
+<dt class="deffn" id="index-query-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">query [text.editing.search]</strong> <var class="def-var-arguments">search-state</var><a class="copiable-link" href="#index-query-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Return the current query sequence for <var class="var">search-state</var>.
+</p>
+<p>The returned sequence must not be modified.
+<a class="ref" href="#Generic_002dFunction-text_002eediting_002esearch_007cextend_002dquery">extend-query</a>
+and
+<a class="ref" href="#Generic_002dFunction-text_002eediting_002esearch_007ctruncate_002dquery">truncate-query</a>
+must be used instead.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007ccase_002dmode"></a><dl class="first-deffn">
+<dt class="deffn" id="index-case_002dmode-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">case-mode [text.editing.search]</strong> <var class="def-var-arguments">search-state</var><a class="copiable-link" href="#index-case_002dmode-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Return the case mode, which is either <code class="t">:ignore</code> or <code class="t">:match</code>, of
+<var class="var">search-state</var>.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007c_0028setf-case_002dmode_0029"></a><dl class="first-deffn">
+<dt class="deffn" id="index-_0028setf-case_002dmode_0029-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">(setf case-mode) [text.editing.search]</strong> <var class="def-var-arguments">new-value search-state</var><a class="copiable-link" href="#index-_0028setf-case_002dmode_0029-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Set the case mode of <var class="var">search-state</var> to <var class="var">new-value</var> which must be
+either <code class="t">:ignore</code> or <code class="t">:match</code>.
+</p>
+<p>Calling this function causes <var class="var">search-state</var> to be rebuilt via
+<a class="ref" href="#Generic_002dFunction-text_002eediting_002esearch_007crebuild_002dstate">rebuild-state</a>.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007cmatch_002dcount"></a><dl class="first-deffn">
+<dt class="deffn" id="index-match_002dcount-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">match-count [text.editing.search]</strong> <var class="def-var-arguments">search-state</var><a class="copiable-link" href="#index-match_002dcount-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Return the number of <a class="ref" href="#term_002dmatch">matches</a> contained in
+<var class="var">search-state</var>.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007cmap_002dmatches"></a><dl class="first-deffn">
+<dt class="deffn" id="index-map_002dmatches-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">map-matches [text.editing.search]</strong> <var class="def-var-arguments">function search-state</var><a class="copiable-link" href="#index-map_002dmatches-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Call <var class="var">function</var> with each <a class="ref" href="#term_002dmatch">match</a> in
+<var class="var">search-state</var>.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007cmatches"></a><dl class="first-deffn">
+<dt class="deffn" id="index-matches-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">matches [text.editing.search]</strong> <var class="def-var-arguments">search-state</var><a class="copiable-link" href="#index-matches-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Return a sequence of the <a class="ref" href="#term_002dmatch">matches</a> in <var class="var">search-state</var>.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007cadd_002dmatch"></a><dl class="first-deffn">
+<dt class="deffn" id="index-add_002dmatch-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">add-match [text.editing.search]</strong> <var class="def-var-arguments">search-state buffer start end</var><a class="copiable-link" href="#index-add_002dmatch-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Add a match in <var class="var">buffer</var> between the cursors <var class="var">start</var> and
+<var class="var">end</var> to <var class="var">search-state</var>.
+</p>
+<p>Return the newly created match object.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007cremove_002dmatch"></a><dl class="first-deffn">
+<dt class="deffn" id="index-remove_002dmatch-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">remove-match [text.editing.search]</strong> <var class="def-var-arguments">search-state buffer match</var><a class="copiable-link" href="#index-remove_002dmatch-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Remove <var class="var">match</var> from <var class="var">search-state</var>.
+</p>
+<p>The default method on this generic function
+<a class="ref" href="#Detach-Protocol">detaches</a> <var class="var">match</var> and, if a site search state
+refers to <var class="var">match</var>, replaces that reference with another match.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007cinitial_002dmatches"></a><dl class="first-deffn">
+<dt class="deffn" id="index-initial_002dmatches-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">initial-matches [text.editing.search]</strong> <var class="def-var-arguments">search-state</var><a class="copiable-link" href="#index-initial_002dmatches-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Compute the initial matches for <var class="var">search-state</var> based on the
+<a class="ref" href="#Generic_002dFunction-text_002eediting_002esearch_007cstart">start</a> cursor and the
+<a class="ref" href="#Generic_002dFunction-text_002eediting_002esearch_007cquery">query</a> sequence.
+</p>
+<p>Call <a class="ref" href="#Generic_002dFunction-text_002eediting_002esearch_007cadd_002dmatch">add-match</a> for
+each computed match.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007crebuild_002dstate"></a><dl class="first-deffn">
+<dt class="deffn" id="index-rebuild_002dstate-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">rebuild-state [text.editing.search]</strong> <var class="def-var-arguments">search-state</var><a class="copiable-link" href="#index-rebuild_002dstate-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Rebuild <var class="var">search-state</var> from scratch, that is remove the current
+matches and use
+<a class="ref" href="#Generic_002dFunction-text_002eediting_002esearch_007cinitial_002dmatches">initial-matches</a>
+to compute new matches.
+</p></dd></dl>
+
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007cfinish"></a><dl class="first-deffn">
+<dt class="deffn" id="index-finish-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">finish [text.editing.search]</strong> <var class="def-var-arguments">search-state</var><a class="copiable-link" href="#index-finish-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Finish the incremental search represented by <var class="var">search-state</var> leaving
+all <a class="ref" href="#term_002dpoint">point</a> cursors at their current locations.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007cabort"></a><dl class="first-deffn">
+<dt class="deffn" id="index-abort-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">abort [text.editing.search]</strong> <var class="def-var-arguments">search-state</var><a class="copiable-link" href="#index-abort-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Abort the incremental search represented by <var class="var">search-state</var> moving
+all <a class="ref" href="#term_002dpoint">point</a> cursors the locations at which they were
+positioned before the incremental search started.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007cdescription"></a><dl class="first-deffn">
+<dt class="deffn" id="index-description-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">description [text.editing.search]</strong> <var class="def-var-arguments">search-state <code class="t">&amp;key</code> comment</var><a class="copiable-link" href="#index-description-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
 </dl>
 
 <hr>
 </div>
-<div class="subsection-level-extent" id="Ordinary-Search-Operations">
-<h4 class="subsection" id="Ordinary-Search-Operations-1"><span>4.2.2 Ordinary Search Operations<a class="copiable-link" href="#Ordinary-Search-Operations-1"> &para;</a></span></h4>
+<div class="subsection-level-extent" id="Match-Protocol">
+<h4 class="subsection" id="Match-Protocol-1"><span>4.2.3 Match Protocol<a class="copiable-link" href="#Match-Protocol-1"> &para;</a></span></h4>
 
-<a class="anchor" id="Generic_002dFunction-text_002eediting_007csearch"></a><dl class="first-deffn">
-<dt class="deffn" id="index-search-_005btext_002eediting_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">search [text.editing]</strong> <var class="def-var-arguments">target query direction</var><a class="copiable-link" href="#index-search-_005btext_002eediting_005d"> &para;</a></span></dt>
-<dd><p>TODO case mode etc.
+<p>The match protocol extends the <a class="ref" href="#Detach-Protocol">Detach Protocol</a>, that is matches
+can (and must) be detached.
+</p>
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007cnext"></a><dl class="first-deffn">
+<dt class="deffn" id="index-next-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">next [text.editing.search]</strong> <var class="def-var-arguments">match</var><a class="copiable-link" href="#index-next-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Return the next match after <var class="var">match</var> or <code class="t">nil</code> if there is no next
+match.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007cprevious"></a><dl class="first-deffn">
+<dt class="deffn" id="index-previous-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">previous [text.editing.search]</strong> <var class="def-var-arguments">match</var><a class="copiable-link" href="#index-previous-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Return the previous match before <var class="var">match</var> or <code class="t">nil</code> if there is no
+previous match.
+</p></dd></dl>
+
+<dl class="first-deffn">
+<dt class="deffn" id="index-start-_005btext_002eediting_002esearch_005d-1"><span class="category-def">Generic Function: </span><span><strong class="def-name">start [text.editing.search]</strong> <var class="def-var-arguments">match</var><a class="copiable-link" href="#index-start-_005btext_002eediting_002esearch_005d-1"> &para;</a></span></dt>
+<dd><p>Return a cursor which marks the start of <var class="var">match</var>.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007cend"></a><dl class="first-deffn">
+<dt class="deffn" id="index-end-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">end [text.editing.search]</strong> <var class="def-var-arguments">match</var><a class="copiable-link" href="#index-end-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Return a cursor which marks the end of <var class="var">match</var>.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007citem_002dmatches_002dp"></a><dl class="first-deffn">
+<dt class="deffn" id="index-item_002dmatches_002dp-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">item-matches-p [text.editing.search]</strong> <var class="def-var-arguments">state match query-item</var><a class="copiable-link" href="#index-item_002dmatches_002dp-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Indicate whether <var class="var">match</var> extended with <var class="var">query-item</var> matches the
+buffer sub-sequence corresponding to <var class="var">match</var>.
+</p></dd></dl>
+
+<hr>
+</div>
+<div class="subsection-level-extent" id="Site-Search-State-Protocol">
+<h4 class="subsection" id="Site-Search-State-Protocol-1"><span>4.2.4 Site Search State Protocol<a class="copiable-link" href="#Site-Search-State-Protocol-1"> &para;</a></span></h4>
+
+<p>The site search state protocol extends the <a class="ref" href="#Detach-Protocol">Detach Protocol</a>, that
+is site search states can (and must) be detached.
+</p>
+<dl class="first-deffn">
+<dt class="deffn" id="index-start-_005btext_002eediting_002esearch_005d-2"><span class="category-def">Generic Function: </span><span><strong class="def-name">start [text.editing.search]</strong> <var class="def-var-arguments">site-search-state</var><a class="copiable-link" href="#index-start-_005btext_002eediting_002esearch_005d-2"> &para;</a></span></dt>
+<dd><p>Return a cursor which indicates the location at which the
+<a class="ref" href="#term_002dpoint">point</a> cursor of the site associated with
+<var class="var">site-search-state</var> was positioned before the start of the
+incremental search.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007cmatch"></a><dl class="first-deffn">
+<dt class="deffn" id="index-match-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">match [text.editing.search]</strong> <var class="def-var-arguments">site-search-state</var><a class="copiable-link" href="#index-match-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Return the <a class="ref" href="#term_002dmatch">match</a> associated with
+<var class="var">site-search-state</var> or <code class="t">nil</code>.
+</p></dd></dl>
+
+<a class="anchor" id="Class-text_002eediting_002esearch_007csite_002dsearch_002dstate"></a><dl class="first-deftp">
+<dt class="deftp" id="index-site_002dsearch_002dstate-_005btext_002eediting_002esearch_005d"><span class="category-def">Class: </span><span><strong class="def-name">site-search-state [text.editing.search]</strong><a class="copiable-link" href="#index-site_002dsearch_002dstate-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Instances of this class store a start cursor and a
+<a class="ref" href="#term_002dmatch">match</a> that should be associated with a
+<a class="ref" href="#term_002dsite">site</a> in the context of an incremental search.
+</p></dd></dl>
+
+<hr>
+</div>
+<div class="subsection-level-extent" id="Buffer-Search-State-Protocol">
+<h4 class="subsection" id="Buffer-Search-State-Protocol-1"><span>4.2.5 Buffer Search State Protocol<a class="copiable-link" href="#Buffer-Search-State-Protocol-1"> &para;</a></span></h4>
+
+<p>The sole purpose of the buffer search state protocol is retrieving the
+<a class="ref" href="#term_002dbuffer_002dsearch_002dstate">search state</a> associated with a given
+buffer:
+</p>
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007csearch_002dstate"></a><dl class="first-deffn">
+<dt class="deffn" id="index-search_002dstate-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">search-state [text.editing.search]</strong> <var class="def-var-arguments">buffer</var><a class="copiable-link" href="#index-search_002dstate-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Return the <a class="ref" href="#term_002dbuffer_002dsearch_002dstate">search state</a> associated with
+<var class="var">buffer</var> or <code class="t">nil</code> if there is none.
+</p></dd></dl>
+
+<a class="anchor" id="Class-text_002eediting_002esearch_007csearch_002dstate_002dmixin"></a><dl class="first-deftp">
+<dt class="deftp" id="index-search_002dstate_002dmixin-_005btext_002eediting_002esearch_005d"><span class="category-def">Class: </span><span><strong class="def-name">search-state-mixin [text.editing.search]</strong><a class="copiable-link" href="#index-search_002dstate_002dmixin-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>This class is intended to be mixed into buffer classes that implement
+the buffer search state protocol.
+</p>
+<p>Methods on
+<a class="ref" href="#Generic_002dFunction-text_002eediting_002esearch_007cadd_002dmatch">add-match</a>
+and
+<a class="ref" href="#Generic_002dFunction-text_002eediting_002esearch_007cremove_002dmatch">remove-match</a>
+specialized to this class take care of associating sites (or the site)
+of the buffer with the nearest match(es) as matches are added and
+removed.
+</p></dd></dl>
+
+<hr>
+</div>
+<div class="subsection-level-extent" id="Ordinary-Search-Operations">
+<h4 class="subsection" id="Ordinary-Search-Operations-1"><span>4.2.6 Ordinary Search Operations<a class="copiable-link" href="#Ordinary-Search-Operations-1"> &para;</a></span></h4>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007csearch"></a><dl class="first-deffn">
+<dt class="deffn" id="index-search-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">search [text.editing.search]</strong> <var class="def-var-arguments">target query direction</var><a class="copiable-link" href="#index-search-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<dd><p>Search for occurrences of <var class="var">query</var> in the underlying buffer of
+<var class="var">target</var> from each site in <var class="var">direction</var>.
+</p>
+<p><var class="var">target</var> can be a buffer, a site or a cursor.  In any of those
+cases, the search will include all sites of the underlying buffer.
+</p>
+<p><var class="var">query</var> is the sequence of items to search for.
+</p>
+<p><var class="var">direction</var> can be either <code class="t">:forward</code> or <code class="t">:backward</code> and controls
+in which direction point cursors should move towards the nearest
+occurrence of <var class="var">query</var> in the buffer.
+</p>
+<p>TODO case mode etc.
 </p></dd></dl>
 
 <hr>
 </div>
 <div class="subsection-level-extent" id="Incremental-Search-Operations">
-<h4 class="subsection" id="Incremental-Search-Operations-1"><span>4.2.3 Incremental Search Operations<a class="copiable-link" href="#Incremental-Search-Operations-1"> &para;</a></span></h4>
+<h4 class="subsection" id="Incremental-Search-Operations-1"><span>4.2.7 Incremental Search Operations<a class="copiable-link" href="#Incremental-Search-Operations-1"> &para;</a></span></h4>
 
 <a class="anchor" id="Generic_002dFunction-ext_002eediting_002esearch_007cincremental_002dsearch"></a><dl class="first-deffn">
 <dt class="deffn" id="index-incremental_002dsearch-_005bext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">incremental-search [ext.editing.search]</strong> <var class="def-var-arguments">target direction</var><a class="copiable-link" href="#index-incremental_002dsearch-_005bext_002eediting_002esearch_005d"> &para;</a></span></dt>
@@ -1815,8 +2127,8 @@ error of type
 <a class="ref" href="#Class-text_002eediting_002esearch_007cnot_002din_002dincremental_002dsearch_002derror">not-in-incremental-search-error</a>.
 </p></dd></dl>
 
-<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007cadd_002dsites_002dfor_002dmatches"></a><dl class="first-deffn">
-<dt class="deffn" id="index-add_002dsites_002dfor_002dmatches-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">add-sites-for-matches [text.editing.search]</strong> <var class="def-var-arguments">target</var><a class="copiable-link" href="#index-add_002dsites_002dfor_002dmatches-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002esearch_007cconvert_002dmatches_002dto_002dsites"></a><dl class="first-deffn">
+<dt class="deffn" id="index-convert_002dmatches_002dto_002dsites-_005btext_002eediting_002esearch_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">convert-matches-to-sites [text.editing.search]</strong> <var class="def-var-arguments">target</var><a class="copiable-link" href="#index-convert_002dmatches_002dto_002dsites-_005btext_002eediting_002esearch_005d"> &para;</a></span></dt>
 <dd><p>Finish the search involving <var class="var">target</var>, and add a <a class="ref" href="#term_002dsite">site</a>
 at the location of each <a class="ref" href="#term_002dmatch">match</a> (except for the match
 that is associated with the primary site).
@@ -1884,9 +2196,9 @@ respective next match.
 the incremental search will include all sites of the underlying buffer.
 </p>
 <p><var class="var">wrap-around</var> controls the behavior in case there is no next match
-when a point cursor should be moved to the next match.  If
-<var class="var">wrap-around</var> is false and there is no next match, signal an error of
-type
+when a point cursor should be moved to the next match.  If there is no
+next match and <var class="var">wrap-around</var> is false or there are no matches at
+all, signal an error of type
 <a class="ref" href="#Class-text_002eediting_002esearch_007cno_002dnext_002dmatch_002derror">no-next-match-error</a>.
 </p>
 <p>If there is no incremental search associated with <var class="var">target</var>, signal
@@ -1905,8 +2217,8 @@ buffer.
 </p>
 <p><var class="var">wrap-around</var> controls the behavior in case there is no previous
 match when a point cursor should be moved to the previous match.  If
-<var class="var">wrap-around</var> is false and there is no previous match, signal error
-of type
+there is no previous match and <var class="var">wrap-around</var> is false or there are
+no matches at all, signal error of type
 <a class="ref" href="#Class-text_002eediting_002esearch_007cno_002dprevious_002dmatch_002derror">no-previous-match-error</a>.
 </p>
 <p>If there is no incremental search associated with <var class="var">target</var>, signal an
@@ -1918,13 +2230,224 @@ error of type
 </div>
 </div>
 </div>
+<div class="chapter-level-extent" id="Expressions">
+<h2 class="chapter" id="Expressions-1"><span>5 Expressions<a class="copiable-link" href="#Expressions-1"> &para;</a></span></h2>
+
+
+<hr>
+<div class="section-level-extent" id="Expressions-Concepts">
+<h3 class="section" id="Expressions-Concepts-1"><span>5.1 Expressions Concepts<a class="copiable-link" href="#Expressions-Concepts-1"> &para;</a></span></h3>
+
+<a class="index-entry-id" id="index-expression"></a>
+<p>This module adds support for operating on
+<a class="anchor" id="term_002dexpression"></a><em class="dfn">expressions</em> which are basically nodes in a
+(concrete) syntax tree constructed <em class="emph">by clients of this library</em> from the text of the buffer.  To this
+end, the module defines two <a class="ref" href="#term_002dunit">units</a>,
+<a class="ref" href="#unit_002dexpression">expression</a> and
+<a class="ref" href="#unit_002dtoplevel_002dexpression">toplevel-expression</a>, the semantics of
+which depend on the implementations of
+<a class="ref" href="#Expression-Node-Protocol">two</a>
+<a class="ref" href="#Expression-Tree-Protocol">protocols</a> that clients of this library
+must provide, for example by parsing the source code of a buffer and
+constructing a (concrete) syntax tree.  The expression-based units work
+with the usual operations for <a class="ref" href="#Motion-Operations">motion</a>,
+<a class="ref" href="#Deletion-Operations">deletion</a> and so on.  In addition, this module
+provides <a class="ref" href="#Expression-Operations">specialized operations</a> such as
+splitting and joining that work with the expression-based
+units.
+</p>
+<p>The concept of an expression must appear very vague at this point and
+this vagueness is in part intrinsic since the exact nature of
+expressions for a given buffer is defined, as mentioned above, by the
+client.  However, we can still make the concept as concrete as possible
+by defining that an expression is a node in a tree and has the following
+properties
+</p>
+<ul class="itemize mark-bullet">
+<li>A <em class="dfn">start location</em> which is a buffer location expressed as a line
+number and a column number.
+
+</li><li>An <em class="dfn">end location</em> which is a buffer location that is expressed as a
+line number and a column number and follows the start location.
+
+</li><li>A possibly empty sequence of child expressions such that:
+
+<ul class="itemize mark-bullet">
+<li>For each child expression the start and end locations are within the
+buffer delimited by the start and end location of the parent expression.
+
+</li><li>for a child <em class="math">c_2</em> that follows a child <em class="math">c_1</em> in the sequence
+of children, the start location of <em class="math">c_2</em> must be equal to or
+greater than the end location of <em class="math">c_1</em>.
+
+</li></ul>
+
+</li></ul>
+
+<p>The following figure shows an example buffer text and a possible
+expression tree for that text:
+</p><div class="float" id="fig_003aexpression_002dtree">
+<div class="center"><img class="image" src="expression-tree.png" alt="expression-tree">
+</div><div class="caption"><p><strong class="strong">Figure 5.1: </strong>Example buffer text and a possible expression tree for that
+text.  Corresponding parts are indicated by matching colors.  Child
+nodes should be considered from left to right.</p></div></div>
+<hr>
+</div>
+<div class="section-level-extent" id="Expressions-Dictionary">
+<h3 class="section" id="Expressions-Dictionary-1"><span>5.2 Expressions Dictionary<a class="copiable-link" href="#Expressions-Dictionary-1"> &para;</a></span></h3>
+
+
+<hr>
+<div class="subsection-level-extent" id="Expression-Conditions">
+<h4 class="subsection" id="Expression-Conditions-1"><span>5.2.1 Expression Conditions<a class="copiable-link" href="#Expression-Conditions-1"> &para;</a></span></h4>
+
+<hr>
+</div>
+<div class="subsection-level-extent" id="Expression-Node-Protocol">
+<h4 class="subsection" id="Expression-Node-Protocol-1"><span>5.2.2 Expression Node Protocol<a class="copiable-link" href="#Expression-Node-Protocol-1"> &para;</a></span></h4>
+
+<p>The purpose of the expression node protocol is to allow this library to
+inspect nodes of an expression tree that is constructed and managed by a
+client of this library.  Accordingly, this library does not define
+methods on the following generic functions.  Instead, clients are
+expected to defined methods that are suitable for the expression
+representation used by the respective client.
+</p>
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002eexpression_007crange"></a><dl class="first-deffn">
+<dt class="deffn" id="index-range-_005btext_002eediting_002eexpression_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">range [text.editing.expression]</strong> <var class="def-var-arguments">expression</var><a class="copiable-link" href="#index-range-_005btext_002eediting_002eexpression_005d"> &para;</a></span></dt>
+<dd><p>Return the source range, that is the start and end buffer positions, of
+<var class="var">expression</var> as four values
+</p><ol class="enumerate">
+<li> The start line number of <var class="var">expression</var>
+
+</li><li> The start column number of <var class="var">expression</var>
+
+</li><li> The end line number of <var class="var">expression</var>
+
+</li><li> The end column number of <var class="var">expression</var>
+
+</li></ol>
+</dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002eexpression_007cchildren"></a><dl class="first-deffn">
+<dt class="deffn" id="index-children-_005btext_002eediting_002eexpression_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">children [text.editing.expression]</strong> <var class="def-var-arguments">expression</var><a class="copiable-link" href="#index-children-_005btext_002eediting_002eexpression_005d"> &para;</a></span></dt>
+<dd><p>Return a possibly empty sequence of child expressions of
+<var class="var">expression</var>.  The elements of the returned sequence are ordered
+according to their respective start locations and do not overlap.
+</p></dd></dl>
+
+<hr>
+</div>
+<div class="subsection-level-extent" id="Expression-Tree-Protocol">
+<h4 class="subsection" id="Expression-Tree-Protocol-1"><span>5.2.3 Expression Tree Protocol<a class="copiable-link" href="#Expression-Tree-Protocol-1"> &para;</a></span></h4>
+
+<p>The purpose of the expression tree protocol is to allow this library to
+query an expression tree that is constructed and managed by a client of
+this library.  Accordingly, this library does not define all required
+methods on the following generic functions.  Instead, clients are
+expected to define methods (or at least one method) that are suitable
+for the expression tree representation used by the respective client.
+For this protocol, it is sufficient for each client to define a method
+that is suitable for the respective expression tree presentation on the
+generic function <code class="t">map-expressions-containing-cursor-using-buffer</code>.
+</p>
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002eexpression_007cmap_002dexpressions_002dcontaining_002dcursor"></a><dl class="first-deffn">
+<dt class="deffn" id="index-map_002dexpressions_002dcontaining_002dcursor-_005btext_002eediting_002eexpression_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">map-expressions-containing-cursor [text.editing.expression]</strong> <var class="def-var-arguments">function cursor syntax-tree <code class="t">&amp;key</code> start-relation end-relation</var><a class="copiable-link" href="#index-map_002dexpressions_002dcontaining_002dcursor-_005btext_002eediting_002eexpression_005d"> &para;</a></span></dt>
+<dd><p>TOODO
+</p>
+<p>The default method on this generic function calls
+<code class="t">map-expressions-containing-cursor-using-buffer</code> with the buffer that
+is <var class="var">cursor</var> is associated with.
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002eexpression_007cmap_002dexpressions_002dcontaining_002dcursor_002dusing_002dbuffer"></a><dl class="first-deffn">
+<dt class="deffn" id="index-map_002dexpressions_002dcontaining_002dcursor_002dusing_002dbuffer-_005btext_002eediting_002eexpression_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">map-expressions-containing-cursor-using-buffer [text.editing.expression]</strong> <var class="def-var-arguments">function buffer cursor syntax-tree <code class="t">&amp;key</code> start-relation end-relation</var><a class="copiable-link" href="#index-map_002dexpressions_002dcontaining_002dcursor_002dusing_002dbuffer-_005btext_002eediting_002eexpression_005d"> &para;</a></span></dt>
+<dd><p>TODO
+</p></dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002eexpression_007cexpressions_002dcontaining_002dcursor"></a><dl class="first-deffn">
+<dt class="deffn" id="index-expressions_002dcontaining_002dcursor-_005btext_002eediting_002eexpression_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">expressions-containing-cursor [text.editing.expression]</strong> <var class="def-var-arguments">cursor syntax-tree <code class="t">&amp;key</code> start-relation end-relation count</var><a class="copiable-link" href="#index-expressions_002dcontaining_002dcursor-_005btext_002eediting_002eexpression_005d"> &para;</a></span></dt>
+<dd><p>TODO
+</p>
+<p>The default method on this generic function calls
+<code class="t">map-expressions-containing-cursor</code>, collects the provided
+expressions, stopping when <var class="var">count</var> expressions have been collected.
+</p></dd></dl>
+
+<hr>
+</div>
+<div class="subsection-level-extent" id="Expression-Operations">
+<h4 class="subsection" id="Expression-Operations-1"><span>5.2.4 Expression Operations<a class="copiable-link" href="#Expression-Operations-1"> &para;</a></span></h4>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002eexpression_007craise"></a><dl class="first-deffn">
+<dt class="deffn" id="index-raise-_005btext_002eediting_002eexpression_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">raise [text.editing.expression]</strong> <var class="def-var-arguments">cursor unit direction</var><a class="copiable-link" href="#index-raise-_005btext_002eediting_002eexpression_005d"> &para;</a></span></dt>
+<dd><p>Raise the expression <em class="math">e</em> which contains, follows or precedes
+<var class="var">cursor</var> by deleting the buffer items that make up the parent of
+<em class="math">e</em> and the siblings of <em class="math">e</em> but preserving the buffer items
+that make up to <em class="math">e</em>.
+</p>
+<p>TODO when there is no such expression
+</p>
+<p>TODO After the operation, <var class="var">cursor</var> is located
+</p>
+<p>TODO return value
+</p>
+<p>Example:
+</p><div class="example">
+<pre class="example-preformatted"><code class="t">(raise cursor expression :forward)</code> in
+  1 2 (3 4 |5 6) 7 8
+&rArr; 1 2 |5 7 8
+</pre></div>
+</dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002eexpression_007csplice"></a><dl class="first-deffn">
+<dt class="deffn" id="index-splice-_005btext_002eediting_002eexpression_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">splice [text.editing.expression]</strong> <var class="def-var-arguments">cursor unit direction</var><a class="copiable-link" href="#index-splice-_005btext_002eediting_002eexpression_005d"> &para;</a></span></dt>
+<dd><p>TODO
+</p>
+<p>Example:
+</p><div class="example">
+<pre class="example-preformatted"><code class="t">(splice cursor expression :forward)</code> in
+  1 2 (3 4 |5 6) 7 8
+&rArr; 1 2 |5 6 7 8
+</pre></div>
+</dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002eexpression_007csplit"></a><dl class="first-deffn">
+<dt class="deffn" id="index-split-_005btext_002eediting_002eexpression_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">split [text.editing.expression]</strong> <var class="def-var-arguments">cursor unit</var><a class="copiable-link" href="#index-split-_005btext_002eediting_002eexpression_005d"> &para;</a></span></dt>
+<dd><p>TODO
+</p>
+<p>Example:
+</p><div class="example">
+<pre class="example-preformatted"><code class="t">(split cursor expression)</code> in
+  (1 2 |3 4)
+&rArr; (1 2 )|(3 4)
+</pre></div>
+
+</dd></dl>
+
+<a class="anchor" id="Generic_002dFunction-text_002eediting_002eexpression_007cjoin"></a><dl class="first-deffn">
+<dt class="deffn" id="index-join-_005btext_002eediting_002eexpression_005d"><span class="category-def">Generic Function: </span><span><strong class="def-name">join [text.editing.expression]</strong> <var class="def-var-arguments">cursor unit</var><a class="copiable-link" href="#index-join-_005btext_002eediting_002eexpression_005d"> &para;</a></span></dt>
+<dd><p>TODO
+</p>
+<p>Example:
+</p><div class="example">
+<pre class="example-preformatted"><code class="t">(join cursor expression)</code> in
+  (1 2) |(3 4)
+&rArr; (1 2 |3 4)
+</pre></div>
+</dd></dl>
+
+<hr>
+</div>
+</div>
+</div>
 <div class="chapter-level-extent" id="Equivalent-Emacs-Commands">
-<h2 class="chapter" id="Equivalent-Emacs-Commands-1"><span>5 Equivalent Emacs Commands<a class="copiable-link" href="#Equivalent-Emacs-Commands-1"> &para;</a></span></h2>
+<h2 class="chapter" id="Equivalent-Emacs-Commands-1"><span>6 Equivalent Emacs Commands<a class="copiable-link" href="#Equivalent-Emacs-Commands-1"> &para;</a></span></h2>
 
 
 <hr>
 <div class="section-level-extent" id="Motion">
-<h3 class="section" id="Motion-1"><span>5.1 Motion<a class="copiable-link" href="#Motion-1"> &para;</a></span></h3>
+<h3 class="section" id="Motion-1"><span>6.1 Motion<a class="copiable-link" href="#Motion-1"> &para;</a></span></h3>
 
 <table class="multitable">
 <thead><tr><th width="20%">Operation</th><th width="20%">Unit</th><th width="20%">Direction</th><th width="40%">Equivalent Emacs Command</th></tr></thead>
@@ -1950,6 +2473,10 @@ error of type
 <tr><td width="20%"><code class="t">edit:move</code></td><td width="20%"><code class="t">edit:paragraph</code></td><td width="20%"><code class="t">:backward</code></td><td width="40%"><code class="t">backward-paragraph</code> (<kbd class="kbd">M-{</kbd>)</td></tr>
 <tr><td width="20%"><code class="t">edit:move</code></td><td width="20%"><code class="t">edit::page</code></td><td width="20%"><code class="t">:forward</code></td><td width="40%"><code class="t">forward-page</code> (<kbd class="kbd">C-x ]</kbd>)</td></tr>
 <tr><td width="20%"><code class="t">edit:move</code></td><td width="20%"><code class="t">edit::page</code></td><td width="20%"><code class="t">:backward</code></td><td width="40%"><code class="t">backward-page</code> (<kbd class="kbd">C-x [</kbd>)</td></tr>
+<tr><td width="20%"><code class="t">edit:move</code></td><td width="20%"><code class="t">text.editing.expression:expression</code></td><td width="20%"><code class="t">:forward</code></td><td width="40%"><code class="t">forward-sexp</code> (<kbd class="kbd">C-M-f</kbd>)</td></tr>
+<tr><td width="20%"><code class="t">edit:move</code></td><td width="20%"><code class="t">text.editing.expression:expression</code></td><td width="20%"><code class="t">:backward</code></td><td width="40%"><code class="t">backward-sexp</code> (<kbd class="kbd">C-M-b</kbd>)</td></tr>
+<tr><td width="20%"><code class="t">edit:move</code></td><td width="20%"><code class="t">text.editing.expression:toplevel-expression</code></td><td width="20%"><code class="t">:forward</code></td><td width="40%"><code class="t">end-of-defun</code> (<kbd class="kbd">C-M-e</kbd>)</td></tr>
+<tr><td width="20%"><code class="t">edit:move</code></td><td width="20%"><code class="t">text.editing.expression:toplevel-expression</code></td><td width="20%"><code class="t">:backward</code></td><td width="40%"><code class="t">beginning-of-defun</code> (<kbd class="kbd">C-M-a</kbd>)</td></tr>
 </tbody>
 </table>
 
@@ -1957,7 +2484,7 @@ error of type
 <hr>
 </div>
 <div class="section-level-extent" id="Deletion">
-<h3 class="section" id="Deletion-1"><span>5.2 Deletion<a class="copiable-link" href="#Deletion-1"> &para;</a></span></h3>
+<h3 class="section" id="Deletion-1"><span>6.2 Deletion<a class="copiable-link" href="#Deletion-1"> &para;</a></span></h3>
 
 <table class="multitable">
 <thead><tr><th width="20%">Operation</th><th width="20%">Unit</th><th width="20%">Direction</th><th width="40%">Equivalent Emacs Command</th></tr></thead>
@@ -1977,8 +2504,8 @@ error of type
 <tr><td width="20%"><code class="t">edit:delete</code></td><td width="20%"><code class="t">edit:sentence</code></td><td width="20%"><code class="t">:backward</code></td><td width="40%"><code class="t">backward-kill-sentence</code> (<kbd class="kbd">C-x DEL</kbd>)</td></tr>
 <tr><td width="20%"><code class="t">edit:delete</code></td><td width="20%"><code class="t">edit:paragraph</code></td><td width="20%"><code class="t">:forward</code></td><td width="40%"><code class="t">kill-paragraph 1</code></td></tr>
 <tr><td width="20%"><code class="t">edit:delete</code></td><td width="20%"><code class="t">edit:paragraph</code></td><td width="20%"><code class="t">:backward</code></td><td width="40%"><code class="t">backward-kill-paragraph 1</code></td></tr>
-<tr><td width="20%"><code class="t">edit:delete</code></td><td width="20%"><code class="t">edit::expression</code></td><td width="20%"><code class="t">:forward</code></td><td width="40%"><code class="t">kill-sexp 1</code> (<kbd class="kbd">C-M-k</kbd>)</td></tr>
-<tr><td width="20%"><code class="t">edit:delete</code></td><td width="20%"><code class="t">edit::expression</code></td><td width="20%"><code class="t">:backward</code></td><td width="40%"><code class="t">backward-kill-sexp 1</code> (<kbd class="kbd">C-M-&lt;backspace&gt;</kbd>)</td></tr>
+<tr><td width="20%"><code class="t">edit:delete</code></td><td width="20%"><code class="t">text.editing.expression:expression</code></td><td width="20%"><code class="t">:forward</code></td><td width="40%"><code class="t">kill-sexp 1</code> (<kbd class="kbd">C-M-k</kbd>)</td></tr>
+<tr><td width="20%"><code class="t">edit:delete</code></td><td width="20%"><code class="t">text.editing.expression:expression</code></td><td width="20%"><code class="t">:backward</code></td><td width="40%"><code class="t">backward-kill-sexp 1</code> (<kbd class="kbd">C-M-&lt;backspace&gt;</kbd>)</td></tr>
 </tbody>
 </table>
 <table class="multitable">
@@ -1995,8 +2522,29 @@ error of type
 
 <hr>
 </div>
+<div class="section-level-extent" id="Marking">
+<h3 class="section" id="Marking-1"><span>6.3 Marking<a class="copiable-link" href="#Marking-1"> &para;</a></span></h3>
+
+<table class="multitable">
+<thead><tr><th width="20%">Operation</th><th width="20%">Unit</th><th width="20%">Direction</th><th width="40%">Equivalent Emacs Command</th></tr></thead>
+<tbody><tr><td width="20%"><code class="t">edit:mark-object</code></td><td width="20%"><code class="t">edit:buffer</code></td><td width="20%"><code class="t">:forward</code></td><td width="40%"><code class="t">mark-whole-buffer</code> (<kbd class="kbd">C-x h</kbd>)</td></tr>
+<tr><td width="20%"><code class="t">edit:mark-object</code></td><td width="20%"><code class="t">edit:semi-buffer</code></td><td width="20%"><code class="t">:forward</code></td><td width="40%"><code class="t">mark-end-of-buffer</code></td></tr>
+<tr><td width="20%"><code class="t">edit:mark-object</code></td><td width="20%"><code class="t">edit:semi-buffer</code></td><td width="20%"><code class="t">:backward</code></td><td width="40%"><code class="t">mark-beginning-of-buffer</code></td></tr>
+<tr><td width="20%"><code class="t">edit:mark-object</code></td><td width="20%"><code class="t">edit:word</code></td><td width="20%"><code class="t">:forward</code></td><td width="40%"><code class="t">mark-word</code> (<kbd class="kbd">M-@</kbd>)</td></tr>
+<tr><td width="20%"><code class="t">edit:mark-object</code></td><td width="20%"><code class="t">edit:sentence</code></td><td width="20%"><code class="t">:forward</code></td><td width="40%"><code class="t">mark-end-of-sentence</code></td></tr>
+<tr><td width="20%"><code class="t">edit:mark-object</code></td><td width="20%"><code class="t">edit:sentence</code></td><td width="20%"><code class="t">:backward</code></td><td width="40%"><code class="t">mark-beginning-of-sentence</code></td></tr>
+<tr><td width="20%"><code class="t">edit:mark-object</code></td><td width="20%"><code class="t">edit:paragraph</code></td><td width="20%"><code class="t">:forward</code></td><td width="40%"><code class="t">mark-paragraph</code> (<kbd class="kbd">M-h</kbd>)</td></tr>
+<tr><td width="20%"><code class="t">edit:mark-object</code></td><td width="20%"><code class="t">edit::page</code></td><td width="20%"><code class="t">:forward</code></td><td width="40%"><code class="t">mark-page</code> (<kbd class="kbd">C-x C-p</kbd>)</td></tr>
+<tr><td width="20%"><code class="t">edit:mark-object</code></td><td width="20%"><code class="t">text.editing.expression:expression</code></td><td width="20%"><code class="t">:forward</code></td><td width="40%"><code class="t">mark-sexp</code> (<kbd class="kbd">C-M-@</kbd>)</td></tr>
+<tr><td width="20%"><code class="t">edit:mark-object</code></td><td width="20%"><code class="t">text.editing.expression:toplevel-expression</code></td><td width="20%"><code class="t">:forward</code></td><td width="40%"><code class="t">mark-defun</code> (<kbd class="kbd">C-M-h</kbd>)</td></tr>
+</tbody>
+</table>
+
+
+<hr>
+</div>
 <div class="section-level-extent" id="Transformation">
-<h3 class="section" id="Transformation-1"><span>5.3 Transformation<a class="copiable-link" href="#Transformation-1"> &para;</a></span></h3>
+<h3 class="section" id="Transformation-1"><span>6.4 Transformation<a class="copiable-link" href="#Transformation-1"> &para;</a></span></h3>
 
 <table class="multitable">
 <thead><tr><th width="15%">Operation</th><th width="15%">Unit</th><th width="15%">Direction</th><th width="15%">Case</th><th width="40%">Equivalent Emacs Command</th></tr></thead>
@@ -2018,7 +2566,7 @@ error of type
 <tr><td width="20%"><code class="t">edit:transpose</code></td><td width="20%"><code class="t">edit:word</code></td><td width="20%"><code class="t">:forward</code></td><td width="40%"><code class="t">transpose-words 1</code> (<kbd class="kbd">M-t</kbd>)</td></tr>
 <tr><td width="20%"><code class="t">edit:transpose</code></td><td width="20%"><code class="t">edit:sentence</code></td><td width="20%"><code class="t">:forward</code></td><td width="40%"><code class="t">transpose-sentences 1</code></td></tr>
 <tr><td width="20%"><code class="t">edit:transpose</code></td><td width="20%"><code class="t">edit:paragraph</code></td><td width="20%"><code class="t">:forward</code></td><td width="40%"><code class="t">transpose-paragraphs 1</code></td></tr>
-<tr><td width="20%"><code class="t">edit:transpose</code></td><td width="20%"><code class="t">edit::expression</code></td><td width="20%"><code class="t">:forward</code></td><td width="40%"><code class="t">transpose-sexps</code> (<kbd class="kbd">C-M-t</kbd>)</td></tr>
+<tr><td width="20%"><code class="t">edit:transpose</code></td><td width="20%"><code class="t">text.editing.expression:expression</code></td><td width="20%"><code class="t">:forward</code></td><td width="40%"><code class="t">transpose-sexps</code> (<kbd class="kbd">C-M-t</kbd>)</td></tr>
 </tbody>
 </table>
 
@@ -2026,21 +2574,31 @@ error of type
 <hr>
 </div>
 <div class="section-level-extent" id="Paredit">
-<h3 class="section" id="Paredit-1"><span>5.4 Paredit<a class="copiable-link" href="#Paredit-1"> &para;</a></span></h3>
+<h3 class="section" id="Paredit-1"><span>6.5 Paredit<a class="copiable-link" href="#Paredit-1"> &para;</a></span></h3>
 
 <table class="multitable">
 <thead><tr><th width="30%">Operation</th><th width="30%">Unit</th><th width="40%">Equivalent Emacs Command</th></tr></thead>
-<tbody><tr><td width="30%"><code class="t">:wrap</code></td><td width="30%"><code class="t">:expression</code></td><td width="40%"><code class="t">paredit-wrap-sexp argument open close</code></td></tr>
+<tbody><tr><td width="30%"><code class="t">&quot;<em class="emph">not implemented</em>&quot;</code></td><td width="30%"><code class="t">&quot;<em class="emph">not implemented</em>&quot;</code></td><td width="40%"><code class="t">paredit-wrap-sexp argument open close</code></td></tr>
 </tbody>
 </table>
 <table class="multitable">
 <thead><tr><th width="30%">Operation</th><th width="30%">Unit</th><th width="40%">Equivalent Emacs Command</th></tr></thead>
-<tbody><tr><td width="30%"><code class="t">:splice</code></td><td width="30%"><code class="t">:expression</code></td><td width="40%"><code class="t">paredit-splice-sexp</code> (<kbd class="kbd">M-s</kbd>)</td></tr>
+<tbody><tr><td width="30%"><code class="t">text.editing.expression:raise</code></td><td width="30%"><code class="t">text.editing.expression:expression</code></td><td width="40%"><code class="t">paredit-raise-sexp</code> (<kbd class="kbd">M-r</kbd>)</td></tr>
 </tbody>
 </table>
 <table class="multitable">
 <thead><tr><th width="30%">Operation</th><th width="30%">Unit</th><th width="40%">Equivalent Emacs Command</th></tr></thead>
-<tbody><tr><td width="30%"><code class="t">:raise</code></td><td width="30%"><code class="t">:expression</code></td><td width="40%"><code class="t">paredit-raise-sexp</code> (<kbd class="kbd">M-r</kbd>)</td></tr>
+<tbody><tr><td width="30%"><code class="t">text.editing.expression:splice</code></td><td width="30%"><code class="t">text.editing.expression:expression</code></td><td width="40%"><code class="t">paredit-splice-sexp</code> (<kbd class="kbd">M-s</kbd>)</td></tr>
+</tbody>
+</table>
+<table class="multitable">
+<thead><tr><th width="30%">Operation</th><th width="30%">Unit</th><th width="40%">Equivalent Emacs Command</th></tr></thead>
+<tbody><tr><td width="30%"><code class="t">text.editing.expression:split</code></td><td width="30%"><code class="t">text.editing.expression:expression</code></td><td width="40%"><code class="t">paredit-split-sexp</code> (<kbd class="kbd">M-S</kbd>)</td></tr>
+</tbody>
+</table>
+<table class="multitable">
+<thead><tr><th width="30%">Operation</th><th width="30%">Unit</th><th width="40%">Equivalent Emacs Command</th></tr></thead>
+<tbody><tr><td width="30%"><code class="t">text.editing.expression:join</code></td><td width="30%"><code class="t">text.editing.expression:expression</code></td><td width="40%"><code class="t">paredit-join-sexp</code> (<kbd class="kbd">M-J</kbd>)</td></tr>
 </tbody>
 </table>
 
@@ -2055,6 +2613,8 @@ error of type
  &nbsp; 
 <a class="summary-letter-printindex" href="#Concept-index_cp_letter-C"><b>C</b></a>
  &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-index_cp_letter-E"><b>E</b></a>
+ &nbsp; 
 <a class="summary-letter-printindex" href="#Concept-index_cp_letter-I"><b>I</b></a>
  &nbsp; 
 <a class="summary-letter-printindex" href="#Concept-index_cp_letter-L"><b>L</b></a>
@@ -2068,6 +2628,8 @@ error of type
 <a class="summary-letter-printindex" href="#Concept-index_cp_letter-R"><b>R</b></a>
  &nbsp; 
 <a class="summary-letter-printindex" href="#Concept-index_cp_letter-S"><b>S</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-index_cp_letter-T"><b>T</b></a>
  &nbsp; 
 <a class="summary-letter-printindex" href="#Concept-index_cp_letter-U"><b>U</b></a>
  &nbsp; 
@@ -2084,6 +2646,10 @@ error of type
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Concept-index_cp_letter-C">C</th></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-cursor">cursor</a></td><td class="printindex-index-section"><a href="#Concepts">Concepts</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-index_cp_letter-E">E</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-expression">expression</a></td><td class="printindex-index-section"><a href="#Expressions-Concepts">Expressions Concepts</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-expression-unit">expression unit</a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Concept-index_cp_letter-I">I</th></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-incremental-search">incremental search</a></td><td class="printindex-index-section"><a href="#Search">Search</a></td></tr>
@@ -2107,18 +2673,25 @@ error of type
 <tr><td></td><td class="printindex-index-entry"><a href="#index-page-unit">page unit</a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-paragraph-unit">paragraph unit</a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-point">point</a></td><td class="printindex-index-section"><a href="#Concepts">Concepts</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-primary-site">primary site</a></td><td class="printindex-index-section"><a href="#Concepts">Concepts</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-primary-site-1">primary site</a></td><td class="printindex-index-section"><a href="#Primary-Site-Protocol">Primary Site Protocol</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Concept-index_cp_letter-R">R</th></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-region">region</a></td><td class="printindex-index-section"><a href="#Concepts">Concepts</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-region-unit">region unit</a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-region_002dor_002dexpression-unit">region-or-expression unit</a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-region_002dor_002ditem-unit">region-or-item unit</a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Concept-index_cp_letter-S">S</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-secondary-site">secondary site</a></td><td class="printindex-index-section"><a href="#Concepts">Concepts</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-semi_002dbuffer-unit">semi-buffer unit</a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-semi_002dline-unit">semi-line unit</a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-sentence-unit">sentence unit</a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-site">site</a></td><td class="printindex-index-section"><a href="#Concepts">Concepts</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-site-1">site</a></td><td class="printindex-index-section"><a href="#Site-Protocol">Site Protocol</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Concept-index_cp_letter-T">T</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-toplevel_002dexpression-unit">toplevel-expression unit</a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Concept-index_cp_letter-U">U</th></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-unit">unit</a></td><td class="printindex-index-section"><a href="#Concepts">Concepts</a></td></tr>
@@ -2130,6 +2703,8 @@ error of type
 <table class="cp-letters-footer-printindex"><tr><th>Jump to: &nbsp; </th><td><a class="summary-letter-printindex" href="#Concept-index_cp_letter-B"><b>B</b></a>
  &nbsp; 
 <a class="summary-letter-printindex" href="#Concept-index_cp_letter-C"><b>C</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-index_cp_letter-E"><b>E</b></a>
  &nbsp; 
 <a class="summary-letter-printindex" href="#Concept-index_cp_letter-I"><b>I</b></a>
  &nbsp; 
@@ -2144,6 +2719,8 @@ error of type
 <a class="summary-letter-printindex" href="#Concept-index_cp_letter-R"><b>R</b></a>
  &nbsp; 
 <a class="summary-letter-printindex" href="#Concept-index_cp_letter-S"><b>S</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Concept-index_cp_letter-T"><b>T</b></a>
  &nbsp; 
 <a class="summary-letter-printindex" href="#Concept-index_cp_letter-U"><b>U</b></a>
  &nbsp; 
@@ -2175,6 +2752,8 @@ error of type
  &nbsp; 
 <a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-I"><b>I</b></a>
  &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-J"><b>J</b></a>
+ &nbsp; 
 <a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-L"><b>L</b></a>
  &nbsp; 
 <a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-M"><b>M</b></a>
@@ -2184,6 +2763,8 @@ error of type
 <a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-O"><b>O</b></a>
  &nbsp; 
 <a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-P"><b>P</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-Q"><b>Q</b></a>
  &nbsp; 
 <a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-R"><b>R</b></a>
  &nbsp; 
@@ -2203,16 +2784,18 @@ error of type
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Function-and-macro-and-variable-and-type-index_fn_symbol-1">(</th></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-_0028setf-backward_0029-_005btext_002eediting_005d"><code>(setf backward) [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Insertion-Stack-Protocol">Insertion Stack Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-_0028setf-case_002dmode_0029-_005btext_002eediting_002esearch_005d"><code>(setf case-mode) [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Search-State-Protocol">Search State Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-_0028setf-forward_0029-_005btext_002eediting_005d"><code>(setf forward) [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Insertion-Stack-Protocol">Insertion Stack Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-_0028setf-items_0029-_005btext_002eediting_005d"><code>(setf items) [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Items-Functions">Items Functions</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-_0028setf-mark_002dactive_002dp_0029-_005btext_002eediting_005d"><code>(setf mark-active-p) [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Site-Protocol">Site Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-_0028setf-preferred_002dcolumn-_005btext_002eediting_0029_005d"><code>(setf preferred-column [text.editing)]</code></a></td><td class="printindex-index-section"><a href="#Preferred-Column-Protocol">Preferred Column Protocol</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-A">A</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-abort-_005btext_002eediting_002esearch_005d"><code>abort [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Search-State-Protocol">Search State Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-abort_002dincremental_002dsearch-_005btext_002eediting_002esearch_005d"><code>abort-incremental-search [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Incremental-Search-Operations">Incremental Search Operations</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-activate_002dmark-_005btext_002eediting_005d"><code>activate-mark [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Marking-Operations">Marking Operations</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-add_002dmatch-_005btext_002eediting_002esearch_005d"><code>add-match [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Search-State-Protocol">Search State Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-add_002dsite-_005btext_002eediting_005d"><code>add-site [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Multiple-Sites-Protocol">Multiple Sites Protocol</a></td></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-add_002dsites_002dfor_002dmatches-_005btext_002eediting_002esearch_005d"><code>add-sites-for-matches [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Incremental-Search-Operations">Incremental Search Operations</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-all_002dunits-_005btext_002eediting_005d"><code>all-units [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Unit-Protocol">Unit Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-already_002din_002dincremental_002dsearch_002derror-_005btext_002eediting_002esearch_005d"><code>already-in-incremental-search-error [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Search-Conditions">Search Conditions</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-apply_002dfrom_002dcursor-_005btext_002eediting_005d"><code>apply-from-cursor [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Unit-Protocol">Unit Protocol</a></td></tr>
@@ -2224,8 +2807,11 @@ error of type
 <tr><td></td><td class="printindex-index-entry"><a href="#index-buffer_002dboundary"><code>buffer-boundary</code></a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-C">C</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-case_002dmode-_005btext_002eediting_002esearch_005d"><code>case-mode [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Search-State-Protocol">Search State Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-change_002dcase-_005btext_002eediting_005d"><code>change-case [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Case-Changing-Operations">Case Changing Operations</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-children-_005btext_002eediting_002eexpression_005d"><code>children [text.editing.expression]</code></a></td><td class="printindex-index-section"><a href="#Expression-Node-Protocol">Expression Node Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-comment-_005btext_002eediting_005d"><code>comment [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Commenting-Operations">Commenting Operations</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-convert_002dmatches_002dto_002dsites-_005btext_002eediting_002esearch_005d"><code>convert-matches-to-sites [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Incremental-Search-Operations">Incremental Search Operations</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-copy-_005btext_002eediting_005d"><code>copy [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Copy-and-Yank-Operations">Copy and Yank Operations</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-D">D</th></tr>
@@ -2233,22 +2819,28 @@ error of type
 <tr><td></td><td class="printindex-index-entry"><a href="#index-delete-_005btext_002eediting_005d"><code>delete [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Deletion-Operations">Deletion Operations</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-delete_002dindentation-_005btext_002eediting_005d"><code>delete-indentation [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Deletion-Operations">Deletion Operations</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-delete_002dtrailing_002dwhitespace-_005btext_002eediting_005d"><code>delete-trailing-whitespace [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Deletion-Operations">Deletion Operations</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-description-_005btext_002eediting_002esearch_005d"><code>description [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Search-State-Protocol">Search State Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-detach-_005btext_002eediting_005d"><code>detach [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Detach-Protocol">Detach Protocol</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-E">E</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-end-_005btext_002eediting_002esearch_005d"><code>end [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Match-Protocol">Match Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-entry_002dcount-_005btext_002eediting_005d"><code>entry-count [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Insertion-Stack-Protocol">Insertion Stack Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-exchange_002dpoint_002dand_002dmark-_005btext_002eediting_005d"><code>exchange-point-and-mark [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Marking-Operations">Marking Operations</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-expression-1"><code>expression</code></a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-expressions_002dcontaining_002dcursor-_005btext_002eediting_002eexpression_005d"><code>expressions-containing-cursor [text.editing.expression]</code></a></td><td class="printindex-index-section"><a href="#Expression-Tree-Protocol">Expression Tree Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-extend_002dquery-_005btext_002eediting_002esearch_005d"><code>extend-query [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Incremental-Search-Operations">Incremental Search Operations</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-F">F</th></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-fill_002dwords-_005btext_002eediting_005d"><code>fill-words [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Filling-Operations">Filling Operations</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-find_002dentry-_005btext_002eediting_005d"><code>find-entry [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Insertion-Stack-Protocol">Insertion Stack Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-finish-_005btext_002eediting_002esearch_005d"><code>finish [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Search-State-Protocol">Search State Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-finish_002dincremental_002dsearch-_005btext_002eediting_002esearch_005d"><code>finish-incremental-search [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Incremental-Search-Operations">Incremental Search Operations</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-fixup_002dwhitespace-_005btext_002eediting_005d"><code>fixup-whitespace [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Deletion-Operations">Deletion Operations</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-forward-_005btext_002eediting_005d"><code>forward [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Insertion-Stack-Protocol">Insertion Stack Protocol</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-I">I</th></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-incremental_002dsearch-_005bext_002eediting_002esearch_005d"><code>incremental-search [ext.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Incremental-Search-Operations">Incremental Search Operations</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-initial_002dmatches-_005btext_002eediting_002esearch_005d"><code>initial-matches [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Search-State-Protocol">Search State Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-insert_002ditem-_005btext_002eediting_005d"><code>insert-item [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Insertion-Operations">Insertion Operations</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-insert_002ditems-_005btext_002eediting_005d"><code>insert-items [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Insertion-Operations">Insertion Operations</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-insert_002dnewline-_005btext_002eediting_005d"><code>insert-newline [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Insertion-Operations">Insertion Operations</a></td></tr>
@@ -2257,26 +2849,37 @@ error of type
 <tr><td></td><td class="printindex-index-entry"><a href="#index-insertion_002dstack-_005btext_002eediting_005d"><code>insertion-stack [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Site-Protocol">Site Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-insertion_002dstack_002dempty_002derror-_005btext_002eediting_005d"><code>insertion-stack-empty-error [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Insertion-Stack-Protocol">Insertion Stack Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-item"><code>item</code></a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-item_002dmatches_002dp-_005btext_002eediting_002esearch_005d"><code>item-matches-p [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Match-Protocol">Match Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-item_002dtransformer-_005btext_002eediting_005d"><code>item-transformer [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Unit-Protocol">Unit Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-items-_005btext_002eediting_005d"><code>items [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Items-Functions">Items Functions</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
+<tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-J">J</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-join-_005btext_002eediting_002eexpression_005d"><code>join [text.editing.expression]</code></a></td><td class="printindex-index-section"><a href="#Expression-Operations">Expression Operations</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-L">L</th></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-line"><code>line</code></a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-line_002dboundary"><code>line-boundary</code></a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-M">M</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-map_002dexpressions_002dcontaining_002dcursor-_005btext_002eediting_002eexpression_005d"><code>map-expressions-containing-cursor [text.editing.expression]</code></a></td><td class="printindex-index-section"><a href="#Expression-Tree-Protocol">Expression Tree Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-map_002dexpressions_002dcontaining_002dcursor_002dusing_002dbuffer-_005btext_002eediting_002eexpression_005d"><code>map-expressions-containing-cursor-using-buffer [text.editing.expression]</code></a></td><td class="printindex-index-section"><a href="#Expression-Tree-Protocol">Expression Tree Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-map_002ditems-_005btext_002eediting_005d"><code>map-items [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Items-Functions">Items Functions</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-map_002dmatches-_005btext_002eediting_002esearch_005d"><code>map-matches [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Search-State-Protocol">Search State Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-map_002dsites-_005btext_002eediting_005d"><code>map-sites [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Multiple-Sites-Protocol">Multiple Sites Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-mark-_005btext_002eediting_005d"><code>mark [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Site-Protocol">Site Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-mark_002dactive_002dp-_005btext_002eediting_005d"><code>mark-active-p [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Site-Protocol">Site Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-mark_002dobject-_005btext_002eediting_005d"><code>mark-object [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Marking-Operations">Marking Operations</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-mark_002dor_002derror-_005btext_002eediting_005d"><code>mark-or-error [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Marking-Operations">Marking Operations</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-mark_002dstack-_005btext_002eediting_005d"><code>mark-stack [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Site-Protocol">Site Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-match-_005btext_002eediting_002esearch_005d"><code>match [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Site-Search-State-Protocol">Site Search State Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-match_002dcount-_005btext_002eediting_002esearch_005d"><code>match-count [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Search-State-Protocol">Search State Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-matches-_005btext_002eediting_002esearch_005d"><code>matches [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Search-State-Protocol">Search State Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-most_002drecent_002doperation-_005btext_002eediting_005d"><code>most-recent-operation [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Operation-History-Protocol">Operation History Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-move-_005btext_002eediting_005d"><code>move [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Motion-Operations">Motion Operations</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-multiple_002dsite_002dmixin-_005btext_002eediting_005d"><code>multiple-site-mixin [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Multiple-Sites-Protocol">Multiple Sites Protocol</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-N">N</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-next-_005btext_002eediting_002esearch_005d"><code>next [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Match-Protocol">Match Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-next_002dmatch-_005btext_002eediting_002esearch_005d"><code>next-match [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Incremental-Search-Operations">Incremental Search Operations</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-no_002dnext_002dmatch_002derror-_005btext_002eediting_002esearch_005d"><code>no-next-match-error [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Search-Conditions">Search Conditions</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-no_002dprevious_002dmatch_002derror-_005btext_002eediting_002esearch_005d"><code>no-previous-match-error [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Search-Conditions">Search Conditions</a></td></tr>
@@ -2296,32 +2899,51 @@ error of type
 <tr><td></td><td class="printindex-index-entry"><a href="#index-pop_002dsite-_005btext_002eediting_005d"><code>pop-site [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Multiple-Sites-Protocol">Multiple Sites Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-preferred_002dcolumn-_005btext_002eediting_005d"><code>preferred-column [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Preferred-Column-Protocol">Preferred Column Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-preferred_002dcolumn_002dtracking_002dmixin-_005btext_002eediting_005d"><code>preferred-column-tracking-mixin [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Preferred-Column-Protocol">Preferred Column Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-previous-_005btext_002eediting_002esearch_005d"><code>previous [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Match-Protocol">Match Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-previous_002dmatch-_005btext_002eediting_002esearch_005d"><code>previous-match [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Incremental-Search-Operations">Incremental Search Operations</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-push_002dentry-_005btext_002eediting_005d"><code>push-entry [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Insertion-Stack-Protocol">Insertion Stack Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-push_002doperation-_005btext_002eediting_005d"><code>push-operation [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Operation-History-Protocol">Operation History Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-push_002dsite_002dat-_005btext_002eediting_005d"><code>push-site-at [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Multiple-Sites-Protocol">Multiple Sites Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-push_002dsite_002drelative-_005btext_002eediting_005d"><code>push-site-relative [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Multiple-Sites-Protocol">Multiple Sites Protocol</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
+<tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-Q">Q</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-query-_005btext_002eediting_002esearch_005d"><code>query [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Search-State-Protocol">Search State Protocol</a></td></tr>
+<tr><td colspan="3"><hr></td></tr>
 <tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-R">R</th></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-raise-_005btext_002eediting_002eexpression_005d"><code>raise [text.editing.expression]</code></a></td><td class="printindex-index-section"><a href="#Expression-Operations">Expression Operations</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-range-_005btext_002eediting_002eexpression_005d"><code>range [text.editing.expression]</code></a></td><td class="printindex-index-section"><a href="#Expression-Node-Protocol">Expression Node Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-rebuild_002dstate-_005btext_002eediting_002esearch_005d"><code>rebuild-state [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Search-State-Protocol">Search State Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-region-1"><code>region</code></a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-region_002dor_002dexpression"><code>region-or-expression</code></a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-region_002dor_002ditem"><code>region-or-item</code></a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-remove_002dmatch-_005btext_002eediting_002esearch_005d"><code>remove-match [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Search-State-Protocol">Search State Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-remove_002dother_002dsites-_005btext_002eediting_005d"><code>remove-other-sites [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Multiple-Sites-Protocol">Multiple Sites Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-remove_002dsite-_005btext_002eediting_005d"><code>remove-site [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Multiple-Sites-Protocol">Multiple Sites Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-rotate_002dsites-_005btext_002eediting_005d"><code>rotate-sites [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Multiple-Sites-Protocol">Multiple Sites Protocol</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-S">S</th></tr>
-<tr><td></td><td class="printindex-index-entry"><a href="#index-search-_005btext_002eediting_005d"><code>search [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Ordinary-Search-Operations">Ordinary Search Operations</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-search-_005btext_002eediting_002esearch_005d"><code>search [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Ordinary-Search-Operations">Ordinary Search Operations</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-search_002dstate-_005btext_002eediting_002esearch_005d"><code>search-state [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Buffer-Search-State-Protocol">Buffer Search State Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-search_002dstate_002dmixin-_005btext_002eediting_002esearch_005d"><code>search-state-mixin [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Buffer-Search-State-Protocol">Buffer Search State Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-semi_002dbuffer"><code>semi-buffer</code></a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-semi_002dline"><code>semi-line</code></a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-sentence"><code>sentence</code></a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-set_002dmark-_005btext_002eediting_005d"><code>set-mark [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Marking-Operations">Marking Operations</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-set_002dmark_002dor_002dtoggle_002dactive-_005btext_002eediting_005d"><code>set-mark-or-toggle-active [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Marking-Operations">Marking Operations</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-singular_002dsite_002derror-_005btext_002eediting_005d"><code>singular-site-error [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Multiple-Sites-Protocol">Multiple Sites Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-site-_005btext_002eediting_005d"><code>site [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Primary-Site-Protocol">Primary Site Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-site_002dcount-_005btext_002eediting_005d"><code>site-count [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Multiple-Sites-Protocol">Multiple Sites Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-site_002dsearch_002dstate-_005btext_002eediting_002esearch_005d"><code>site-search-state [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Site-Search-State-Protocol">Site Search State Protocol</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-sites-_005btext_002eediting_005d"><code>sites [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Multiple-Sites-Protocol">Multiple Sites Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-splice-_005btext_002eediting_002eexpression_005d"><code>splice [text.editing.expression]</code></a></td><td class="printindex-index-section"><a href="#Expression-Operations">Expression Operations</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-split-_005btext_002eediting_002eexpression_005d"><code>split [text.editing.expression]</code></a></td><td class="printindex-index-section"><a href="#Expression-Operations">Expression Operations</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-start-_005btext_002eediting_002esearch_005d"><code>start [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Search-State-Protocol">Search State Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-start-_005btext_002eediting_002esearch_005d-1"><code>start [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Match-Protocol">Match Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-start-_005btext_002eediting_002esearch_005d-2"><code>start [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Site-Search-State-Protocol">Site Search State Protocol</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
 <tr><th id="Function-and-macro-and-variable-and-type-index_fn_letter-T">T</th></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-top_002dentry-_005btext_002eediting_005d"><code>top-entry [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Insertion-Stack-Protocol">Insertion Stack Protocol</a></td></tr>
+<tr><td></td><td class="printindex-index-entry"><a href="#index-toplevel_002dexpression"><code>toplevel-expression</code></a></td><td class="printindex-index-section"><a href="#Built_002din-Units">Built-in Units</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-transpose-_005btext_002eediting_005d"><code>transpose [text.editing]</code></a></td><td class="printindex-index-section"><a href="#Transposing-Operations">Transposing Operations</a></td></tr>
 <tr><td></td><td class="printindex-index-entry"><a href="#index-truncate_002dquery-_005btext_002eediting_002esearch_005d"><code>truncate-query [text.editing.search]</code></a></td><td class="printindex-index-section"><a href="#Incremental-Search-Operations">Incremental Search Operations</a></td></tr>
 <tr><td colspan="3"><hr></td></tr>
@@ -2352,6 +2974,8 @@ error of type
  &nbsp; 
 <a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-I"><b>I</b></a>
  &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-J"><b>J</b></a>
+ &nbsp; 
 <a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-L"><b>L</b></a>
  &nbsp; 
 <a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-M"><b>M</b></a>
@@ -2361,6 +2985,8 @@ error of type
 <a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-O"><b>O</b></a>
  &nbsp; 
 <a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-P"><b>P</b></a>
+ &nbsp; 
+<a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-Q"><b>Q</b></a>
  &nbsp; 
 <a class="summary-letter-printindex" href="#Function-and-macro-and-variable-and-type-index_fn_letter-R"><b>R</b></a>
  &nbsp; 
