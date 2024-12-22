@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2024-12-22 Sun 15:57 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Design Ideas and Decisions in the Spell Library</title>
+<meta name="author" content="Jan Moringen" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<style>body { width: 60%; margin-left: 20%; text-align: justify; } body { margin:40px auto; line-height:1.4; font-size:16px; color:#444; padding:0 10px } h1,h2,h3 { line-height:1.2 }</style>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Design Ideas and Decisions in the Spell Library</h1>
+<div id="outline-container-org7dc69d3" class="outline-2">
+<h2 id="org7dc69d3">Space Optimizations</h2>
+<div class="outline-text-2" id="text-org7dc69d3">
+</div>
+<div id="outline-container-org9987a69" class="outline-3">
+<h3 id="org9987a69"><span class="done DONE">DONE</span> String Interning</h3>
+<div class="outline-text-3" id="text-org9987a69">
+<p>
+For all strings that appear in the final representation of the
+dictionary
+</p>
+
+<ol class="org-ol">
+<li>We ensure that there are no duplicate strings</li>
+
+<li>We convert strings to <code class="src src-lisp">base_string</code>s if their characters
+allow it</li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org22cdaec" class="outline-3">
+<h3 id="org22cdaec"><span class="done DONE">DONE</span> Trie Path Compression</h3>
+<div class="outline-text-3" id="text-org22cdaec">
+<p>
+The initial trie often contains linear sub-trees of the form
+</p>
+
+<pre class="example" id="org9327888">
+node₀
+└ c₁ → node₁
+       └ c₂ → node₂
+              └ c₃ → node₃
+                     └ entry
+</pre>
+
+<p>
+We can avoid storing the intermediate nodes by compressing the path
+into a single string:
+</p>
+
+<pre class="example" id="orge110376">
+node₀
+└ "c₁c₂c₃" → node₃
+             └ entry
+</pre>
+
+<p>
+With the <a href="#orgc2cafce">Implicit Leaf Nodes</a> optimization, this is further reduced
+to just
+</p>
+
+<pre class="example" id="org6ca59c8">
+node₀
+└ "c₁c₂c₃" → entry
+</pre>
+</div>
+</div>
+<div id="outline-container-org18df0c7" class="outline-3">
+<h3 id="org18df0c7"><span class="done DONE">DONE</span> Implicit Base</h3>
+<div class="outline-text-3" id="text-org18df0c7">
+<p>
+The dictionary lookup operation traverses the trie along a path
+that spells out the word. For example, the lookup for <code>car</code> could
+visit the following sub-tree
+</p>
+
+<pre class="example" id="org002c9d3">
+node₀
+└ #\c → node₁
+        └ #\a → node₂
+                └ #\r → node₃
+                        └ entry
+</pre>
+
+<p>
+When the traversal arrives at <code>entry</code>, it is clear that the
+corresponding dictionary word is <code>car</code> but in this case, the base
+is also <code>car</code>. If we can mark <code>entry</code> as having the same base and
+spelling, we can add the query string as the <code class="src src-lisp"><span style="color: #b77fdb;">:base</span></code> of the
+returned <code>word</code> instance that we make (See <a href="#orgbb23b13">Implicit Words</a>). Since
+the question of whether the spelling matches the base contains just
+1 bit of information, we can easily encode the answer in the class
+of the word object (See <a href="#orgd3e9a36">Subclasses for Properties</a> and <a href="#orgbb23b13">Implicit Words</a>).
+</p>
+
+<p>
+This idea can probably be extended to <a href="#org84aef6d">Advanced Base Compression</a>.
+</p>
+</div>
+</div>
+<div id="outline-container-org0904228" class="outline-3">
+<h3 id="org0904228"><span class="done DONE">DONE</span> Bitfields for Properties</h3>
+<div class="outline-text-3" id="text-org0904228">
+<p>
+All properties of dictionary words have a small range of possible
+values, for example
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(<span style="color: #d08928;">check-type</span> number (member <span style="color: #b77fdb;">:any</span> <span style="color: #b77fdb;">:singular</span> <span style="color: #b77fdb;">:plural</span>))
+(<span style="color: #d08928;">check-type</span> case   (member nil <span style="color: #b77fdb;">:nominative</span> <span style="color: #b77fdb;">:genitive</span>))
+(<span style="color: #d08928;">check-type</span> gender (member nil <span style="color: #b77fdb;">:any</span> <span style="color: #b77fdb;">:masculine</span> <span style="color: #b77fdb;">:feminine</span> <span style="color: #b77fdb;">:neuter</span>))
+</pre>
+</div>
+
+<p>
+for <code class="src src-lisp">noun</code>. We can encode this information in all small
+integer instead of three slots using the <code>bitfield</code> library:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(<span style="color: #6c9ef8;">bitfield:define-bitfield</span> noun-info
+  (singular  boolean)
+  (plural    boolean)
+  (<span style="color: #6c9ef8;">case</span>      (member nil <span style="color: #b77fdb;">:nominative</span> <span style="color: #b77fdb;">:genitive</span>))
+  (masculine boolean)
+  (feminine  boolean)
+  (neuter    boolean))
+</pre>
+</div>
+
+<p>
+The integer is so small that we can easily fit the class index into
+the same integer without needing additional "effective" storage
+space (See <a href="#orgbb23b13">Implicit Words</a>).
+</p>
+</div>
+</div>
+<div id="outline-container-orgd3e9a36" class="outline-3">
+<h3 id="orgd3e9a36"><span class="done DONE">DONE</span> Subclasses for Properties</h3>
+<div class="outline-text-3" id="text-orgd3e9a36">
+<p>
+The adjective word type has a single property:
+<code class="src src-lisp"><span style="color: #b77fdb;">:degree</span></code>. The property has three possible values
+<code class="src src-lisp"><span style="color: #b77fdb;">:positive</span></code>, <code class="src src-lisp"><span style="color: #b77fdb;">:comparative</span></code> and
+<code class="src src-lisp"><span style="color: #b77fdb;">:superlative</span></code>. For cases like this in which a slot
+contains less than, say, two bits of information, we can just not
+represent the information in the object itself: We already "pay"
+for a reference to the class of the object (either in the form of
+the reference from an object to its class as returned by
+<code class="src src-lisp">cl:class-of</code> or in the form of our class reference
+mechanism in <a href="#orgbb23b13">Implicit Words</a>). We can piggyback on this reference
+by creating one subclass of the <code class="src src-lisp">adjective</code> class for each
+possible value of the degree property.
+</p>
+
+<p>
+Now that I think about it, this may not actually save any space
+since eliminating the bitfield from the
+<code class="src src-lisp">CLASS-INDEX+BITFIELD</code> representation (see <a href="#orgbb23b13">Implicit Words</a>)
+does not change the fact that the value requires one word of
+storage.
+</p>
+</div>
+</div>
+<div id="outline-container-org60426e2" class="outline-3">
+<h3 id="org60426e2"><span class="done DONE">DONE</span> Singleton Child and Single Entry</h3>
+<div class="outline-text-3" id="text-org60426e2">
+<p>
+When a node contains a single child or a single entry, we remove
+the sequence around the child or entry and store the child or entry
+directly in the slot of the parent.
+</p>
+</div>
+</div>
+<div id="outline-container-orgc2cafce" class="outline-3">
+<h3 id="orgc2cafce"><span class="done DONE">DONE</span> Implicit Leaf Nodes</h3>
+<div class="outline-text-3" id="text-orgc2cafce">
+<p>
+The initial trie often contains sub-trees like the following
+</p>
+
+<pre class="example" id="org0aee183">
+node₁
+├ #\x → node₂
+│ ⋮
+└ #\y → node₃
+        ├ entry₁
+        ├ entry₂
+        ⋮
+        └ entryₖ
+</pre>
+
+<p>
+<code>node₁</code> is an inner node and <code>node₃</code> is a leaf node. Since <code>node₃</code>
+contains entries but no children, it is possible to omit <code>node₃</code>
+and instead represent the sub-tree as (assuming we change <code>lookup</code>
+accordingly):
+</p>
+
+<pre class="example" id="orgdaa0b6b">
+node₁
+├ #\x → node₂
+│ ⋮
+└ #\y → entry₁
+        entry₂
+        ⋮
+        entryₖ
+</pre>
+
+<p>
+Maybe we could go further with this idea an reduce the number of
+nodes and slots some more?
+</p>
+</div>
+</div>
+<div id="outline-container-orgbb23b13" class="outline-3">
+<h3 id="orgbb23b13"><span class="done DONE">DONE</span> Implicit Words</h3>
+<div class="outline-text-3" id="text-orgbb23b13">
+<p>
+Conceptually, instances of the <code class="src src-lisp">leaf-mixin</code> class store
+entries that are (indirect) instances of <code class="src src-lisp">word</code>. However,
+there is no need to actually store those instances. Instead, we can
+store just enough information to reconstruct the <code class="src src-lisp">word</code>
+instances on-demand:
+</p>
+
+<ol class="org-ol">
+<li>The class of which the object is a direct instance</li>
+
+<li>The values of the slots of the objects. With the <a href="#org0904228">Bitfields for Properties</a> optimization, this information is represented as a
+small integer.</li>
+
+<li>The base string. With the <a href="#org18df0c7">Implicit Base</a> optimization, there is
+often no need to store an explicit reference.</li>
+</ol>
+
+<p>
+The resulting representation is thus of one of two forms:
+</p>
+
+<ol class="org-ol">
+<li><code class="src src-lisp">CLASS-INDEX+BITFIELD</code></li>
+
+<li><code class="src src-lisp">(CLASS-INDEX+BITFIELD . BASE-STRING)</code></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org83f3fc0" class="outline-3">
+<h3 id="org83f3fc0"><span class="todo TODO">TODO</span> Vector of Children instead of Alist</h3>
+<div class="outline-text-3" id="text-org83f3fc0">
+<p>
+The layout would be
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">#(CHARACTER-OR-STRING&#8321; CHILD&#8321; CHARACTER-OR-STRING&#8322; CHILD&#8322; &#8230;)
+</pre>
+</div>
+
+<p>
+As a further optimization, we could use an array with element type,
+say, <code class="src src-lisp">(unsigned-byte 24)</code> and put the strings and nodes
+into big arrays. All array elements would be either (encoded)
+characters or indices into the string and node tables.
+</p>
+</div>
+</div>
+<div id="outline-container-org84aef6d" class="outline-3">
+<h3 id="org84aef6d"><span class="todo TODO">TODO</span> Advanced Base Compression</h3>
+<div class="outline-text-3" id="text-org84aef6d">
+<p>
+Consider an entry with the spelling <code>car's</code> and the base
+<code>car</code>. With the existing optimizations, the entry must store the
+base explicitly. This is bad in two ways:
+</p>
+<ol class="org-ol">
+<li>The entry storage must contain a cell to hold the reference to
+the base string (for example, the storage may have to be upgrade
+to a cons of a bitfield and the string reference)</li>
+<li>The referenced base string could be otherwise unreferenced if
+other optimizations succeeded in avoiding explicit references.</li>
+</ol>
+<p>
+The idea is to store the base string reference as <code>2</code> since we can
+get the base string from the spelling by removing the last two
+characters of the spelling.
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Jan Moringen</p>
+<p class="date">Created: 2024-12-22 Sun 15:57</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
