@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-12-22 Sun 15:57 -->
+<!-- 2024-12-29 Sun 13:17 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Design Ideas and Decisions in the Spell Library</title>
@@ -198,13 +198,13 @@
 <body>
 <div id="content" class="content">
 <h1 class="title">Design Ideas and Decisions in the Spell Library</h1>
-<div id="outline-container-org7dc69d3" class="outline-2">
-<h2 id="org7dc69d3">Space Optimizations</h2>
-<div class="outline-text-2" id="text-org7dc69d3">
+<div id="outline-container-orgc4e1cbd" class="outline-2">
+<h2 id="orgc4e1cbd">Space Optimizations</h2>
+<div class="outline-text-2" id="text-orgc4e1cbd">
 </div>
-<div id="outline-container-org9987a69" class="outline-3">
-<h3 id="org9987a69"><span class="done DONE">DONE</span> String Interning</h3>
-<div class="outline-text-3" id="text-org9987a69">
+<div id="outline-container-orgb0563a1" class="outline-3">
+<h3 id="orgb0563a1"><span class="done DONE">DONE</span> String Interning</h3>
+<div class="outline-text-3" id="text-orgb0563a1">
 <p>
 For all strings that appear in the final representation of the
 dictionary
@@ -218,14 +218,14 @@ allow it</li>
 </ol>
 </div>
 </div>
-<div id="outline-container-org22cdaec" class="outline-3">
-<h3 id="org22cdaec"><span class="done DONE">DONE</span> Trie Path Compression</h3>
-<div class="outline-text-3" id="text-org22cdaec">
+<div id="outline-container-org272b45d" class="outline-3">
+<h3 id="org272b45d"><span class="done DONE">DONE</span> Trie Path Compression</h3>
+<div class="outline-text-3" id="text-org272b45d">
 <p>
 The initial trie often contains linear sub-trees of the form
 </p>
 
-<pre class="example" id="org9327888">
+<pre class="example" id="org67a3d0b">
 node₀
 └ c₁ → node₁
        └ c₂ → node₂
@@ -238,33 +238,33 @@ We can avoid storing the intermediate nodes by compressing the path
 into a single string:
 </p>
 
-<pre class="example" id="orge110376">
+<pre class="example" id="orgdb7a685">
 node₀
 └ "c₁c₂c₃" → node₃
              └ entry
 </pre>
 
 <p>
-With the <a href="#orgc2cafce">Implicit Leaf Nodes</a> optimization, this is further reduced
+With the <a href="#org751bada">Implicit Leaf Nodes</a> optimization, this is further reduced
 to just
 </p>
 
-<pre class="example" id="org6ca59c8">
+<pre class="example" id="org9b6aba4">
 node₀
 └ "c₁c₂c₃" → entry
 </pre>
 </div>
 </div>
-<div id="outline-container-org18df0c7" class="outline-3">
-<h3 id="org18df0c7"><span class="done DONE">DONE</span> Implicit Base</h3>
-<div class="outline-text-3" id="text-org18df0c7">
+<div id="outline-container-org7f7a0a0" class="outline-3">
+<h3 id="org7f7a0a0"><span class="done DONE">DONE</span> Implicit Base</h3>
+<div class="outline-text-3" id="text-org7f7a0a0">
 <p>
 The dictionary lookup operation traverses the trie along a path
 that spells out the word. For example, the lookup for <code>car</code> could
 visit the following sub-tree
 </p>
 
-<pre class="example" id="org002c9d3">
+<pre class="example" id="orgb3287f2">
 node₀
 └ #\c → node₁
         └ #\a → node₂
@@ -277,20 +277,20 @@ When the traversal arrives at <code>entry</code>, it is clear that the
 corresponding dictionary word is <code>car</code> but in this case, the base
 is also <code>car</code>. If we can mark <code>entry</code> as having the same base and
 spelling, we can add the query string as the <code class="src src-lisp"><span style="color: #b77fdb;">:base</span></code> of the
-returned <code>word</code> instance that we make (See <a href="#orgbb23b13">Implicit Words</a>). Since
+returned <code>word</code> instance that we make (See <a href="#org3f7b625">Implicit Words</a>). Since
 the question of whether the spelling matches the base contains just
 1 bit of information, we can easily encode the answer in the class
-of the word object (See <a href="#orgd3e9a36">Subclasses for Properties</a> and <a href="#orgbb23b13">Implicit Words</a>).
+of the word object (See <a href="#org3e93b8e">Subclasses for Properties</a> and <a href="#org3f7b625">Implicit Words</a>).
 </p>
 
 <p>
-This idea can probably be extended to <a href="#org84aef6d">Advanced Base Compression</a>.
+This idea can probably be extended to <a href="#org6797e42">Advanced Base Compression</a>.
 </p>
 </div>
 </div>
-<div id="outline-container-org0904228" class="outline-3">
-<h3 id="org0904228"><span class="done DONE">DONE</span> Bitfields for Properties</h3>
-<div class="outline-text-3" id="text-org0904228">
+<div id="outline-container-orgc4d8f97" class="outline-3">
+<h3 id="orgc4d8f97"><span class="done DONE">DONE</span> Bitfields for Properties</h3>
+<div class="outline-text-3" id="text-orgc4d8f97">
 <p>
 All properties of dictionary words have a small range of possible
 values, for example
@@ -322,13 +322,13 @@ integer instead of three slots using the <code>bitfield</code> library:
 <p>
 The integer is so small that we can easily fit the class index into
 the same integer without needing additional "effective" storage
-space (See <a href="#orgbb23b13">Implicit Words</a>).
+space (See <a href="#org3f7b625">Implicit Words</a>).
 </p>
 </div>
 </div>
-<div id="outline-container-orgd3e9a36" class="outline-3">
-<h3 id="orgd3e9a36"><span class="done DONE">DONE</span> Subclasses for Properties</h3>
-<div class="outline-text-3" id="text-orgd3e9a36">
+<div id="outline-container-org3e93b8e" class="outline-3">
+<h3 id="org3e93b8e"><span class="done DONE">DONE</span> Subclasses for Properties</h3>
+<div class="outline-text-3" id="text-org3e93b8e">
 <p>
 The adjective word type has a single property:
 <code class="src src-lisp"><span style="color: #b77fdb;">:degree</span></code>. The property has three possible values
@@ -339,7 +339,7 @@ represent the information in the object itself: We already "pay"
 for a reference to the class of the object (either in the form of
 the reference from an object to its class as returned by
 <code class="src src-lisp">cl:class-of</code> or in the form of our class reference
-mechanism in <a href="#orgbb23b13">Implicit Words</a>). We can piggyback on this reference
+mechanism in <a href="#org3f7b625">Implicit Words</a>). We can piggyback on this reference
 by creating one subclass of the <code class="src src-lisp">adjective</code> class for each
 possible value of the degree property.
 </p>
@@ -347,15 +347,15 @@ possible value of the degree property.
 <p>
 Now that I think about it, this may not actually save any space
 since eliminating the bitfield from the
-<code class="src src-lisp">CLASS-INDEX+BITFIELD</code> representation (see <a href="#orgbb23b13">Implicit Words</a>)
+<code class="src src-lisp">CLASS-INDEX+BITFIELD</code> representation (see <a href="#org3f7b625">Implicit Words</a>)
 does not change the fact that the value requires one word of
 storage.
 </p>
 </div>
 </div>
-<div id="outline-container-org60426e2" class="outline-3">
-<h3 id="org60426e2"><span class="done DONE">DONE</span> Singleton Child and Single Entry</h3>
-<div class="outline-text-3" id="text-org60426e2">
+<div id="outline-container-org64be11b" class="outline-3">
+<h3 id="org64be11b"><span class="done DONE">DONE</span> Singleton Child and Single Entry</h3>
+<div class="outline-text-3" id="text-org64be11b">
 <p>
 When a node contains a single child or a single entry, we remove
 the sequence around the child or entry and store the child or entry
@@ -363,14 +363,14 @@ directly in the slot of the parent.
 </p>
 </div>
 </div>
-<div id="outline-container-orgc2cafce" class="outline-3">
-<h3 id="orgc2cafce"><span class="done DONE">DONE</span> Implicit Leaf Nodes</h3>
-<div class="outline-text-3" id="text-orgc2cafce">
+<div id="outline-container-org751bada" class="outline-3">
+<h3 id="org751bada"><span class="done DONE">DONE</span> Implicit Leaf Nodes</h3>
+<div class="outline-text-3" id="text-org751bada">
 <p>
 The initial trie often contains sub-trees like the following
 </p>
 
-<pre class="example" id="org0aee183">
+<pre class="example" id="orge171949">
 node₁
 ├ #\x → node₂
 │ ⋮
@@ -388,7 +388,7 @@ and instead represent the sub-tree as (assuming we change <code>lookup</code>
 accordingly):
 </p>
 
-<pre class="example" id="orgdaa0b6b">
+<pre class="example" id="org15ef8b8">
 node₁
 ├ #\x → node₂
 │ ⋮
@@ -404,9 +404,9 @@ nodes and slots some more?
 </p>
 </div>
 </div>
-<div id="outline-container-orgbb23b13" class="outline-3">
-<h3 id="orgbb23b13"><span class="done DONE">DONE</span> Implicit Words</h3>
-<div class="outline-text-3" id="text-orgbb23b13">
+<div id="outline-container-org3f7b625" class="outline-3">
+<h3 id="org3f7b625"><span class="done DONE">DONE</span> Implicit Words</h3>
+<div class="outline-text-3" id="text-org3f7b625">
 <p>
 Conceptually, instances of the <code class="src src-lisp">leaf-mixin</code> class store
 entries that are (indirect) instances of <code class="src src-lisp">word</code>. However,
@@ -418,10 +418,10 @@ instances on-demand:
 <ol class="org-ol">
 <li>The class of which the object is a direct instance</li>
 
-<li>The values of the slots of the objects. With the <a href="#org0904228">Bitfields for Properties</a> optimization, this information is represented as a
+<li>The values of the slots of the object. With the <a href="#orgc4d8f97">Bitfields for Properties</a> optimization, this information is represented as a
 small integer.</li>
 
-<li>The base string. With the <a href="#org18df0c7">Implicit Base</a> optimization, there is
+<li>The base string. With the <a href="#org7f7a0a0">Implicit Base</a> optimization, there is
 often no need to store an explicit reference.</li>
 </ol>
 
@@ -436,9 +436,9 @@ The resulting representation is thus of one of two forms:
 </ol>
 </div>
 </div>
-<div id="outline-container-org83f3fc0" class="outline-3">
-<h3 id="org83f3fc0"><span class="todo TODO">TODO</span> Vector of Children instead of Alist</h3>
-<div class="outline-text-3" id="text-org83f3fc0">
+<div id="outline-container-org9758d5c" class="outline-3">
+<h3 id="org9758d5c"><span class="todo TODO">TODO</span> Vector of Children instead of Alist</h3>
+<div class="outline-text-3" id="text-org9758d5c">
 <p>
 The layout would be
 </p>
@@ -452,25 +452,30 @@ The layout would be
 As a further optimization, we could use an array with element type,
 say, <code class="src src-lisp">(unsigned-byte 24)</code> and put the strings and nodes
 into big arrays. All array elements would be either (encoded)
-characters or indices into the string and node tables.
+characters or indices into the string and node arrays.
 </p>
 </div>
 </div>
-<div id="outline-container-org84aef6d" class="outline-3">
-<h3 id="org84aef6d"><span class="todo TODO">TODO</span> Advanced Base Compression</h3>
-<div class="outline-text-3" id="text-org84aef6d">
+<div id="outline-container-org6797e42" class="outline-3">
+<h3 id="org6797e42"><span class="done DONE">DONE</span> Advanced Base Compression</h3>
+<div class="outline-text-3" id="text-org6797e42">
 <p>
 Consider an entry with the spelling <code>car's</code> and the base
 <code>car</code>. With the existing optimizations, the entry must store the
 base explicitly. This is bad in two ways:
 </p>
+
 <ol class="org-ol">
 <li>The entry storage must contain a cell to hold the reference to
-the base string (for example, the storage may have to be upgrade
-to a cons of a bitfield and the string reference)</li>
+the base string (for example, the storage may have to be
+upgraded to a cons of a bitfield and the string reference
+instead of just the bitfield)</li>
+
 <li>The referenced base string could be otherwise unreferenced if
-other optimizations succeeded in avoiding explicit references.</li>
+other optimizations succeeded in avoiding an explicit
+representation.</li>
 </ol>
+
 <p>
 The idea is to store the base string reference as <code>2</code> since we can
 get the base string from the spelling by removing the last two
@@ -478,11 +483,29 @@ characters of the spelling.
 </p>
 </div>
 </div>
+<div id="outline-container-org7eef506" class="outline-3">
+<h3 id="org7eef506"><span class="done DONE">DONE</span> Structure Sharing</h3>
+<div class="outline-text-3" id="text-org7eef506">
+<p>
+To be written
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org578fae5" class="outline-2">
+<h2 id="org578fae5">Optimization Results</h2>
+<div class="outline-text-2" id="text-org578fae5">
+
+<div id="orgc9dc8d5" class="figure">
+<p><img src="optimization-results-sbcl-2.4.11.png" alt="optimization-results-sbcl-2.4.11.png" width="100%" />
+</p>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Jan Moringen</p>
-<p class="date">Created: 2024-12-22 Sun 15:57</p>
+<p class="date">Created: 2024-12-29 Sun 13:17</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
