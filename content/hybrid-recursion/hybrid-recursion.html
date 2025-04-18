@@ -1,0 +1,514 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2025-04-18 Fri 16:31 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hybrid Recursion Scheme for the Reader and CST Libraries</title>
+<meta name="author" content="Jan Moringen" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<style>body { width:60%; margin:40px auto; margin-left: 20%; padding:0 10px; text-align:justify; line-height:1.4; font-size:16px; color:#444; } h1,h2,h3 { line-height:1.2 }</style>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Hybrid Recursion Scheme for the Reader and CST Libraries</h1>
+<div id="outline-container-org93bdc08" class="outline-2">
+<h2 id="org93bdc08">Problem Statement</h2>
+<div class="outline-text-2" id="text-org93bdc08">
+<p>
+I'm going through the read/cst/ast libraries and removing
+limitations caused by recursively implemented algorithms. Examples
+are
+</p>
+
+<ul class="org-ul">
+<li>Eclector
+<ul class="org-ul">
+<li><code>fixup</code></li>
+</ul></li>
+<li>Concrete syntax tree
+<ul class="org-ul">
+<li><code>cst-from-expression</code></li>
+<li><code>reconstruct</code> (and its helper functions)</li>
+</ul></li>
+</ul>
+
+<p>
+A simple illustration of the issue is this function from the
+<code>concrete-syntax-tree</code> library
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp"><span class="linenr">1: </span>(<span style="color: #6c9ef8;">defun</span> <span style="color: #b77fdb; font-weight: bold;">cons-table</span> (cst <span style="color: #00aa80;">&amp;optional</span> (table (make-hash-table <span style="color: #b77fdb;">:test</span> #'eq)))
+<span class="linenr">2: </span>  (<span style="color: #6c9ef8;">labels</span> ((traverse (cst)
+<span class="linenr">3: </span>             (<span style="color: #6c9ef8;">let</span> ((raw (raw cst)))
+<span class="linenr">4: </span>               (<span style="color: #6c9ef8;">when</span> (and (consp cst) (cl:null (gethash raw table)))
+<span class="linenr">5: </span>                 (setf (gethash raw table) cst)
+<span class="linenr">6: </span>                 (traverse (first cst))
+<span class="linenr">7: </span>                 (traverse (rest cst))))))
+<span class="linenr">8: </span>    (traverse cst))
+<span class="linenr">9: </span>  table)
+</pre>
+</div>
+
+<p>
+In bad cases, the stack space required is proportional to the input
+size (In the common case of a long proper list, we may get saved by
+the fact that tail call optimization can make the second recursive
+call not consume stack space but for a general tree structure the
+statement holds).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp">(<span style="color: #6c9ef8;">handler-case</span>
+    (cst::cons-table (cst:cst-from-expression (make-list 100000)))
+  (storage-condition (condition)
+    (princ condition)))
+</pre>
+</div>
+
+<pre class="example" id="org02afdbb">
+Control stack guard page temporarily disabled: proceed with caution
+Control stack exhausted (no more space for function call frames).
+This is probably due to heavily nested or infinitely recursive function
+calls, or a tail call that SBCL cannot or has not optimized away.
+
+PROCEED WITH CAUTION.
+</pre>
+</div>
+</div>
+<div id="outline-container-orgd36b3f1" class="outline-2">
+<h2 id="orgd36b3f1">Approach</h2>
+<div class="outline-text-2" id="text-orgd36b3f1">
+<p>
+To remove the limitations, we could use an iterative implementation
+with a worklist:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp"><span class="linenr"> 1: </span>(<span style="color: #6c9ef8;">defun</span> <span style="color: #b77fdb; font-weight: bold;">cons-table</span> (cst <span style="color: #00aa80;">&amp;optional</span> (table (make-hash-table <span style="color: #b77fdb;">:test</span> #'eq)))
+<span class="linenr"> 2: </span>  (<span style="color: #6c9ef8;">loop</span> with worklist = (make-array 1 <span style="color: #b77fdb;">:adjustable</span> t
+<span class="linenr"> 3: </span>                                      <span style="color: #b77fdb;">:fill-pointer</span> 1
+<span class="linenr"> 4: </span>                                      <span style="color: #b77fdb;">:initial-contents</span> (cl:list cst))
+<span class="linenr"> 5: </span>        for cst = (vector-pop worklist)
+<span class="linenr"> 6: </span>        do (<span style="color: #6c9ef8;">let</span> ((raw (raw cst)))
+<span class="linenr"> 7: </span>             (<span style="color: #6c9ef8;">when</span> (and (consp cst) (cl:null (gethash raw table)))
+<span class="linenr"> 8: </span>               (setf (gethash raw table) cst)
+<span class="linenr"> 9: </span>               (vector-push-extend (first cst) worklist)
+<span class="linenr">10: </span>               (vector-push-extend (rest cst) worklist)))
+<span class="linenr">11: </span>        when (zerop (length worklist))
+<span class="linenr">12: </span>          do (<span style="color: #6c9ef8;">return</span> table)))
+</pre>
+</div>
+
+<p>
+However, this iterative approach comes with a lot of overhead,
+especially for small trees that would be completely fine within the
+limited stack space:
+</p>
+
+<ul class="org-ul">
+<li>Allocation and initialization of the <code class="src src-lisp">worklist</code> array.</li>
+
+<li>Pushing and popping worklist items</li>
+
+<li>Termination check</li>
+</ul>
+</div>
+<div id="outline-container-org4a16ed0" class="outline-3">
+<h3 id="org4a16ed0">Simple Case</h3>
+<div class="outline-text-3" id="text-org4a16ed0">
+<p>
+As a compromise, I came up with the following (I suspect this pattern
+to be well-known and maybe it even has a name but I can't think of
+anything):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp"><span class="linenr"> 1: </span>(<span style="color: #6c9ef8;">defun</span> <span style="color: #b77fdb; font-weight: bold;">cons-table</span> (cst <span style="color: #00aa80;">&amp;optional</span> (table (make-hash-table <span style="color: #b77fdb;">:test</span> #'eq)))
+<span class="linenr"> 2: </span>  (<span style="color: #6c9ef8;">let</span> ((tail (cl:list cst)))
+<span class="linenr"> 3: </span>    (<span style="color: #6c9ef8;">declare</span> (dynamic-extent tail))
+<span class="linenr"> 4: </span>    (<span style="color: #6c9ef8;">flet</span> ((enqueue (element)
+<span class="linenr"> 5: </span>             (<span style="color: #6c9ef8;">let</span> ((cell (cl:cons element nil)))
+<span class="linenr"> 6: </span>               (setf (cdr tail) cell
+<span class="linenr"> 7: </span>                     tail cell))))
+<span class="linenr"> 8: </span>      (<span style="color: #6c9ef8;">declare</span> (dynamic-extent (function enqueue)))
+<span class="linenr"> 9: </span>      (<span style="color: #6c9ef8;">labels</span> ((traverse (cst depth)
+<span class="linenr">10: </span>                 (<span style="color: #6c9ef8;">if</span> (&lt; depth 1000)
+<span class="linenr">11: </span>                     (<span style="color: #6c9ef8;">let</span> (raw)
+<span class="linenr">12: </span>                       (<span style="color: #6c9ef8;">when</span> (and (consp cst)
+<span class="linenr">13: </span>                                  (cl:null
+<span class="linenr">14: </span>                                   (gethash (setf raw (raw cst)) table)))
+<span class="linenr">15: </span>                         (setf (gethash raw table) cst)
+<span class="linenr">16: </span>                         (<span style="color: #6c9ef8;">let</span> ((depth+1 (1+ depth)))
+<span class="linenr">17: </span>                           (traverse (first cst) depth+1)
+<span class="linenr">18: </span>                           <span style="color: #808080; font-style: italic;">;; </span><span style="color: #808080; font-style: italic;">This second call could use just DEPTH if</span>
+<span class="linenr">19: </span>                           <span style="color: #808080; font-style: italic;">;; </span><span style="color: #808080; font-style: italic;">we could be sure about tail call</span>
+<span class="linenr">20: </span>                           <span style="color: #808080; font-style: italic;">;; </span><span style="color: #808080; font-style: italic;">optimization.</span>
+<span class="linenr">21: </span>                           (traverse (rest cst) depth+1))))
+<span class="linenr">22: </span>                     (enqueue cst))))
+<span class="linenr">23: </span>        (<span style="color: #6c9ef8;">loop</span> for worklist = tail then (cl:rest worklist)
+<span class="linenr">24: </span>              for cst = (cl:first worklist)
+<span class="linenr">25: </span>              do (traverse cst 0)
+<span class="linenr">26: </span>              when (cl:null (cl:rest worklist))
+<span class="linenr">27: </span>                do (loop-finish)))))
+<span class="linenr">28: </span>  table)
+</pre>
+</div>
+
+<p>
+This implementation is optimized for the common case of small inputs
+that would work fine with just the recursive implementation:
+</p>
+
+<ul class="org-ul">
+<li>The "inner loop", that is recursive <code>traverse</code> calls, is almost
+unchanged. The only changes are the <code>depth</code> parameter and the
+<code class="src src-lisp">(&lt; depth 1000)</code> check.</li>
+
+<li>The initial element of the worklist is allocated without consing
+and the worklist code leaves the loop after a single iteration.</li>
+
+<li><code class="src src-lisp">enqueue</code> is called only on the slow path so the fact
+that it conses and is not inlined should not matter.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org682ed8a" class="outline-3">
+<h3 id="org682ed8a">Slightly More General Case</h3>
+<div class="outline-text-3" id="text-org682ed8a">
+<p>
+<code class="src src-lisp">cons-table</code> was a simple case since the return value of
+<code class="src src-lisp">traverse</code> is not used. The <code>concrete-syntax-tree</code> function
+<code class="src src-lisp">build-cst</code> has this complication:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp"><span class="linenr"> 1: </span>(<span style="color: #6c9ef8;">defun</span> <span style="color: #b77fdb; font-weight: bold;">build-cst</span> (expression table default-source)
+<span class="linenr"> 2: </span>  (<span style="color: #6c9ef8;">let</span> ((cons-table (make-hash-table <span style="color: #b77fdb;">:test</span> #'eq)))
+<span class="linenr"> 3: </span>    (<span style="color: #6c9ef8;">labels</span> ((traverse (expression)
+<span class="linenr"> 4: </span>               (<span style="color: #6c9ef8;">multiple-value-bind</span> (value found-p)
+<span class="linenr"> 5: </span>                   (gethash expression table)
+<span class="linenr"> 6: </span>                 (<span style="color: #6c9ef8;">cond</span>
+<span class="linenr"> 7: </span>                   (found-p
+<span class="linenr"> 8: </span>                    value)
+<span class="linenr"> 9: </span>                   ((cl:consp expression)
+<span class="linenr">10: </span>                    (<span style="color: #6c9ef8;">multiple-value-bind</span> (existing found-p)
+<span class="linenr">11: </span>                        (gethash expression cons-table)
+<span class="linenr">12: </span>                      (<span style="color: #6c9ef8;">if</span> found-p
+<span class="linenr">13: </span>                          existing
+<span class="linenr">14: </span>                          (<span style="color: #6c9ef8;">let</span> ((cst (make-instance 'cons-cst
+<span class="linenr">15: </span>                                                    <span style="color: #b77fdb;">:raw</span> expression
+<span class="linenr">16: </span>                                                    <span style="color: #b77fdb;">:source</span> default-source)))
+<span class="linenr">17: </span>                            (setf (gethash expression cons-table) cst)
+<span class="linenr">18: </span>                            <span style="color: #808080; font-style: italic;">;; </span><span style="color: #808080; font-style: italic;">Return values of recursive calls are used.</span>
+<span class="linenr">19: </span>                            (<span style="color: #6c9ef8;">let</span> ((first (traverse (car expression)))
+<span class="linenr">20: </span>                                  (rest (traverse (cdr expression))))
+<span class="linenr">21: </span>                              (reinitialize-instance cst
+<span class="linenr">22: </span>                                                     <span style="color: #b77fdb;">:first</span> first
+<span class="linenr">23: </span>                                                     <span style="color: #b77fdb;">:rest</span> rest))
+<span class="linenr">24: </span>                            cst))))
+<span class="linenr">25: </span>                   (t
+<span class="linenr">26: </span>                    (make-instance 'atom-cst
+<span class="linenr">27: </span>                                   <span style="color: #b77fdb;">:raw</span> expression
+<span class="linenr">28: </span>                                   <span style="color: #b77fdb;">:source</span> default-source))))))
+<span class="linenr">29: </span>      (traverse expression))))
+</pre>
+</div>
+
+<p>
+To handle this case, we have to produce and store the results of
+the recursive calls before we restart the recursion. The
+implementation must use a stack since there can be multiple
+in-progress "recursive segments" at the same time:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-lisp"><span class="linenr"> 1: </span>(<span style="color: #6c9ef8;">defun</span> <span style="color: #b77fdb; font-weight: bold;">build-cst</span> (expression table default-source)
+<span class="linenr"> 2: </span>  (<span style="color: #6c9ef8;">let</span> ((cons-table (make-hash-table <span style="color: #b77fdb;">:test</span> #'eq))
+<span class="linenr"> 3: </span>        (tail (cl:list expression))
+<span class="linenr"> 4: </span>        (stack '()))
+<span class="linenr"> 5: </span>    (<span style="color: #6c9ef8;">declare</span> (dynamic-extent tail))
+<span class="linenr"> 6: </span>    (<span style="color: #6c9ef8;">flet</span> ((enqueue (element)
+<span class="linenr"> 7: </span>             (<span style="color: #6c9ef8;">let</span> ((cell (cl:cons element nil)))
+<span class="linenr"> 8: </span>               (setf (cdr tail) cell
+<span class="linenr"> 9: </span>                     tail cell))))
+<span class="linenr">10: </span>      (<span style="color: #6c9ef8;">declare</span> (dynamic-extent (function enqueue)))
+<span class="linenr">11: </span>      (<span style="color: #6c9ef8;">labels</span> ((traverse (expression depth)
+<span class="linenr">12: </span>                 (<span style="color: #6c9ef8;">multiple-value-bind</span> (value found-p)
+<span class="linenr">13: </span>                     (gethash expression table)
+<span class="linenr">14: </span>                   (<span style="color: #6c9ef8;">cond</span> (found-p value)
+<span class="linenr">15: </span>                         ((cl:consp expression)
+<span class="linenr">16: </span>                          (<span style="color: #6c9ef8;">multiple-value-bind</span> (existing found-p)
+<span class="linenr">17: </span>                              (gethash expression cons-table)
+<span class="linenr">18: </span>                            (<span style="color: #6c9ef8;">if</span> found-p
+<span class="linenr">19: </span>                                existing
+<span class="linenr">20: </span>                                (<span style="color: #6c9ef8;">let</span> ((car (car expression))
+<span class="linenr">21: </span>                                      (cdr (cdr expression))
+<span class="linenr">22: </span>                                      (cst (make-instance
+<span class="linenr">23: </span>                                            'cons-cst <span style="color: #b77fdb;">:raw</span> expression
+<span class="linenr">24: </span>                                                      <span style="color: #b77fdb;">:source</span> default-source)))
+<span class="linenr">25: </span>                                  (setf (gethash expression cons-table) cst)
+<span class="linenr">26: </span>                                  (<span style="color: #6c9ef8;">if</span> (&lt; depth 1000)
+<span class="linenr">27: </span>                                      (reinitialize-instance
+<span class="linenr">28: </span>                                       cst <span style="color: #b77fdb;">:first</span> (traverse car (1+ depth))
+<span class="linenr">29: </span>                                           <span style="color: #b77fdb;">:rest</span> (traverse cdr (1+ depth)))
+<span class="linenr">30: </span>                                      (<span style="color: #6c9ef8;">progn</span>
+<span class="linenr">31: </span>                                        <span style="color: #808080; font-style: italic;">;; </span><span style="color: #808080; font-style: italic;">First work item: restart</span>
+<span class="linenr">32: </span>                                        <span style="color: #808080; font-style: italic;">;; </span><span style="color: #808080; font-style: italic;">recursion for CAR and push</span>
+<span class="linenr">33: </span>                                        <span style="color: #808080; font-style: italic;">;; </span><span style="color: #808080; font-style: italic;">result onto STACK.</span>
+<span class="linenr">34: </span>                                        (enqueue car)
+<span class="linenr">35: </span>                                        <span style="color: #808080; font-style: italic;">;; </span><span style="color: #808080; font-style: italic;">Second work item: restart</span>
+<span class="linenr">36: </span>                                        <span style="color: #808080; font-style: italic;">;; </span><span style="color: #808080; font-style: italic;">recursion for CDR and push</span>
+<span class="linenr">37: </span>                                        <span style="color: #808080; font-style: italic;">;; </span><span style="color: #808080; font-style: italic;">result onto STACK.</span>
+<span class="linenr">38: </span>                                        (enqueue cdr)
+<span class="linenr">39: </span>                                        <span style="color: #808080; font-style: italic;">;; </span><span style="color: #808080; font-style: italic;">Third work item: pop</span>
+<span class="linenr">40: </span>                                        <span style="color: #808080; font-style: italic;">;; </span><span style="color: #808080; font-style: italic;">results for CDR and CAR,</span>
+<span class="linenr">41: </span>                                        <span style="color: #808080; font-style: italic;">;; </span><span style="color: #808080; font-style: italic;">update CST and push result</span>
+<span class="linenr">42: </span>                                        <span style="color: #808080; font-style: italic;">;; </span><span style="color: #808080; font-style: italic;">onto stack.</span>
+<span class="linenr">43: </span>                                        (enqueue
+<span class="linenr">44: </span>                                         (<span style="color: #6c9ef8;">lambda</span> ()
+<span class="linenr">45: </span>                                           (<span style="color: #d08928;">assert</span> (&gt;= (length stack) 2))
+<span class="linenr">46: </span>                                           (<span style="color: #6c9ef8;">let</span> ((rest (pop stack))
+<span class="linenr">47: </span>                                                 (first (pop stack)))
+<span class="linenr">48: </span>                                             (reinitialize-instance
+<span class="linenr">49: </span>                                              cst <span style="color: #b77fdb;">:first</span> first <span style="color: #b77fdb;">:rest</span> rest))))))
+<span class="linenr">50: </span>                                  cst))))
+<span class="linenr">51: </span>                         (t
+<span class="linenr">52: </span>                          (make-instance 'atom-cst <span style="color: #b77fdb;">:raw</span> expression
+<span class="linenr">53: </span>                                                   <span style="color: #b77fdb;">:source</span> default-source))))))
+<span class="linenr">54: </span>        (<span style="color: #6c9ef8;">loop</span> for worklist = tail then (cl:rest worklist)
+<span class="linenr">55: </span>              for worklist-item = (cl:first worklist)
+<span class="linenr">56: </span>              do (<span style="color: #6c9ef8;">if</span> (functionp worklist-item)
+<span class="linenr">57: </span>                     (funcall worklist-item)
+<span class="linenr">58: </span>                     (push (traverse worklist-item 0) stack))
+<span class="linenr">59: </span>              when (cl:null (cl:rest worklist))
+<span class="linenr">60: </span>                do (loop-finish))
+<span class="linenr">61: </span>        (<span style="color: #d08928;">assert</span> (= (length stack) 1))
+<span class="linenr">62: </span>        (cl:first stack)))))
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org7aec95b" class="outline-2">
+<h2 id="org7aec95b">Limitations</h2>
+<div class="outline-text-2" id="text-org7aec95b">
+<p>
+Whenever we pop a work item from the worklist and "restart" the
+recursion, the <code class="src src-lisp">traverse</code> call at depth 0 starts with a
+dynamic environment that comes from the enclosing function. This is
+different from the naive recursive implementation in which the
+dynamic environment would come from enclosing <code class="src src-lisp">traverse</code>
+calls which would correspond to the structure of the input.
+</p>
+
+<p>
+This limitation could matter if the recursive processing was
+intertwined with calling functions controlled by the client. An
+example of such a structure is the generic function <code class="src src-lisp">fixup</code>
+in Eclector. A client could define methods that establish and read
+dynamic variable bindings. Those bindings would get undone whenever
+we restart the recursion.
+</p>
+
+<p>
+Unfortunately this problem could easily go unnoticed since only
+deeply nested inputs reveal the incorrect assumption.
+</p>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Jan Moringen</p>
+<p class="date">Created: 2025-04-18 Fri 16:31</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

@@ -1,0 +1,269 @@
+#+TITLE:           Hybrid Recursion Scheme for the Reader and CST Libraries
+#+AUTHOR:          Jan Moringen
+
+#+OPTIONS:         toc:nil num:nil
+#+HTML_HEAD_EXTRA: <style>body { width:60%; margin:40px auto; margin-left: 20%; padding:0 10px; text-align:justify; line-height:1.4; font-size:16px; color:#444; } h1,h2,h3 { line-height:1.2 }</style>
+#+MACRO:           color @@html:<font color="$1">$2</font>@@
+#+MACRO:           cl src_lisp[:exports code]{$1}
+
+* Problem Statement
+
+  I'm going through the read/cst/ast libraries and removing
+  limitations caused by recursively implemented algorithms. Examples
+  are
+
+  + Eclector
+    + ~fixup~
+  + Concrete syntax tree
+    + ~cst-from-expression~
+    + ~reconstruct~ (and its helper functions)
+
+  A simple illustration of the issue is this function from the
+  ~concrete-syntax-tree~ library
+
+  #+begin_src lisp -n
+    (defun cons-table (cst &optional (table (make-hash-table :test #'eq)))
+      (labels ((traverse (cst)
+                 (let ((raw (raw cst)))
+                   (when (and (consp cst) (cl:null (gethash raw table)))
+                     (setf (gethash raw table) cst)
+                     (traverse (first cst))
+                     (traverse (rest cst))))))
+        (traverse cst))
+      table)
+  #+end_src
+
+  In bad cases, the stack space required is proportional to the input
+  size (In the common case of a long proper list, we may get saved by
+  the fact that tail call optimization can make the second recursive
+  call not consume stack space but for a general tree structure the
+  statement holds).
+
+  # :exports both :results output
+  #+begin_src lisp
+    (handler-case
+        (cst::cons-table (cst:cst-from-expression (make-list 100000)))
+      (storage-condition (condition)
+        (princ condition)))
+  #+end_src
+
+  # #+RESULTS:
+  #+begin_example
+    Control stack guard page temporarily disabled: proceed with caution
+    Control stack exhausted (no more space for function call frames).
+    This is probably due to heavily nested or infinitely recursive function
+    calls, or a tail call that SBCL cannot or has not optimized away.
+
+    PROCEED WITH CAUTION.
+  #+end_example
+
+* Approach
+
+  To remove the limitations, we could use an iterative implementation
+  with a worklist:
+
+  #+begin_src lisp -n
+    (defun cons-table (cst &optional (table (make-hash-table :test #'eq)))
+      (loop with worklist = (make-array 1 :adjustable t
+                                          :fill-pointer 1
+                                          :initial-contents (cl:list cst))
+            for cst = (vector-pop worklist)
+            do (let ((raw (raw cst)))
+                 (when (and (consp cst) (cl:null (gethash raw table)))
+                   (setf (gethash raw table) cst)
+                   (vector-push-extend (first cst) worklist)
+                   (vector-push-extend (rest cst) worklist)))
+            when (zerop (length worklist))
+              do (return table)))
+  #+end_src
+
+  However, this iterative approach comes with a lot of overhead,
+  especially for small trees that would be completely fine within the
+  limited stack space:
+
+  + Allocation and initialization of the {{{cl(worklist)}}} array.
+
+  + Pushing and popping worklist items
+
+  + Termination check
+
+** Simple Case
+
+   As a compromise, I came up with the following (I suspect this pattern
+   to be well-known and maybe it even has a name but I can't think of
+   anything):
+
+   #+begin_src lisp -n
+     (defun cons-table (cst &optional (table (make-hash-table :test #'eq)))
+       (let ((tail (cl:list cst)))
+         (declare (dynamic-extent tail))
+         (flet ((enqueue (element)
+                  (let ((cell (cl:cons element nil)))
+                    (setf (cdr tail) cell
+                          tail cell))))
+           (declare (dynamic-extent (function enqueue)))
+           (labels ((traverse (cst depth)
+                      (if (< depth 1000)
+                          (let (raw)
+                            (when (and (consp cst)
+                                       (cl:null
+                                        (gethash (setf raw (raw cst)) table)))
+                              (setf (gethash raw table) cst)
+                              (let ((depth+1 (1+ depth)))
+                                (traverse (first cst) depth+1)
+                                ;; This second call could use just DEPTH if
+                                ;; we could be sure about tail call
+                                ;; optimization.
+                                (traverse (rest cst) depth+1))))
+                          (enqueue cst))))
+             (loop for worklist = tail then (cl:rest worklist)
+                   for cst = (cl:first worklist)
+                   do (traverse cst 0)
+                   when (cl:null (cl:rest worklist))
+                     do (loop-finish)))))
+       table)
+   #+end_src
+
+   This implementation is optimized for the common case of small inputs
+   that would work fine with just the recursive implementation:
+
+   + The "inner loop", that is recursive ~traverse~ calls, is almost
+     unchanged. The only changes are the ~depth~ parameter and the
+     {{{cl((< depth 1000))}}} check.
+
+   + The initial element of the worklist is allocated without consing
+     and the worklist code leaves the loop after a single iteration.
+
+   + {{{cl(enqueue)}}} is called only on the slow path so the fact
+     that it conses and is not inlined should not matter.
+
+** Slightly More General Case
+
+   {{{cl(cons-table)}}} was a simple case since the return value of
+   {{{cl(traverse)}}} is not used. The ~concrete-syntax-tree~ function
+   {{{cl(build-cst)}}} has this complication:
+
+   #+begin_src lisp -n
+     (defun build-cst (expression table default-source)
+       (let ((cons-table (make-hash-table :test #'eq)))
+         (labels ((traverse (expression)
+                    (multiple-value-bind (value found-p)
+                        (gethash expression table)
+                      (cond
+                        (found-p
+                         value)
+                        ((cl:consp expression)
+                         (multiple-value-bind (existing found-p)
+                             (gethash expression cons-table)
+                           (if found-p
+                               existing
+                               (let ((cst (make-instance 'cons-cst
+                                                         :raw expression
+                                                         :source default-source)))
+                                 (setf (gethash expression cons-table) cst)
+                                 ;; Return values of recursive calls are used.
+                                 (let ((first (traverse (car expression)))
+                                       (rest (traverse (cdr expression))))
+                                   (reinitialize-instance cst
+                                                          :first first
+                                                          :rest rest))
+                                 cst))))
+                        (t
+                         (make-instance 'atom-cst
+                                        :raw expression
+                                        :source default-source))))))
+           (traverse expression))))
+   #+end_src
+
+   To handle this case, we have to produce and store the results of
+   the recursive calls before we restart the recursion. The
+   implementation must use a stack since there can be multiple
+   in-progress "recursive segments" at the same time:
+
+   #+begin_src lisp -n
+     (defun build-cst (expression table default-source)
+       (let ((cons-table (make-hash-table :test #'eq))
+             (tail (cl:list expression))
+             (stack '()))
+         (declare (dynamic-extent tail))
+         (flet ((enqueue (element)
+                  (let ((cell (cl:cons element nil)))
+                    (setf (cdr tail) cell
+                          tail cell))))
+           (declare (dynamic-extent (function enqueue)))
+           (labels ((traverse (expression depth)
+                      (multiple-value-bind (value found-p)
+                          (gethash expression table)
+                        (cond (found-p value)
+                              ((cl:consp expression)
+                               (multiple-value-bind (existing found-p)
+                                   (gethash expression cons-table)
+                                 (if found-p
+                                     existing
+                                     (let ((car (car expression))
+                                           (cdr (cdr expression))
+                                           (cst (make-instance
+                                                 'cons-cst :raw expression
+                                                           :source default-source)))
+                                       (setf (gethash expression cons-table) cst)
+                                       (if (< depth 1000)
+                                           (reinitialize-instance
+                                            cst :first (traverse car (1+ depth))
+                                                :rest (traverse cdr (1+ depth)))
+                                           (progn
+                                             ;; First work item: restart
+                                             ;; recursion for CAR and push
+                                             ;; result onto STACK.
+                                             (enqueue car)
+                                             ;; Second work item: restart
+                                             ;; recursion for CDR and push
+                                             ;; result onto STACK.
+                                             (enqueue cdr)
+                                             ;; Third work item: pop
+                                             ;; results for CDR and CAR,
+                                             ;; update CST and push result
+                                             ;; onto stack.
+                                             (enqueue
+                                              (lambda ()
+                                                (assert (>= (length stack) 2))
+                                                (let ((rest (pop stack))
+                                                      (first (pop stack)))
+                                                  (reinitialize-instance
+                                                   cst :first first :rest rest))))))
+                                       cst))))
+                              (t
+                               (make-instance 'atom-cst :raw expression
+                                                        :source default-source))))))
+             (loop for worklist = tail then (cl:rest worklist)
+                   for worklist-item = (cl:first worklist)
+                   do (if (functionp worklist-item)
+                          (funcall worklist-item)
+                          (push (traverse worklist-item 0) stack))
+                   when (cl:null (cl:rest worklist))
+                     do (loop-finish))
+             (assert (= (length stack) 1))
+             (cl:first stack)))))
+   #+end_src
+
+* Limitations
+
+  Whenever we pop a work item from the worklist and "restart" the
+  recursion, the {{{cl(traverse)}}} call at depth 0 starts with a
+  dynamic environment that comes from the enclosing function. This is
+  different from the naive recursive implementation in which the
+  dynamic environment would come from enclosing {{{cl(traverse)}}}
+  calls which would correspond to the structure of the input.
+
+  This limitation could matter if the recursive processing was
+  intertwined with calling functions controlled by the client. An
+  example of such a structure is the generic function {{{cl(fixup)}}}
+  in Eclector. A client could define methods that establish and read
+  dynamic variable bindings. Those bindings would get undone whenever
+  we restart the recursion.
+
+  Unfortunately this problem could easily go unnoticed since only
+  deeply nested inputs reveal the incorrect assumption.
+
+# Local Variables:
+# eval: (slime-disable-contrib 'slime-highlight-edits)
+# End:
